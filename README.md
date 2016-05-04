@@ -1,5 +1,7 @@
 # Swagger Codegen for the cpprestsdk library
 
+# This code generator is currently still work-in-progress and not yet usable. 
+
 ## Overview
 This is a client generation library for Swagger Codegen focusing on generating clients for APIs written using ASP.net Web API.
 As client library the [cpprestsdk](https://github.com/Microsoft/cpprestsdk) (former known as Catalina) developer by Microsoft is used and therefore a prerequesite. 
