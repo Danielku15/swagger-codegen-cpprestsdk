@@ -1,0 +1,71 @@
+{{#models}}{{#model}}
+
+#include "{{classname}}.h"
+
+BEGIN_SDK_NS
+
+namespace model {
+
+{{classname}}::{{classname}}()
+{
+}
+
+{{classname}}::~{{classname}}()
+{
+}
+
+void {{classname}}::validate() 
+{
+}
+
+web::json::value {{classname}}::toJson() const
+{
+     web::json::value val;
+     
+	{{#vars}}
+    
+	{{/vars}}
+
+    return val;
+}
+
+void {{classname}}::fromJson(web::json::value& json)
+{
+	
+}
+
+void {{classname}}::toMultipart(std::shared_ptr<MultipartFormData> multipart, const std::string& namePrefix) const
+{
+}
+
+void {{classname}}::fromMultiPart(web::json::value& val, const std::string& namePrefix)
+{
+}
+    
+   
+{{#vars}}{{^isNotContainer}}{{{datatype}}}& {{classname}}::{{getter}}()
+{
+	return m_{{name}};
+}
+{{/isNotContainer}}{{#isNotContainer}}{{{datatype}}} {{classname}}::{{getter}}() const
+{
+	return m_{{name}};
+}
+void {{classname}}::{{setter}}({{{datatype}}} value)
+{
+	m_{{name}} = value;
+}
+{{/isNotContainer}} 
+{{^required}}void {{classname}}::unset{{name}}() 
+{
+    m_{{name}}IsSet = false;
+}
+{{/required}}
+{{/vars}}
+
+}
+
+END_SDK_NS
+
+{{/model}}
+{{/models}}

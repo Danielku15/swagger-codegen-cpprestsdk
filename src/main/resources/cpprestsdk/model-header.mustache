@@ -1,0 +1,65 @@
+{{#models}}{{#model}}/*
+ * {{classname}}.h
+ * 
+ * {{description}}
+ */
+
+#ifndef {{classname}}_H_
+#define {{classname}}_H_
+
+#include "Commons.h"
+#include "ModelBase.h"
+
+{{#imports}}{{{this}}}
+{{/imports}}
+
+BEGIN_SDK_NS
+
+namespace model {
+
+class SDK_DECLSPEC {{classname}}
+	: public ModelBase
+{
+public:
+    {{classname}}();
+    virtual ~{{classname}}();
+
+	/////////////////////////////////////////////
+	/// ModelBase overrides
+	
+    virtual void validate() override;
+
+    virtual web::json::value toJson() const override;
+    virtual void fromJson(web::json::value& json) override;
+
+    virtual void toMultipart(std::shared_ptr<MultipartFormData> multipart, const std::string& namePrefix) const override;
+    virtual void fromMultiPart(web::json::value& val, const std::string& namePrefix) override;
+    
+ 	/////////////////////////////////////////////
+	/// {{classname}} members
+	   
+    {{#vars}}
+    /*
+     * {{description}}
+     */ 
+    {{^isNotContainer}}{{{datatype}}}& {{getter}}();
+    {{/isNotContainer}}{{#isNotContainer}}{{{datatype}}} {{getter}}() const;
+    void {{setter}}({{{datatype}}} value);
+    {{/isNotContainer}}{{^required}}void unset{{name}}();
+    {{/required}}
+    {{/vars}}
+    
+protected:
+    {{#vars}}{{{datatype}}} m_{{name}};
+    {{^required}}bool m_{{name}}IsSet;
+    {{/required}}
+    {{/vars}}
+};
+
+}
+
+END_SDK_NS
+
+#endif /* {{classname}}_H_ */
+{{/model}}
+{{/models}}
