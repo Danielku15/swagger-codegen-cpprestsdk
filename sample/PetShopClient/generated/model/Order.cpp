@@ -20,21 +20,23 @@ void Order::validate()
 
 web::json::value Order::toJson() const
 {
-     web::json::value val;
+    web::json::value val;
      
-	
+	val[U("id")] = ModelBase::toJson(m_Id);
+    val[U("petId")] = ModelBase::toJson(m_PetId);
+    val[U("quantity")] = ModelBase::toJson(m_Quantity);
+    if(m_ShipDateIsSet)
+    {
+        val[U("shipDate")] = ModelBase::toJson(m_ShipDate);
+                
+    }
+    if(m_StatusIsSet)
+    {
+        val[U("status")] = ModelBase::toJson(m_Status);
+                
+    }
+    val[U("complete")] = ModelBase::toJson(m_Complete);
     
-	
-    
-	
-    
-	
-    
-	
-    
-	
-    
-	
 
     return val;
 }

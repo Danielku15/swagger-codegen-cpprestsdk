@@ -20,25 +20,41 @@ void User::validate()
 
 web::json::value User::toJson() const
 {
-     web::json::value val;
+    web::json::value val;
      
-	
+	val[U("id")] = ModelBase::toJson(m_Id);
+    if(m_UsernameIsSet)
+    {
+        val[U("username")] = ModelBase::toJson(m_Username);
+                
+    }
+    if(m_FirstNameIsSet)
+    {
+        val[U("firstName")] = ModelBase::toJson(m_FirstName);
+                
+    }
+    if(m_LastNameIsSet)
+    {
+        val[U("lastName")] = ModelBase::toJson(m_LastName);
+                
+    }
+    if(m_EmailIsSet)
+    {
+        val[U("email")] = ModelBase::toJson(m_Email);
+                
+    }
+    if(m_PasswordIsSet)
+    {
+        val[U("password")] = ModelBase::toJson(m_Password);
+                
+    }
+    if(m_PhoneIsSet)
+    {
+        val[U("phone")] = ModelBase::toJson(m_Phone);
+                
+    }
+    val[U("userStatus")] = ModelBase::toJson(m_UserStatus);
     
-	
-    
-	
-    
-	
-    
-	
-    
-	
-    
-	
-    
-	
-    
-	
 
     return val;
 }

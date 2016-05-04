@@ -20,13 +20,15 @@ void Tag::validate()
 
 web::json::value Tag::toJson() const
 {
-     web::json::value val;
+    web::json::value val;
      
-	
+	val[U("id")] = ModelBase::toJson(m_Id);
+    if(m_NameIsSet)
+    {
+        val[U("name")] = ModelBase::toJson(m_Name);
+                
+    }
     
-	
-    
-	
 
     return val;
 }

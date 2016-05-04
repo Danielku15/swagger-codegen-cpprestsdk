@@ -20,11 +20,36 @@ void {{classname}}::validate()
 
 web::json::value {{classname}}::toJson() const
 {
-     web::json::value val;
+    web::json::value val;
      
-	{{#vars}}
-    
-	{{/vars}}
+	{{#vars}}{{#isPrimitiveType}}{{#required}}if(m_{{name}}IsSet)
+    {
+        val[U("{{baseName}}")] = ModelBase::toJson(m_{{name}});
+    }
+    {{/required}}{{^required}}val[U("{{baseName}}")] = ModelBase::toJson(m_{{name}});
+    {{/required}}{{/isPrimitiveType}}{{^isPrimitiveType}}{{#isListContainer}}{
+        std::vector<web::json::value> jsonArray;
+        for( auto& item : m_{{name}} )
+        {
+            {{#items.isPrimitiveType}}jsonArray.push_back(ModelBase::toJson(item));
+            {{/items.isPrimitiveType}}{{^items.isPrimitiveType}}{{#items.isString}}jsonArray.push_back(ModelBase::toJson(item));
+            {{/items.isString}}{{^items.isString}}{{#items.isDateTime}}jsonArray.push_back(ModelBase::toJson(item));
+            {{/items.isDateTime}}{{^items.isDateTime}}jsonArray.push_back( item.get() ? item->toJson() : web::json::value::null() );
+            {{/items.isDateTime}}{{/items.isString}}{{/items.isPrimitiveType}}
+        }
+        val[U("{{baseName}}")] = web::json::value::array(jsonArray);
+    }
+    {{/isListContainer}}{{^isListContainer}}{{^required}}if(m_{{name}}IsSet)
+    {
+        {{#isString}}val[U("{{baseName}}")] = ModelBase::toJson(m_{{name}});
+        {{/isString}}{{^isString}}{{#isDateTime}}val[U("{{baseName}}")] = ModelBase::toJson(m_{{name}});
+        {{/isDateTime}}{{^isDateTime}}val[U("{{baseName}}")] = m_{{name}}->toJson();
+        {{/isDateTime}}{{/isString}}        
+    }
+    {{/required}}{{#required}}{{#isString}}val[U("{{baseName}}")] = ModelBase::toJson(m_{{name}});
+    {{/isString}}{{^isString}}
+    val[U("{{baseName}}")] = m_{{name}}->toJson();
+    {{/isString}}{{/required}}{{/isListContainer}}{{/isPrimitiveType}}{{/vars}}
 
     return val;
 }

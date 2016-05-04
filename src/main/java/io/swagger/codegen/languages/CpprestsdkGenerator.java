@@ -137,6 +137,10 @@ public class CpprestsdkGenerator extends DefaultCodegen implements CodegenConfig
 				codegenModel.imports.add(newImp);	
 			}
 		}
+		
+		for (CodegenProperty prop : codegenModel.vars) {
+			
+		}
 
 		return codegenModel;
 	}

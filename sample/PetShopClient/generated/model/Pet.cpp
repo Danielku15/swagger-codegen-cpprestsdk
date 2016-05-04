@@ -20,21 +20,39 @@ void Pet::validate()
 
 web::json::value Pet::toJson() const
 {
-     web::json::value val;
+    web::json::value val;
      
-	
+	val[U("id")] = ModelBase::toJson(m_Id);
+    if(m_CategoryIsSet)
+    {
+        val[U("category")] = m_Category->toJson();
+                
+    }
+    val[U("name")] = ModelBase::toJson(m_Name);
+    {
+        std::vector<web::json::value> jsonArray;
+        for( auto& item : m_PhotoUrls )
+        {
+            jsonArray.push_back(ModelBase::toJson(item));
+            
+        }
+        val[U("photoUrls")] = web::json::value::array(jsonArray);
+    }
+    {
+        std::vector<web::json::value> jsonArray;
+        for( auto& item : m_Tags )
+        {
+            jsonArray.push_back( item.get() ? item->toJson() : web::json::value::null() );
+            
+        }
+        val[U("tags")] = web::json::value::array(jsonArray);
+    }
+    if(m_StatusIsSet)
+    {
+        val[U("status")] = ModelBase::toJson(m_Status);
+                
+    }
     
-	
-    
-	
-    
-	
-    
-	
-    
-	
-    
-	
 
     return val;
 }

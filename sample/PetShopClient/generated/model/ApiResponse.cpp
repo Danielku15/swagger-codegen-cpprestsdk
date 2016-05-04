@@ -20,15 +20,20 @@ void ApiResponse::validate()
 
 web::json::value ApiResponse::toJson() const
 {
-     web::json::value val;
+    web::json::value val;
      
-	
+	val[U("code")] = ModelBase::toJson(m_Code);
+    if(m_TypeIsSet)
+    {
+        val[U("type")] = ModelBase::toJson(m_Type);
+                
+    }
+    if(m_MessageIsSet)
+    {
+        val[U("message")] = ModelBase::toJson(m_Message);
+                
+    }
     
-	
-    
-	
-    
-	
 
     return val;
 }
