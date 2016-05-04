@@ -25,7 +25,7 @@ class SDK_DECLSPEC PetApi
 	: public ApiBase
 {
 public:
-    PetApi();
+    PetApi( std::shared_ptr<ApiConfiguration> configuration );
     virtual ~PetApi();
     
     /// <summary>

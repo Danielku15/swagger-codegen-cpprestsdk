@@ -6,7 +6,8 @@ BEGIN_SDK_NS
 
 namespace api {
 
-{{classname}}::{{classname}}()
+{{classname}}::{{classname}}( std::shared_ptr<ApiConfiguration> configuration )
+    : ApiBase(configuration)
 {
 }
 

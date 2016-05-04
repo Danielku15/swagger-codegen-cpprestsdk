@@ -146,6 +146,7 @@
   <ItemGroup>
     <ClInclude Include="Commons.h" />
     <ClInclude Include="generated\ApiBase.h" />
+    <ClInclude Include="generated\ApiConfiguration.h" />
     <ClInclude Include="generated\client\PetApi.h" />
     <ClInclude Include="generated\client\StoreApi.h" />
     <ClInclude Include="generated\client\UserApi.h" />
@@ -176,6 +177,7 @@
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="generated\ApiBase.cpp" />
+    <ClCompile Include="generated\ApiConfiguration.cpp" />
     <ClCompile Include="generated\client\PetApi.cpp" />
     <ClCompile Include="generated\client\StoreApi.cpp" />
     <ClCompile Include="generated\client\UserApi.cpp" />

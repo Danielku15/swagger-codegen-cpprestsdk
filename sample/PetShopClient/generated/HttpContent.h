@@ -9,7 +9,7 @@
 
 #include "Commons.h"
 
-#include <cpprest/details/basic_types.h>
+#include <cpprest/details/basic_types.h> 
 #include <memory>
 
 BEGIN_SDK_NS

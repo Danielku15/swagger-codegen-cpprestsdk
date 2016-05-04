@@ -24,7 +24,7 @@ class SDK_DECLSPEC UserApi
 	: public ApiBase
 {
 public:
-    UserApi();
+    UserApi( std::shared_ptr<ApiConfiguration> configuration );
     virtual ~UserApi();
     
     /// <summary>

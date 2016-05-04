@@ -6,7 +6,8 @@ BEGIN_SDK_NS
 
 namespace api {
 
-PetApi::PetApi()
+PetApi::PetApi( std::shared_ptr<ApiConfiguration> configuration )
+    : ApiBase(configuration)
 {
 }
 

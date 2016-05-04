@@ -6,7 +6,8 @@ BEGIN_SDK_NS
 
 namespace api {
 
-UserApi::UserApi()
+UserApi::UserApi( std::shared_ptr<ApiConfiguration> configuration )
+    : ApiBase(configuration)
 {
 }
 

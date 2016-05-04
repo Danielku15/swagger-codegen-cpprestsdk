@@ -23,7 +23,7 @@ class SDK_DECLSPEC {{classname}}
 	: public ApiBase
 {
 public:
-    {{classname}}();
+    {{classname}}( std::shared_ptr<ApiConfiguration> configuration );
     virtual ~{{classname}}();
     {{#operation}}
     /// <summary>

@@ -6,7 +6,8 @@ BEGIN_SDK_NS
 
 namespace api {
 
-StoreApi::StoreApi()
+StoreApi::StoreApi( std::shared_ptr<ApiConfiguration> configuration )
+    : ApiBase(configuration)
 {
 }
 

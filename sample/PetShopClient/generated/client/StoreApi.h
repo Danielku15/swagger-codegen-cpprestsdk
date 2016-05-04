@@ -23,7 +23,7 @@ class SDK_DECLSPEC StoreApi
 	: public ApiBase
 {
 public:
-    StoreApi();
+    StoreApi( std::shared_ptr<ApiConfiguration> configuration );
     virtual ~StoreApi();
     
     /// <summary>
