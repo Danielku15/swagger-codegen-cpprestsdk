@@ -10,6 +10,7 @@
 #include "Commons.h"
 
 #include <cpprest/details/basic_types.h> 
+#include <map>
 
 BEGIN_SDK_NS
 
@@ -23,9 +24,17 @@ public:
     
     utility::string_t getBaseUrl() const;
     void setBaseUrl( const utility::string_t value );
+    
+    utility::string_t getUserAgent() const;
+    void setUserAgent( const utility::string_t value );
+    
+    std::map<utility::string_t, utility::string_t>& getDefaultHeaders();
 
 protected:
     utility::string_t m_BaseUrl;
+    std::map<utility::string_t, utility::string_t> m_DefaultHeaders;
+    utility::string_t m_UserAgent;
+    
 };
 
 }

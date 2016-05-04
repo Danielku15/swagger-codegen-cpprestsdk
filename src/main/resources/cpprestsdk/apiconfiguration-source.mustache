@@ -22,6 +22,22 @@ void ApiConfiguration::setBaseUrl( const utility::string_t value )
     m_BaseUrl = value;
 }
 
+utility::string_t ApiConfiguration::getUserAgent() const
+{
+    return m_UserAgent;
+}
+
+void ApiConfiguration::setUserAgent( const utility::string_t value )
+{
+    m_UserAgent = value;
+}
+
+std::map<utility::string_t, utility::string_t>& ApiConfiguration::getDefaultHeaders()
+{
+    return m_DefaultHeaders;
+}
+
+
 }
 
 END_SDK_NS
