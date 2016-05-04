@@ -62,6 +62,21 @@ void ApiResponse::fromJson(web::json::value& val)
 
 void ApiResponse::toMultipart(std::shared_ptr<MultipartFormData> multipart, const std::string& namePrefix) const
 {
+	if(m_CodeIsSet)
+    {
+        multipart->add(ModelBase::toMultipart(namePrefix + "code", m_Code));
+    }
+    if(m_TypeIsSet)
+    {
+        multipart->add(ModelBase::toMultipart(namePrefix + "type", m_Type));
+                
+    }
+    if(m_MessageIsSet)
+    {
+        multipart->add(ModelBase::toMultipart(namePrefix + "message", m_Message));
+                
+    }
+    
 }
 
 void ApiResponse::fromMultiPart(web::json::value& val, const std::string& namePrefix)

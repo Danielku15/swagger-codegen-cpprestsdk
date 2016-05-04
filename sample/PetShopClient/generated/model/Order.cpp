@@ -86,6 +86,33 @@ void Order::fromJson(web::json::value& val)
 
 void Order::toMultipart(std::shared_ptr<MultipartFormData> multipart, const std::string& namePrefix) const
 {
+	if(m_IdIsSet)
+    {
+        multipart->add(ModelBase::toMultipart(namePrefix + "id", m_Id));
+    }
+    if(m_PetIdIsSet)
+    {
+        multipart->add(ModelBase::toMultipart(namePrefix + "petId", m_PetId));
+    }
+    if(m_QuantityIsSet)
+    {
+        multipart->add(ModelBase::toMultipart(namePrefix + "quantity", m_Quantity));
+    }
+    if(m_ShipDateIsSet)
+    {
+        multipart->add(ModelBase::toMultipart(namePrefix + "shipDate", m_ShipDate));
+                
+    }
+    if(m_StatusIsSet)
+    {
+        multipart->add(ModelBase::toMultipart(namePrefix + "status", m_Status));
+                
+    }
+    if(m_CompleteIsSet)
+    {
+        multipart->add(ModelBase::toMultipart(namePrefix + "complete", m_Complete));
+    }
+    
 }
 
 void Order::fromMultiPart(web::json::value& val, const std::string& namePrefix)

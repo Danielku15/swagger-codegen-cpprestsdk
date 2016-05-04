@@ -117,6 +117,43 @@ void {{classname}}::fromJson(web::json::value& val)
 
 void {{classname}}::toMultipart(std::shared_ptr<MultipartFormData> multipart, const std::string& namePrefix) const
 {
+	{{#vars}}{{#isPrimitiveType}}{{^required}}if(m_{{name}}IsSet)
+    {
+        multipart->add(ModelBase::toMultipart(namePrefix + "{{baseName}}", m_{{name}}));
+    }
+    {{/required}}{{#required}}multipart->add(ModelBase::toMultipart(namePrefix + "{{baseName}}", m_{{name}}));
+    {{/required}}{{/isPrimitiveType}}{{^isPrimitiveType}}{{#isListContainer}}{
+        std::vector<web::json::value> jsonArray;
+        for( auto& item : m_{{name}} )
+        {
+            {{#items.isPrimitiveType}}jsonArray.push_back(ModelBase::toJson(item));
+            {{/items.isPrimitiveType}}{{^items.isPrimitiveType}}{{#items.isString}}jsonArray.push_back(ModelBase::toJson(item));
+            {{/items.isString}}{{^items.isString}}{{#items.isDateTime}}jsonArray.push_back(ModelBase::toJson(item));
+            {{/items.isDateTime}}{{^items.isDateTime}}jsonArray.push_back( item.get() ? item->toJson() : web::json::value::null() );
+            {{/items.isDateTime}}{{/items.isString}}{{/items.isPrimitiveType}}
+        }
+        {{#required}}multipart->add(ModelBase::toMultipart(namePrefix + "{{baseName}}", web::json::value::array(jsonArray), "application/json"));
+        {{/required}}{{^required}}
+        if(jsonArray.size() > 0) 
+        {
+            multipart->add(ModelBase::toMultipart(namePrefix + "{{baseName}}", web::json::value::array(jsonArray), "application/json"));
+        }
+        {{/required}}
+    }
+    {{/isListContainer}}{{^isListContainer}}{{^required}}if(m_{{name}}IsSet)
+    {
+        {{#isString}}multipart->add(ModelBase::toMultipart(namePrefix + "{{baseName}}", m_{{name}}));
+        {{/isString}}{{^isString}}{{#isDateTime}}multipart->add(ModelBase::toMultipart(namePrefix + "{{baseName}}", m_{{name}}));
+        {{/isDateTime}}{{^isDateTime}}if (m_{{name}}.get())
+        {
+            m_{{name}}->toMultipart(multipart, "{{baseName}}.");
+        }
+        {{/isDateTime}}{{/isString}}        
+    }
+    {{/required}}{{#required}}{{#isString}}multipart->add(ModelBase::toMultipart(namePrefix + "{{baseName}}", m_{{name}}));
+    {{/isString}}{{^isString}}
+    m_{{name}}->toMultipart(multipart, "{{baseName}}.");
+    {{/isString}}{{/required}}{{/isListContainer}}{{/isPrimitiveType}}{{/vars}}
 }
 
 void {{classname}}::fromMultiPart(web::json::value& val, const std::string& namePrefix)

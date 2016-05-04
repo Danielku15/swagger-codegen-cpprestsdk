@@ -235,7 +235,7 @@ utility::string_t ModelBase::stringFromJson(web::json::value& val)
 
 utility::datetime ModelBase::dateFromJson(web::json::value& val)
 {
-    return utility::datetime::from_string(val.to_string(), utility::datetime::ISO_8601);
+    return utility::datetime::from_string(val.as_string(), utility::datetime::ISO_8601);
 }
 bool ModelBase::boolFromJson(web::json::value& val)
 {

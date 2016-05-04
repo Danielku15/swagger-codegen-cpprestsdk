@@ -16,40 +16,43 @@
     <Filter Include="Generated">
       <UniqueIdentifier>{28a7bc67-f79b-408b-8d91-a686a33eaa1c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Generated\Models">
+      <UniqueIdentifier>{cefcd9d1-4180-4eff-ae31-01d869760e79}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="generated\model\ApiResponse.cpp">
-      <Filter>Generated</Filter>
+      <Filter>Generated\Models</Filter>
     </ClCompile>
     <ClCompile Include="generated\model\Category.cpp">
-      <Filter>Generated</Filter>
+      <Filter>Generated\Models</Filter>
     </ClCompile>
     <ClCompile Include="generated\HttpContent.cpp">
-      <Filter>Generated</Filter>
+      <Filter>Generated\Models</Filter>
     </ClCompile>
     <ClCompile Include="generated\ModelBase.cpp">
-      <Filter>Generated</Filter>
+      <Filter>Generated\Models</Filter>
     </ClCompile>
     <ClCompile Include="generated\MultipartFormData.cpp">
-      <Filter>Generated</Filter>
+      <Filter>Generated\Models</Filter>
     </ClCompile>
     <ClCompile Include="generated\Object.cpp">
-      <Filter>Generated</Filter>
+      <Filter>Generated\Models</Filter>
     </ClCompile>
     <ClCompile Include="generated\model\Order.cpp">
-      <Filter>Generated</Filter>
+      <Filter>Generated\Models</Filter>
     </ClCompile>
     <ClCompile Include="generated\model\Pet.cpp">
-      <Filter>Generated</Filter>
+      <Filter>Generated\Models</Filter>
     </ClCompile>
     <ClCompile Include="generated\model\Tag.cpp">
-      <Filter>Generated</Filter>
+      <Filter>Generated\Models</Filter>
     </ClCompile>
     <ClCompile Include="generated\model\User.cpp">
-      <Filter>Generated</Filter>
+      <Filter>Generated\Models</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -57,34 +60,34 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="generated\model\ApiResponse.h">
-      <Filter>Generated</Filter>
+      <Filter>Generated\Models</Filter>
     </ClInclude>
     <ClInclude Include="generated\model\Category.h">
-      <Filter>Generated</Filter>
+      <Filter>Generated\Models</Filter>
     </ClInclude>
     <ClInclude Include="generated\HttpContent.h">
-      <Filter>Generated</Filter>
+      <Filter>Generated\Models</Filter>
     </ClInclude>
     <ClInclude Include="generated\ModelBase.h">
-      <Filter>Generated</Filter>
+      <Filter>Generated\Models</Filter>
     </ClInclude>
     <ClInclude Include="generated\MultipartFormData.h">
-      <Filter>Generated</Filter>
+      <Filter>Generated\Models</Filter>
     </ClInclude>
     <ClInclude Include="generated\Object.h">
-      <Filter>Generated</Filter>
+      <Filter>Generated\Models</Filter>
     </ClInclude>
     <ClInclude Include="generated\model\Order.h">
-      <Filter>Generated</Filter>
+      <Filter>Generated\Models</Filter>
     </ClInclude>
     <ClInclude Include="generated\model\Pet.h">
-      <Filter>Generated</Filter>
+      <Filter>Generated\Models</Filter>
     </ClInclude>
     <ClInclude Include="generated\model\Tag.h">
-      <Filter>Generated</Filter>
+      <Filter>Generated\Models</Filter>
     </ClInclude>
     <ClInclude Include="generated\model\User.h">
-      <Filter>Generated</Filter>
+      <Filter>Generated\Models</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

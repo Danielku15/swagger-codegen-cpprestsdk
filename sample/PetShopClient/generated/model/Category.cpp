@@ -52,6 +52,16 @@ void Category::fromJson(web::json::value& val)
 
 void Category::toMultipart(std::shared_ptr<MultipartFormData> multipart, const std::string& namePrefix) const
 {
+	if(m_IdIsSet)
+    {
+        multipart->add(ModelBase::toMultipart(namePrefix + "id", m_Id));
+    }
+    if(m_NameIsSet)
+    {
+        multipart->add(ModelBase::toMultipart(namePrefix + "name", m_Name));
+                
+    }
+    
 }
 
 void Category::fromMultiPart(web::json::value& val, const std::string& namePrefix)
