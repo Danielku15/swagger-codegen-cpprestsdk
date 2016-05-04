@@ -16,6 +16,7 @@ Order::~Order()
 
 void Order::validate() 
 {
+    // TODO: implement validation
 }
 
 web::json::value Order::toJson() const

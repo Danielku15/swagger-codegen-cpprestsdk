@@ -17,6 +17,9 @@ BEGIN_SDK_NS
 
 namespace model {
 
+/// <summary>
+/// 
+/// </summary>
 class SDK_DECLSPEC Tag
 	: public ModelBase
 {
@@ -39,18 +42,18 @@ public:
 	/// Tag members
 	   
     
-    /*
-     * 
-     */ 
+    /// <summary>
+    /// 
+    /// </summary>
     int64_t getId() const;
     void setId(int64_t value);
     bool IdIsSet();
     void unsetId();
     
     
-    /*
-     * 
-     */ 
+    /// <summary>
+    /// 
+    /// </summary>
     utility::string_t getName() const;
     void setName(utility::string_t value);
     bool NameIsSet();

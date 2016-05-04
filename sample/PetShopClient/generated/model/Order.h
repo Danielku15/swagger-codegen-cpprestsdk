@@ -17,6 +17,9 @@ BEGIN_SDK_NS
 
 namespace model {
 
+/// <summary>
+/// 
+/// </summary>
 class SDK_DECLSPEC Order
 	: public ModelBase
 {
@@ -39,54 +42,54 @@ public:
 	/// Order members
 	   
     
-    /*
-     * 
-     */ 
+    /// <summary>
+    /// 
+    /// </summary>
     int64_t getId() const;
     void setId(int64_t value);
     bool IdIsSet();
     void unsetId();
     
     
-    /*
-     * 
-     */ 
+    /// <summary>
+    /// 
+    /// </summary>
     int64_t getPetId() const;
     void setPetId(int64_t value);
     bool PetIdIsSet();
     void unsetPetId();
     
     
-    /*
-     * 
-     */ 
+    /// <summary>
+    /// 
+    /// </summary>
     int32_t getQuantity() const;
     void setQuantity(int32_t value);
     bool QuantityIsSet();
     void unsetQuantity();
     
     
-    /*
-     * 
-     */ 
+    /// <summary>
+    /// 
+    /// </summary>
     utility::datetime getShipDate() const;
     void setShipDate(utility::datetime value);
     bool ShipDateIsSet();
     void unsetShipDate();
     
     
-    /*
-     * Order Status
-     */ 
+    /// <summary>
+    /// Order Status
+    /// </summary>
     utility::string_t getStatus() const;
     void setStatus(utility::string_t value);
     bool StatusIsSet();
     void unsetStatus();
     
     
-    /*
-     * 
-     */ 
+    /// <summary>
+    /// 
+    /// </summary>
     bool getComplete() const;
     void setComplete(bool value);
     bool CompleteIsSet();

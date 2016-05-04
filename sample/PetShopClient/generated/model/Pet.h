@@ -20,6 +20,9 @@ BEGIN_SDK_NS
 
 namespace model {
 
+/// <summary>
+/// 
+/// </summary>
 class SDK_DECLSPEC Pet
 	: public ModelBase
 {
@@ -42,48 +45,48 @@ public:
 	/// Pet members
 	   
     
-    /*
-     * 
-     */ 
+    /// <summary>
+    /// 
+    /// </summary>
     int64_t getId() const;
     void setId(int64_t value);
     bool IdIsSet();
     void unsetId();
     
     
-    /*
-     * 
-     */ 
+    /// <summary>
+    /// 
+    /// </summary>
     std::shared_ptr<Category> getCategory() const;
     void setCategory(std::shared_ptr<Category> value);
     bool CategoryIsSet();
     void unsetCategory();
     
     
-    /*
-     * 
-     */ 
+    /// <summary>
+    /// 
+    /// </summary>
     utility::string_t getName() const;
     void setName(utility::string_t value);
     
     
-    /*
-     * 
-     */ 
+    /// <summary>
+    /// 
+    /// </summary>
     std::vector<utility::string_t>& getPhotoUrls();
     
     
-    /*
-     * 
-     */ 
+    /// <summary>
+    /// 
+    /// </summary>
     std::vector<std::shared_ptr<Tag>>& getTags();
     bool TagsIsSet();
     void unsetTags();
     
     
-    /*
-     * pet status in the store
-     */ 
+    /// <summary>
+    /// pet status in the store
+    /// </summary>
     utility::string_t getStatus() const;
     void setStatus(utility::string_t value);
     bool StatusIsSet();

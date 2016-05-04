@@ -1,28 +1,57 @@
+{{#operations}}/*
+ * {{classname}}.h
+ * 
+ * {{description}}
+ */
+ 
+#ifndef {{classname}}_H_
+#define {{classname}}_H_
 
-# This is a sample api mustache template.  It is representing a ficticous 
-# language and won't be usable or compile to anything without lots of changes.
-# Use it as an example.  You can access the variables in the generator object
-# like such:
+#include "Commons.h"
+#include "ApiBase.h"
 
-# use the package from the `apiPackage` variable
-package: {{package}}
+{{#imports}}{{{import}}}
+{{/imports}}
 
-# operations block
-{{#operations}}
-classname: {{classname}}
+BEGIN_SDK_NS
 
-# loop over each operation in the API:
-{{#operation}}
+namespace api {
 
-# each operation has an `operationId`:
-operationId: {{operationId}}
+USE_SDK_NS(model)
 
-# and parameters:
-{{#allParams}}
-{{paramName}}: {{dataType}}
-{{/allParams}}
+class SDK_DECLSPEC {{classname}}
+	: public ApiBase
+{
+public:
+    {{classname}}();
+    virtual ~{{classname}}();
+    {{#operation}}
+    /// <summary>
+    /// {{summary}}
+    /// </summary>
+    /// <remarks>
+    /// {{notes}}
+    /// </remarks>
+    {{#allParams}}/// <param name="{{paramName}}">{{description}}{{^required}} (optional{{#defaultValue}}, default to {{.}}{{/defaultValue}}){{/required}}</param>{{/allParams}}
+    {{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}void{{/returnType}} {{operationId}}({{#allParams}}{{{dataType}}} {{paramName}}{{^required}}{{/required}}{{#hasMore}}, {{/hasMore}}{{/allParams}});
+    {{/operation}}
 
-{{/operation}}
+    {{#operation}}
+    /// <summary>
+    /// {{summary}}
+    /// </summary>
+    /// <remarks>
+    /// {{notes}}
+    /// </remarks>
+    {{#allParams}}/// <param name="{{paramName}}">{{description}}{{^required}} (optional{{#defaultValue}}, default to {{.}}{{/defaultValue}}){{/required}}</param>{{/allParams}}
+    pplx::task<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}void{{/returnType}}> {{operationId}}Async({{#allParams}}{{{dataType}}} {{paramName}}{{^required}}{{/required}}{{#hasMore}}, {{/hasMore}}{{/allParams}});
+    {{/operation}}
+};
+    
+}
 
-# end of operations block
+END_SDK_NS
+
+#endif /* {{classname}}_H_ */
+
 {{/operations}}

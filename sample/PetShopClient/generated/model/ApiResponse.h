@@ -17,6 +17,9 @@ BEGIN_SDK_NS
 
 namespace model {
 
+/// <summary>
+/// 
+/// </summary>
 class SDK_DECLSPEC ApiResponse
 	: public ModelBase
 {
@@ -39,27 +42,27 @@ public:
 	/// ApiResponse members
 	   
     
-    /*
-     * 
-     */ 
+    /// <summary>
+    /// 
+    /// </summary>
     int32_t getCode() const;
     void setCode(int32_t value);
     bool CodeIsSet();
     void unsetCode();
     
     
-    /*
-     * 
-     */ 
+    /// <summary>
+    /// 
+    /// </summary>
     utility::string_t getType() const;
     void setType(utility::string_t value);
     bool TypeIsSet();
     void unsetType();
     
     
-    /*
-     * 
-     */ 
+    /// <summary>
+    /// 
+    /// </summary>
     utility::string_t getMessage() const;
     void setMessage(utility::string_t value);
     bool MessageIsSet();

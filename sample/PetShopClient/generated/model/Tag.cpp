@@ -16,6 +16,7 @@ Tag::~Tag()
 
 void Tag::validate() 
 {
+    // TODO: implement validation
 }
 
 web::json::value Tag::toJson() const

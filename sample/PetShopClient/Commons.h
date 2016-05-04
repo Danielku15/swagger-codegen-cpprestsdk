@@ -11,5 +11,6 @@
 
 #define BEGIN_SDK_NS namespace petshop { 
 #define END_SDK_NS }
+#define USE_SDK_NS(NS) using namespace petshop::NS;
 
 #endif /* Commons_H_ */

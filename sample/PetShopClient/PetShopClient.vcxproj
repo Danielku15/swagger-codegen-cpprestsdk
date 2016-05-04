@@ -145,6 +145,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Commons.h" />
+    <ClInclude Include="generated\ApiBase.h" />
+    <ClInclude Include="generated\client\PetApi.h" />
+    <ClInclude Include="generated\client\StoreApi.h" />
+    <ClInclude Include="generated\client\UserApi.h" />
     <ClInclude Include="generated\HttpContent.h" />
     <ClInclude Include="generated\ModelBase.h" />
     <ClInclude Include="generated\model\ApiResponse.h" />
@@ -171,6 +175,10 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="generated\ApiBase.cpp" />
+    <ClCompile Include="generated\client\PetApi.cpp" />
+    <ClCompile Include="generated\client\StoreApi.cpp" />
+    <ClCompile Include="generated\client\UserApi.cpp" />
     <ClCompile Include="generated\HttpContent.cpp" />
     <ClCompile Include="generated\ModelBase.cpp" />
     <ClCompile Include="generated\model\ApiResponse.cpp" />

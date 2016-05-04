@@ -19,6 +19,9 @@
     <Filter Include="Generated\Models">
       <UniqueIdentifier>{cefcd9d1-4180-4eff-ae31-01d869760e79}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Generated\Api">
+      <UniqueIdentifier>{a609bd42-73a2-4639-94e1-1cbcb1b005a8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -54,6 +57,18 @@
     <ClCompile Include="generated\model\User.cpp">
       <Filter>Generated\Models</Filter>
     </ClCompile>
+    <ClCompile Include="generated\client\PetApi.cpp">
+      <Filter>Generated\Api</Filter>
+    </ClCompile>
+    <ClCompile Include="generated\client\StoreApi.cpp">
+      <Filter>Generated\Api</Filter>
+    </ClCompile>
+    <ClCompile Include="generated\client\UserApi.cpp">
+      <Filter>Generated\Api</Filter>
+    </ClCompile>
+    <ClCompile Include="generated\ApiBase.cpp">
+      <Filter>Generated\Api</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Commons.h">
@@ -88,6 +103,18 @@
     </ClInclude>
     <ClInclude Include="generated\model\User.h">
       <Filter>Generated\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="generated\client\PetApi.h">
+      <Filter>Generated\Api</Filter>
+    </ClInclude>
+    <ClInclude Include="generated\client\StoreApi.h">
+      <Filter>Generated\Api</Filter>
+    </ClInclude>
+    <ClInclude Include="generated\client\UserApi.h">
+      <Filter>Generated\Api</Filter>
+    </ClInclude>
+    <ClInclude Include="generated\ApiBase.h">
+      <Filter>Generated\Api</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

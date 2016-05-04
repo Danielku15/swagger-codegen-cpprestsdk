@@ -16,6 +16,7 @@ Category::~Category()
 
 void Category::validate() 
 {
+    // TODO: implement validation
 }
 
 web::json::value Category::toJson() const

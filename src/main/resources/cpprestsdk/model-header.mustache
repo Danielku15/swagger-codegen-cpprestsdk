@@ -17,6 +17,9 @@ BEGIN_SDK_NS
 
 namespace model {
 
+/// <summary>
+/// {{description}}
+/// </summary>
 class SDK_DECLSPEC {{classname}}
 	: public ModelBase
 {
@@ -39,9 +42,9 @@ public:
 	/// {{classname}} members
 	   
     {{#vars}}
-    /*
-     * {{description}}
-     */ 
+    /// <summary>
+    /// {{description}}
+    /// </summary>
     {{^isNotContainer}}{{{datatype}}}& {{getter}}();
     {{/isNotContainer}}{{#isNotContainer}}{{{datatype}}} {{getter}}() const;
     void {{setter}}({{{datatype}}} value);

@@ -16,6 +16,7 @@ User::~User()
 
 void User::validate() 
 {
+    // TODO: implement validation
 }
 
 web::json::value User::toJson() const

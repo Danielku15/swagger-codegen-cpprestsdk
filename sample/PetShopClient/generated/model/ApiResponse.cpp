@@ -16,6 +16,7 @@ ApiResponse::~ApiResponse()
 
 void ApiResponse::validate() 
 {
+    // TODO: implement validation
 }
 
 web::json::value ApiResponse::toJson() const

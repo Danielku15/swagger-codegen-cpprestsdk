@@ -1,28 +1,41 @@
-
-# This is a sample api mustache template.  It is representing a ficticous 
-# language and won't be usable or compile to anything without lots of changes.
-# Use it as an example.  You can access the variables in the generator object
-# like such:
-
-# use the package from the `apiPackage` variable
-package: {{package}}
-
-# operations block
 {{#operations}}
-classname: {{classname}}
 
-# loop over each operation in the API:
+#include "{{classname}}.h"
+
+BEGIN_SDK_NS
+
+namespace api {
+
+{{classname}}::{{classname}}()
+{
+}
+
+{{classname}}::~{{classname}}()
+{
+}
+
 {{#operation}}
-
-# each operation has an `operationId`:
-operationId: {{operationId}}
-
-# and parameters:
-{{#allParams}}
-{{paramName}}: {{dataType}}
-{{/allParams}}
-
+{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}void{{/returnType}} {{classname}}::{{operationId}}({{#allParams}}{{{dataType}}} {{paramName}}{{^required}}{{/required}}{{#hasMore}}, {{/hasMore}}{{/allParams}})
+{
+    auto task = {{operationId}}Async({{#allParams}}{{paramName}}{{^required}}{{/required}}{{#hasMore}}, {{/hasMore}}{{/allParams}});
+    {{#returnType}}
+    return task.get();
+    {{/returnType}}{{^returnType}}
+    task.wait();
+    {{/returnType}}
+}
 {{/operation}}
 
-# end of operations block
+{{#operation}}
+pplx::task<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}void{{/returnType}}> {{classname}}::{{operationId}}Async({{#allParams}}{{{dataType}}} {{paramName}}{{^required}}{{/required}}{{#hasMore}}, {{/hasMore}}{{/allParams}})
+{
+    return pplx::task<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}void{{/returnType}}> ();
+}
+{{/operation}}
+
+
+}
+
+END_SDK_NS
+
 {{/operations}}

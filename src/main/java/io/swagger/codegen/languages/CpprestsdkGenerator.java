@@ -54,6 +54,8 @@ public class CpprestsdkGenerator extends DefaultCodegen implements CodegenConfig
 
 		supportingFiles.add(new SupportingFile("modelbase-header.mustache", "", "ModelBase.h"));
 		supportingFiles.add(new SupportingFile("modelbase-source.mustache", "", "ModelBase.cpp"));
+		supportingFiles.add(new SupportingFile("apibase-header.mustache", "", "ApiBase.h"));
+		supportingFiles.add(new SupportingFile("apibase-source.mustache", "", "ApiBase.cpp"));
 		supportingFiles.add(new SupportingFile("httpcontent-header.mustache", "", "HttpContent.h"));
 		supportingFiles.add(new SupportingFile("httpcontent-source.mustache", "", "HttpContent.cpp"));
 		supportingFiles.add(new SupportingFile("multipart-header.mustache", "", "MultipartFormData.h"));
@@ -133,8 +135,8 @@ public class CpprestsdkGenerator extends DefaultCodegen implements CodegenConfig
 		codegenModel.imports = new HashSet<String>();
 		for (String imp : oldImports) {
 			String newImp = toModelImport(imp);
-			if(!newImp.isEmpty()){
-				codegenModel.imports.add(newImp);	
+			if (!newImp.isEmpty()) {
+				codegenModel.imports.add(newImp);
 			}
 		}
 
@@ -148,7 +150,7 @@ public class CpprestsdkGenerator extends DefaultCodegen implements CodegenConfig
 
 	@Override
 	public String toApiFilename(String name) {
-		return initialCaps(name) + "Client";
+		return initialCaps(name) + "Api";
 	}
 
 	/**
@@ -219,6 +221,20 @@ public class CpprestsdkGenerator extends DefaultCodegen implements CodegenConfig
 		return "nullptr";
 	}
 
+	@Override
+	public void postProcessParameter(CodegenParameter parameter) {
+		super.postProcessParameter(parameter);
+		
+		boolean isPrimitiveType = parameter.isPrimitiveType == Boolean.TRUE;
+		boolean isListContainer = parameter.isListContainer == Boolean.TRUE;
+		boolean isString = parameter.isString == Boolean.TRUE;
+
+		if ( !isPrimitiveType && !isListContainer && !isString && !parameter.dataType.startsWith("std::shared_ptr"))
+		{
+			parameter.dataType = "std::shared_ptr<" + parameter.dataType + ">";
+		}
+	}
+
 	/**
 	 * Optional - swagger type conversion. This is used to map swagger types in
 	 * a `Property` into either language specific types via `typeMapping` or
@@ -268,6 +284,6 @@ public class CpprestsdkGenerator extends DefaultCodegen implements CodegenConfig
 
 	@Override
 	public String toApiName(String type) {
-		return Character.toUpperCase(type.charAt(0)) + type.substring(1) + "Client";
+		return Character.toUpperCase(type.charAt(0)) + type.substring(1) + "Api";
 	}
 }
