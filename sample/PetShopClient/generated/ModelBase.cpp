@@ -78,7 +78,7 @@ web::json::value ModelBase::toJson( std::shared_ptr<HttpContent> content )
     return web::json::value::string( base64 );
 }
 
-std::shared_ptr<HttpContent> ModelBase::toMultipart( const std::string& name, const utility::string_t& value, const std::string& contentType)
+std::shared_ptr<HttpContent> ModelBase::toHttpContent( const std::string& name, const utility::string_t& value, const std::string& contentType)
 {
     std::shared_ptr<HttpContent> content(new HttpContent);
     content->setName( name );
@@ -87,7 +87,7 @@ std::shared_ptr<HttpContent> ModelBase::toMultipart( const std::string& name, co
     content->setData( std::shared_ptr<std::iostream>( new std::stringstream( ModelBase::wstringToString(value) ) ) );
     return content;
 }
-std::shared_ptr<HttpContent> ModelBase::toMultipart( const std::string& name, const utility::datetime& value, const std::string& contentType )
+std::shared_ptr<HttpContent> ModelBase::toHttpContent( const std::string& name, const utility::datetime& value, const std::string& contentType )
 {
     std::shared_ptr<HttpContent> content( new HttpContent );
     content->setName( name );
@@ -96,7 +96,7 @@ std::shared_ptr<HttpContent> ModelBase::toMultipart( const std::string& name, co
     content->setData( std::shared_ptr<std::iostream>( new std::stringstream( ModelBase::wstringToString(value.to_string(utility::datetime::ISO_8601) ) ) ) );
     return content;
 }
-std::shared_ptr<HttpContent> ModelBase::toMultipart( const std::string& name, std::shared_ptr<HttpContent> value )
+std::shared_ptr<HttpContent> ModelBase::toHttpContent( const std::string& name, std::shared_ptr<HttpContent> value )
 {
     std::shared_ptr<HttpContent> content( new HttpContent );
     content->setName( name );
@@ -106,7 +106,7 @@ std::shared_ptr<HttpContent> ModelBase::toMultipart( const std::string& name, st
     content->setFileName( value->getFileName() );
     return content;
 }
-std::shared_ptr<HttpContent> ModelBase::toMultipart( const std::string& name, const web::json::value& value, const std::string& contentType )
+std::shared_ptr<HttpContent> ModelBase::toHttpContent( const std::string& name, const web::json::value& value, const std::string& contentType )
 {
     std::shared_ptr<HttpContent> content( new HttpContent );
     content->setName( name );
@@ -115,7 +115,7 @@ std::shared_ptr<HttpContent> ModelBase::toMultipart( const std::string& name, co
     content->setData( std::shared_ptr<std::iostream>( new std::stringstream( ModelBase::wstringToString(value.serialize()) ) ) );
     return content;
 }
-std::shared_ptr<HttpContent> ModelBase::toMultipart( const std::string& name, int32_t value, const std::string& contentType )
+std::shared_ptr<HttpContent> ModelBase::toHttpContent( const std::string& name, int32_t value, const std::string& contentType )
 {
     std::shared_ptr<HttpContent> content( new HttpContent );
     content->setName( name );
@@ -124,7 +124,7 @@ std::shared_ptr<HttpContent> ModelBase::toMultipart( const std::string& name, in
     content->setData( std::shared_ptr<std::iostream>( new std::stringstream( std::to_string( value ) ) ) );
     return content;
 }
-std::shared_ptr<HttpContent> ModelBase::toMultipart( const std::string& name, int64_t value, const std::string& contentType )
+std::shared_ptr<HttpContent> ModelBase::toHttpContent( const std::string& name, int64_t value, const std::string& contentType )
 {
     std::shared_ptr<HttpContent> content( new HttpContent );
     content->setName( name );
@@ -133,7 +133,7 @@ std::shared_ptr<HttpContent> ModelBase::toMultipart( const std::string& name, in
     content->setData( std::shared_ptr<std::iostream>( new std::stringstream( std::to_string( value ) ) ) );
     return content;
 }
-std::shared_ptr<HttpContent> ModelBase::toMultipart( const std::string& name, double value, const std::string& contentType )
+std::shared_ptr<HttpContent> ModelBase::toHttpContent( const std::string& name, double value, const std::string& contentType )
 {
     std::shared_ptr<HttpContent> content( new HttpContent );
     content->setName( name );
@@ -213,11 +213,19 @@ std::shared_ptr<HttpContent> ModelBase::streamFromBase64( const web::json::value
     return content;
 
 }
+
 std::string ModelBase::wstringToString( const std::wstring& value )
 {
     char const* p = reinterpret_cast<char const*>(&value[0]);
     std::size_t size = value.size() * sizeof( value.front() );
     return std::string(p, size);
+}
+
+std::wstring ModelBase::stringToWstring( const std::string& value )
+{
+    wchar_t const* p = reinterpret_cast<wchar_t const*>(&value[0]);
+    std::size_t size = value.size() % 2 == 0 ? value.size() : value.size() - 1;
+    return std::wstring(p, size * sizeof(wchar_t));
 }
 
 int64_t ModelBase::int64_tFromJson(web::json::value& val)
@@ -240,6 +248,50 @@ utility::datetime ModelBase::dateFromJson(web::json::value& val)
 bool ModelBase::boolFromJson(web::json::value& val)
 {
     return val.as_bool();
+}
+
+int64_t ModelBase::int64_tFromHttpContent(std::shared_ptr<HttpContent> val)
+{
+    utility::string_t str = ModelBase::stringFromHttpContent(val);
+    
+    utility::stringstream_t ss(str);
+    int64_t result = 0;
+    ss >> result;
+    return result;
+}
+int32_t ModelBase::int32_tFromHttpContent(std::shared_ptr<HttpContent> val)
+{
+    utility::string_t str = ModelBase::stringFromHttpContent(val);
+    
+    utility::stringstream_t ss(str);
+    int32_t result = 0;
+    ss >> result;
+    return result;
+}
+utility::string_t ModelBase::stringFromHttpContent(std::shared_ptr<HttpContent> val)
+{
+    std::shared_ptr<std::iostream> data = val->getData();
+    data->seekg( 0, data->beg );
+    
+    std::string str((std::istreambuf_iterator<char>(*data.get())),
+                 std::istreambuf_iterator<char>());
+    
+    return ModelBase::stringToWstring(str);
+}
+utility::datetime ModelBase::dateFromHttpContent(std::shared_ptr<HttpContent> val)
+{
+    utility::string_t str = ModelBase::stringFromHttpContent(val);    
+    return utility::datetime::from_string(str, utility::datetime::ISO_8601);
+}
+
+bool ModelBase::boolFromHttpContent(std::shared_ptr<HttpContent> val)
+{
+    utility::string_t str = ModelBase::stringFromHttpContent(val);
+    
+    utility::stringstream_t ss(str);
+    bool result = false;
+    ss >> result;
+    return result;
 }
 
 

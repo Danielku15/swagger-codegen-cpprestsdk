@@ -26,6 +26,22 @@ std::string MultipartFormData::getBoundary()
 void MultipartFormData::add( std::shared_ptr<HttpContent> content )
 {
     m_Contents.push_back( content );
+    m_ContentLookup[content->getName()] = content;
+}
+
+bool MultipartFormData::hasContent(const std::string& name) const
+{
+    return m_ContentLookup.find(name) != m_ContentLookup.end();
+}
+
+std::shared_ptr<HttpContent> MultipartFormData::getContent(const std::string& name) const
+{
+    auto result = m_ContentLookup.find(name);
+    if(result == m_ContentLookup.end())
+    {
+        return std::shared_ptr<HttpContent>(nullptr);
+    }
+    return result->second;
 }
 
 void MultipartFormData::writeTo( std::ostream& target )

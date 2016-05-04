@@ -64,23 +64,38 @@ void ApiResponse::toMultipart(std::shared_ptr<MultipartFormData> multipart, cons
 {
 	if(m_CodeIsSet)
     {
-        multipart->add(ModelBase::toMultipart(namePrefix + "code", m_Code));
+        multipart->add(ModelBase::toHttpContent(namePrefix + "code", m_Code));
     }
     if(m_TypeIsSet)
     {
-        multipart->add(ModelBase::toMultipart(namePrefix + "type", m_Type));
+        multipart->add(ModelBase::toHttpContent(namePrefix + "type", m_Type));
                 
     }
     if(m_MessageIsSet)
     {
-        multipart->add(ModelBase::toMultipart(namePrefix + "message", m_Message));
+        multipart->add(ModelBase::toHttpContent(namePrefix + "message", m_Message));
                 
     }
     
 }
 
-void ApiResponse::fromMultiPart(web::json::value& val, const std::string& namePrefix)
+void ApiResponse::fromMultiPart(std::shared_ptr<MultipartFormData> multipart, const std::string& namePrefix)
 {
+    if(multipart->hasContent("code"))
+    {
+        setCode(ModelBase::int32_tFromHttpContent(multipart->getContent("code")));
+    }
+    if(multipart->hasContent("type"))
+    {
+        setType(ModelBase::stringFromHttpContent(multipart->getContent("type")));
+                
+    }
+    if(multipart->hasContent("message"))
+    {
+        setMessage(ModelBase::stringFromHttpContent(multipart->getContent("message")));
+                
+    }
+    
 }
     
    

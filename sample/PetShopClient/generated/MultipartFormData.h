@@ -12,6 +12,7 @@
 
 #include <cpprest/details/basic_types.h>
 #include <vector>
+#include <map>
 #include <memory>
 
 BEGIN_SDK_NS
@@ -26,11 +27,14 @@ public:
 
     virtual void add( std::shared_ptr<HttpContent> content );
     virtual std::string getBoundary();
+    virtual std::shared_ptr<HttpContent> getContent(const std::string& name) const;
+    virtual bool hasContent(const std::string& name) const;
     virtual void writeTo( std::ostream& target );
     
 protected:
     std::vector<std::shared_ptr<HttpContent>> m_Contents;
     std::string m_Boundary;
+    std::map<std::string, std::shared_ptr<HttpContent>> m_ContentLookup;
 };
 
 }

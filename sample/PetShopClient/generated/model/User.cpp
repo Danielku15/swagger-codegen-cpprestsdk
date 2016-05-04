@@ -112,47 +112,86 @@ void User::toMultipart(std::shared_ptr<MultipartFormData> multipart, const std::
 {
 	if(m_IdIsSet)
     {
-        multipart->add(ModelBase::toMultipart(namePrefix + "id", m_Id));
+        multipart->add(ModelBase::toHttpContent(namePrefix + "id", m_Id));
     }
     if(m_UsernameIsSet)
     {
-        multipart->add(ModelBase::toMultipart(namePrefix + "username", m_Username));
+        multipart->add(ModelBase::toHttpContent(namePrefix + "username", m_Username));
                 
     }
     if(m_FirstNameIsSet)
     {
-        multipart->add(ModelBase::toMultipart(namePrefix + "firstName", m_FirstName));
+        multipart->add(ModelBase::toHttpContent(namePrefix + "firstName", m_FirstName));
                 
     }
     if(m_LastNameIsSet)
     {
-        multipart->add(ModelBase::toMultipart(namePrefix + "lastName", m_LastName));
+        multipart->add(ModelBase::toHttpContent(namePrefix + "lastName", m_LastName));
                 
     }
     if(m_EmailIsSet)
     {
-        multipart->add(ModelBase::toMultipart(namePrefix + "email", m_Email));
+        multipart->add(ModelBase::toHttpContent(namePrefix + "email", m_Email));
                 
     }
     if(m_PasswordIsSet)
     {
-        multipart->add(ModelBase::toMultipart(namePrefix + "password", m_Password));
+        multipart->add(ModelBase::toHttpContent(namePrefix + "password", m_Password));
                 
     }
     if(m_PhoneIsSet)
     {
-        multipart->add(ModelBase::toMultipart(namePrefix + "phone", m_Phone));
+        multipart->add(ModelBase::toHttpContent(namePrefix + "phone", m_Phone));
                 
     }
     if(m_UserStatusIsSet)
     {
-        multipart->add(ModelBase::toMultipart(namePrefix + "userStatus", m_UserStatus));
+        multipart->add(ModelBase::toHttpContent(namePrefix + "userStatus", m_UserStatus));
     }
     
 }
 
-void User::fromMultiPart(web::json::value& val, const std::string& namePrefix)
+void User::fromMultiPart(std::shared_ptr<MultipartFormData> multipart, const std::string& namePrefix)
 {
+    if(multipart->hasContent("id"))
+    {
+        setId(ModelBase::int64_tFromHttpContent(multipart->getContent("id")));
+    }
+    if(multipart->hasContent("username"))
+    {
+        setUsername(ModelBase::stringFromHttpContent(multipart->getContent("username")));
+                
+    }
+    if(multipart->hasContent("firstName"))
+    {
+        setFirstName(ModelBase::stringFromHttpContent(multipart->getContent("firstName")));
+                
+    }
+    if(multipart->hasContent("lastName"))
+    {
+        setLastName(ModelBase::stringFromHttpContent(multipart->getContent("lastName")));
+                
+    }
+    if(multipart->hasContent("email"))
+    {
+        setEmail(ModelBase::stringFromHttpContent(multipart->getContent("email")));
+                
+    }
+    if(multipart->hasContent("password"))
+    {
+        setPassword(ModelBase::stringFromHttpContent(multipart->getContent("password")));
+                
+    }
+    if(multipart->hasContent("phone"))
+    {
+        setPhone(ModelBase::stringFromHttpContent(multipart->getContent("phone")));
+                
+    }
+    if(multipart->hasContent("userStatus"))
+    {
+        setUserStatus(ModelBase::int32_tFromHttpContent(multipart->getContent("userStatus")));
+    }
+    
 }
     
    

@@ -31,7 +31,7 @@ public:
     virtual void fromJson(web::json::value& json) = 0;
 
     virtual void toMultipart(std::shared_ptr<MultipartFormData> multipart, const std::string& namePrefix) const = 0;
-    virtual void fromMultiPart(web::json::value& val, const std::string& namePrefix) = 0;
+    virtual void fromMultiPart(std::shared_ptr<MultipartFormData> multipart, const std::string& namePrefix) = 0;
 
     static web::json::value toJson( const utility::string_t& value );
     static web::json::value toJson( const utility::datetime& value );
@@ -46,16 +46,24 @@ public:
     static utility::datetime dateFromJson(web::json::value& val);
     static bool boolFromJson(web::json::value& val);
         
-    static std::shared_ptr<HttpContent> toMultipart( const std::string& name, const utility::string_t& value, const std::string& contentType = "");
-    static std::shared_ptr<HttpContent> toMultipart( const std::string& name, const utility::datetime& value, const std::string& contentType = "" );
-    static std::shared_ptr<HttpContent> toMultipart( const std::string& name, std::shared_ptr<HttpContent> value );
-    static std::shared_ptr<HttpContent> toMultipart( const std::string& name, const web::json::value& value, const std::string& contentType = "application/json" );
-    static std::shared_ptr<HttpContent> toMultipart( const std::string& name, int32_t value, const std::string& contentType = "" );
-    static std::shared_ptr<HttpContent> toMultipart( const std::string& name, int64_t value, const std::string& contentType = "" );
-    static std::shared_ptr<HttpContent> toMultipart( const std::string& name, double value, const std::string& contentType = "" );
+    static std::shared_ptr<HttpContent> toHttpContent( const std::string& name, const utility::string_t& value, const std::string& contentType = "");
+    static std::shared_ptr<HttpContent> toHttpContent( const std::string& name, const utility::datetime& value, const std::string& contentType = "" );
+    static std::shared_ptr<HttpContent> toHttpContent( const std::string& name, std::shared_ptr<HttpContent> value );
+    static std::shared_ptr<HttpContent> toHttpContent( const std::string& name, const web::json::value& value, const std::string& contentType = "application/json" );
+    static std::shared_ptr<HttpContent> toHttpContent( const std::string& name, int32_t value, const std::string& contentType = "" );
+    static std::shared_ptr<HttpContent> toHttpContent( const std::string& name, int64_t value, const std::string& contentType = "" );
+    static std::shared_ptr<HttpContent> toHttpContent( const std::string& name, double value, const std::string& contentType = "" );
+    
+    static int64_t int64_tFromHttpContent(std::shared_ptr<HttpContent> val);
+    static int32_t int32_tFromHttpContent(std::shared_ptr<HttpContent> val);
+    static utility::string_t stringFromHttpContent(std::shared_ptr<HttpContent> val);
+    static utility::datetime dateFromHttpContent(std::shared_ptr<HttpContent> val);
+    static bool boolFromHttpContent(std::shared_ptr<HttpContent> val);
+    
 
     static std::shared_ptr<HttpContent> streamFromBase64( const web::json::value& value );
     static std::string wstringToString( const std::wstring& value );
+    static std::wstring stringToWstring( const std::string& value );
 };
 
 }

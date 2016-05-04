@@ -54,18 +54,28 @@ void Category::toMultipart(std::shared_ptr<MultipartFormData> multipart, const s
 {
 	if(m_IdIsSet)
     {
-        multipart->add(ModelBase::toMultipart(namePrefix + "id", m_Id));
+        multipart->add(ModelBase::toHttpContent(namePrefix + "id", m_Id));
     }
     if(m_NameIsSet)
     {
-        multipart->add(ModelBase::toMultipart(namePrefix + "name", m_Name));
+        multipart->add(ModelBase::toHttpContent(namePrefix + "name", m_Name));
                 
     }
     
 }
 
-void Category::fromMultiPart(web::json::value& val, const std::string& namePrefix)
+void Category::fromMultiPart(std::shared_ptr<MultipartFormData> multipart, const std::string& namePrefix)
 {
+    if(multipart->hasContent("id"))
+    {
+        setId(ModelBase::int64_tFromHttpContent(multipart->getContent("id")));
+    }
+    if(multipart->hasContent("name"))
+    {
+        setName(ModelBase::stringFromHttpContent(multipart->getContent("name")));
+                
+    }
+    
 }
     
    

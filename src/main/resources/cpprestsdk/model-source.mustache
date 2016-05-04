@@ -119,9 +119,9 @@ void {{classname}}::toMultipart(std::shared_ptr<MultipartFormData> multipart, co
 {
 	{{#vars}}{{#isPrimitiveType}}{{^required}}if(m_{{name}}IsSet)
     {
-        multipart->add(ModelBase::toMultipart(namePrefix + "{{baseName}}", m_{{name}}));
+        multipart->add(ModelBase::toHttpContent(namePrefix + "{{baseName}}", m_{{name}}));
     }
-    {{/required}}{{#required}}multipart->add(ModelBase::toMultipart(namePrefix + "{{baseName}}", m_{{name}}));
+    {{/required}}{{#required}}multipart->add(ModelBase::toHttpContent(namePrefix + "{{baseName}}", m_{{name}}));
     {{/required}}{{/isPrimitiveType}}{{^isPrimitiveType}}{{#isListContainer}}{
         std::vector<web::json::value> jsonArray;
         for( auto& item : m_{{name}} )
@@ -132,32 +132,84 @@ void {{classname}}::toMultipart(std::shared_ptr<MultipartFormData> multipart, co
             {{/items.isDateTime}}{{^items.isDateTime}}jsonArray.push_back( item.get() ? item->toJson() : web::json::value::null() );
             {{/items.isDateTime}}{{/items.isString}}{{/items.isPrimitiveType}}
         }
-        {{#required}}multipart->add(ModelBase::toMultipart(namePrefix + "{{baseName}}", web::json::value::array(jsonArray), "application/json"));
+        {{#required}}multipart->add(ModelBase::toHttpContent(namePrefix + "{{baseName}}", web::json::value::array(jsonArray), "application/json"));
         {{/required}}{{^required}}
         if(jsonArray.size() > 0) 
         {
-            multipart->add(ModelBase::toMultipart(namePrefix + "{{baseName}}", web::json::value::array(jsonArray), "application/json"));
+            multipart->add(ModelBase::toHttpContent(namePrefix + "{{baseName}}", web::json::value::array(jsonArray), "application/json"));
         }
         {{/required}}
     }
     {{/isListContainer}}{{^isListContainer}}{{^required}}if(m_{{name}}IsSet)
     {
-        {{#isString}}multipart->add(ModelBase::toMultipart(namePrefix + "{{baseName}}", m_{{name}}));
-        {{/isString}}{{^isString}}{{#isDateTime}}multipart->add(ModelBase::toMultipart(namePrefix + "{{baseName}}", m_{{name}}));
+        {{#isString}}multipart->add(ModelBase::toHttpContent(namePrefix + "{{baseName}}", m_{{name}}));
+        {{/isString}}{{^isString}}{{#isDateTime}}multipart->add(ModelBase::toHttpContent(namePrefix + "{{baseName}}", m_{{name}}));
         {{/isDateTime}}{{^isDateTime}}if (m_{{name}}.get())
         {
             m_{{name}}->toMultipart(multipart, "{{baseName}}.");
         }
         {{/isDateTime}}{{/isString}}        
     }
-    {{/required}}{{#required}}{{#isString}}multipart->add(ModelBase::toMultipart(namePrefix + "{{baseName}}", m_{{name}}));
+    {{/required}}{{#required}}{{#isString}}multipart->add(ModelBase::toHttpContent(namePrefix + "{{baseName}}", m_{{name}}));
     {{/isString}}{{^isString}}
     m_{{name}}->toMultipart(multipart, "{{baseName}}.");
     {{/isString}}{{/required}}{{/isListContainer}}{{/isPrimitiveType}}{{/vars}}
 }
 
-void {{classname}}::fromMultiPart(web::json::value& val, const std::string& namePrefix)
+void {{classname}}::fromMultiPart(std::shared_ptr<MultipartFormData> multipart, const std::string& namePrefix)
 {
+    {{#vars}}{{#isPrimitiveType}}{{^required}}if(multipart->hasContent("{{baseName}}"))
+    {
+        {{setter}}(ModelBase::{{baseType}}FromHttpContent(multipart->getContent("{{baseName}}")));
+    }
+    {{/required}}{{#required}}{{setter}}(ModelBase::{{baseType}}FromHttpContent(multipart->getContent("{{baseName}}")));
+    {{/required}}{{/isPrimitiveType}}{{^isPrimitiveType}}{{#isListContainer}}{
+        m_{{name}}.clear();
+        {{^required}}if(multipart->hasContent("{{baseName}}"))
+        {            
+        {{/required}}
+        
+        web::json::value jsonArray = web::json::value::parse(ModelBase::stringFromHttpContent(multipart->getContent("{{baseName}}")));
+        for( auto& item : jsonArray.as_array() )
+        {
+            {{#items.isPrimitiveType}}m_{{name}}.push_back(ModelBase::{{baseType}}FromJson(item));
+            {{/items.isPrimitiveType}}{{^items.isPrimitiveType}}{{#items.isString}}m_{{name}}.push_back(ModelBase::stringFromJson(item));
+            {{/items.isString}}{{^items.isString}}{{#items.isDateTime}}m_{{name}}.push_back(ModelBase::dateFromJson(item));
+            {{/items.isDateTime}}{{^items.isDateTime}}
+            if(item.is_null()) 
+            {
+                m_{{name}}.push_back( {{{items.datatype}}}(nullptr) );
+            }
+            else
+            {
+                {{{items.datatype}}} newItem({{{items.defaultValue}}});
+                newItem->fromJson(item);
+                m_{{name}}.push_back( newItem );
+            }
+            {{/items.isDateTime}}{{/items.isString}}{{/items.isPrimitiveType}}
+        }
+        {{^required}} 
+        }
+        {{/required}}
+    }
+    {{/isListContainer}}{{^isListContainer}}{{^required}}if(multipart->hasContent("{{baseName}}"))
+    {
+        {{#isString}}{{setter}}(ModelBase::stringFromHttpContent(multipart->getContent("{{baseName}}")));
+        {{/isString}}{{^isString}}{{#isDateTime}}{{setter}}(ModelBase::dateFromHttpContent(multipart->getContent("{{baseName}}")));
+        {{/isDateTime}}{{^isDateTime}}if(multipart->hasContent("{{baseName}}"))
+        {
+            {{{datatype}}} newItem({{{defaultValue}}});
+            newItem->fromMultiPart(multipart, "{{baseName}}.");
+            {{setter}}( newItem );
+        }
+        {{/isDateTime}}{{/isString}}        
+    }
+    {{/required}}{{#required}}{{#isString}}{{setter}}(ModelBase::stringFromHttpContent(multipart->getContent("{{baseName}}")));
+    {{/isString}}{{^isString}}
+    {{{datatype}}} new{{name}}({{{defaultValue}}});
+    newItem->fromMultiPart(multipart, "{{baseName}}.");
+    {{setter}}( newItem );
+    {{/isString}}{{/required}}{{/isListContainer}}{{/isPrimitiveType}}{{/vars}}
 }
     
    
