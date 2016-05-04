@@ -22,7 +22,10 @@ web::json::value User::toJson() const
 {
     web::json::value val;
      
-	val[U("id")] = ModelBase::toJson(m_Id);
+	if(m_IdIsSet)
+    {
+        val[U("id")] = ModelBase::toJson(m_Id);
+    }
     if(m_UsernameIsSet)
     {
         val[U("username")] = ModelBase::toJson(m_Username);
@@ -53,15 +56,56 @@ web::json::value User::toJson() const
         val[U("phone")] = ModelBase::toJson(m_Phone);
                 
     }
-    val[U("userStatus")] = ModelBase::toJson(m_UserStatus);
+    if(m_UserStatusIsSet)
+    {
+        val[U("userStatus")] = ModelBase::toJson(m_UserStatus);
+    }
     
 
     return val;
 }
 
-void User::fromJson(web::json::value& json)
+void User::fromJson(web::json::value& val)
 {
-	
+    if(val.has_field(U("id")))
+    {
+        setId(ModelBase::int64_tFromJson(val[U("id")]));
+    }
+    if(val.has_field(U("username")))
+    {
+        setUsername(ModelBase::stringFromJson(val[U("username")]));
+                
+    }
+    if(val.has_field(U("firstName")))
+    {
+        setFirstName(ModelBase::stringFromJson(val[U("firstName")]));
+                
+    }
+    if(val.has_field(U("lastName")))
+    {
+        setLastName(ModelBase::stringFromJson(val[U("lastName")]));
+                
+    }
+    if(val.has_field(U("email")))
+    {
+        setEmail(ModelBase::stringFromJson(val[U("email")]));
+                
+    }
+    if(val.has_field(U("password")))
+    {
+        setPassword(ModelBase::stringFromJson(val[U("password")]));
+                
+    }
+    if(val.has_field(U("phone")))
+    {
+        setPhone(ModelBase::stringFromJson(val[U("phone")]));
+                
+    }
+    if(val.has_field(U("userStatus")))
+    {
+        setUserStatus(ModelBase::int32_tFromJson(val[U("userStatus")]));
+    }
+    
 }
 
 void User::toMultipart(std::shared_ptr<MultipartFormData> multipart, const std::string& namePrefix) const
@@ -82,6 +126,10 @@ void User::setId(int64_t value)
 	m_Id = value;
 }
  
+bool User::IdIsSet() 
+{
+    return m_IdIsSet;
+}
 void User::unsetId() 
 {
     m_IdIsSet = false;
@@ -96,6 +144,10 @@ void User::setUsername(utility::string_t value)
 	m_Username = value;
 }
  
+bool User::UsernameIsSet() 
+{
+    return m_UsernameIsSet;
+}
 void User::unsetUsername() 
 {
     m_UsernameIsSet = false;
@@ -110,6 +162,10 @@ void User::setFirstName(utility::string_t value)
 	m_FirstName = value;
 }
  
+bool User::FirstNameIsSet() 
+{
+    return m_FirstNameIsSet;
+}
 void User::unsetFirstName() 
 {
     m_FirstNameIsSet = false;
@@ -124,6 +180,10 @@ void User::setLastName(utility::string_t value)
 	m_LastName = value;
 }
  
+bool User::LastNameIsSet() 
+{
+    return m_LastNameIsSet;
+}
 void User::unsetLastName() 
 {
     m_LastNameIsSet = false;
@@ -138,6 +198,10 @@ void User::setEmail(utility::string_t value)
 	m_Email = value;
 }
  
+bool User::EmailIsSet() 
+{
+    return m_EmailIsSet;
+}
 void User::unsetEmail() 
 {
     m_EmailIsSet = false;
@@ -152,6 +216,10 @@ void User::setPassword(utility::string_t value)
 	m_Password = value;
 }
  
+bool User::PasswordIsSet() 
+{
+    return m_PasswordIsSet;
+}
 void User::unsetPassword() 
 {
     m_PasswordIsSet = false;
@@ -166,6 +234,10 @@ void User::setPhone(utility::string_t value)
 	m_Phone = value;
 }
  
+bool User::PhoneIsSet() 
+{
+    return m_PhoneIsSet;
+}
 void User::unsetPhone() 
 {
     m_PhoneIsSet = false;
@@ -180,6 +252,10 @@ void User::setUserStatus(int32_t value)
 	m_UserStatus = value;
 }
  
+bool User::UserStatusIsSet() 
+{
+    return m_UserStatusIsSet;
+}
 void User::unsetUserStatus() 
 {
     m_UserStatusIsSet = false;

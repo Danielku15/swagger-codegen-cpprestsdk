@@ -220,6 +220,29 @@ std::string ModelBase::wstringToString( const std::wstring& value )
     return std::string(p, size);
 }
 
+int64_t ModelBase::int64_tFromJson(web::json::value& val)
+{
+    return val.as_number().to_int64();
+}
+int32_t ModelBase::int32_tFromJson(web::json::value& val)
+{
+    return val.as_integer();
+}
+utility::string_t ModelBase::stringFromJson(web::json::value& val)
+{
+    return val.as_string();
+}
+
+utility::datetime ModelBase::dateFromJson(web::json::value& val)
+{
+    return utility::datetime::from_string(val.to_string(), utility::datetime::ISO_8601);
+}
+bool ModelBase::boolFromJson(web::json::value& val)
+{
+    return val.as_bool();
+}
+
+
 }
 
 END_SDK_NS

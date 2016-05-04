@@ -22,7 +22,10 @@ web::json::value Pet::toJson() const
 {
     web::json::value val;
      
-	val[U("id")] = ModelBase::toJson(m_Id);
+	if(m_IdIsSet)
+    {
+        val[U("id")] = ModelBase::toJson(m_Id);
+    }
     if(m_CategoryIsSet)
     {
         val[U("category")] = m_Category->toJson();
@@ -37,6 +40,7 @@ web::json::value Pet::toJson() const
             
         }
         val[U("photoUrls")] = web::json::value::array(jsonArray);
+        
     }
     {
         std::vector<web::json::value> jsonArray;
@@ -45,7 +49,12 @@ web::json::value Pet::toJson() const
             jsonArray.push_back( item.get() ? item->toJson() : web::json::value::null() );
             
         }
-        val[U("tags")] = web::json::value::array(jsonArray);
+        
+        if(jsonArray.size() > 0) 
+        {
+            val[U("tags")] = web::json::value::array(jsonArray);
+        }
+        
     }
     if(m_StatusIsSet)
     {
@@ -57,9 +66,65 @@ web::json::value Pet::toJson() const
     return val;
 }
 
-void Pet::fromJson(web::json::value& json)
+void Pet::fromJson(web::json::value& val)
 {
-	
+    if(val.has_field(U("id")))
+    {
+        setId(ModelBase::int64_tFromJson(val[U("id")]));
+    }
+    if(val.has_field(U("category")))
+    {
+        if(!val[U("category")].is_null()) 
+        {
+            std::shared_ptr<Category> newItem(new Category());
+            newItem->fromJson(val[U("category")]);
+            setCategory( newItem );
+        }
+                
+    }
+    setName(ModelBase::stringFromJson(val[U("name")]));
+    {
+        m_PhotoUrls.clear();
+        std::vector<web::json::value> jsonArray;
+        
+        for( auto& item : val[U("photoUrls")].as_array() )
+        {
+            m_PhotoUrls.push_back(ModelBase::stringFromJson(item));
+            
+        }
+        
+    }
+    {
+        m_Tags.clear();
+        std::vector<web::json::value> jsonArray;
+        if(val.has_field(U("tags")))
+        {
+        
+        for( auto& item : val[U("tags")].as_array() )
+        {
+            
+            if(item.is_null()) 
+            {
+                m_Tags.push_back( std::shared_ptr<Tag>(nullptr) );
+            }
+            else
+            {
+                std::shared_ptr<Tag> newItem(new Tag());
+                newItem->fromJson(item);
+                m_Tags.push_back( newItem );
+            }
+            
+        }
+         
+        }
+        
+    }
+    if(val.has_field(U("status")))
+    {
+        setStatus(ModelBase::stringFromJson(val[U("status")]));
+                
+    }
+    
 }
 
 void Pet::toMultipart(std::shared_ptr<MultipartFormData> multipart, const std::string& namePrefix) const
@@ -80,6 +145,10 @@ void Pet::setId(int64_t value)
 	m_Id = value;
 }
  
+bool Pet::IdIsSet() 
+{
+    return m_IdIsSet;
+}
 void Pet::unsetId() 
 {
     m_IdIsSet = false;
@@ -94,6 +163,10 @@ void Pet::setCategory(std::shared_ptr<Category> value)
 	m_Category = value;
 }
  
+bool Pet::CategoryIsSet() 
+{
+    return m_CategoryIsSet;
+}
 void Pet::unsetCategory() 
 {
     m_CategoryIsSet = false;
@@ -120,6 +193,10 @@ std::vector<std::shared_ptr<Tag>>& Pet::getTags()
 	return m_Tags;
 }
  
+bool Pet::TagsIsSet() 
+{
+    return m_TagsIsSet;
+}
 void Pet::unsetTags() 
 {
     m_TagsIsSet = false;
@@ -134,6 +211,10 @@ void Pet::setStatus(utility::string_t value)
 	m_Status = value;
 }
  
+bool Pet::StatusIsSet() 
+{
+    return m_StatusIsSet;
+}
 void Pet::unsetStatus() 
 {
     m_StatusIsSet = false;

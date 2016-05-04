@@ -137,10 +137,6 @@ public class CpprestsdkGenerator extends DefaultCodegen implements CodegenConfig
 				codegenModel.imports.add(newImp);	
 			}
 		}
-		
-		for (CodegenProperty prop : codegenModel.vars) {
-			
-		}
 
 		return codegenModel;
 	}
@@ -218,7 +214,7 @@ public class CpprestsdkGenerator extends DefaultCodegen implements CodegenConfig
 			return "std::vector<" + inner + ">()";
 		} else if (p instanceof RefProperty) {
 			RefProperty rp = (RefProperty) p;
-			return "std::shared_ptr<new " + toModelName(rp.getSimpleRef()) + ">";
+			return "new " + toModelName(rp.getSimpleRef()) + "()";
 		}
 		return "nullptr";
 	}

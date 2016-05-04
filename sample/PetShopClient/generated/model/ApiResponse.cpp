@@ -22,7 +22,10 @@ web::json::value ApiResponse::toJson() const
 {
     web::json::value val;
      
-	val[U("code")] = ModelBase::toJson(m_Code);
+	if(m_CodeIsSet)
+    {
+        val[U("code")] = ModelBase::toJson(m_Code);
+    }
     if(m_TypeIsSet)
     {
         val[U("type")] = ModelBase::toJson(m_Type);
@@ -38,9 +41,23 @@ web::json::value ApiResponse::toJson() const
     return val;
 }
 
-void ApiResponse::fromJson(web::json::value& json)
+void ApiResponse::fromJson(web::json::value& val)
 {
-	
+    if(val.has_field(U("code")))
+    {
+        setCode(ModelBase::int32_tFromJson(val[U("code")]));
+    }
+    if(val.has_field(U("type")))
+    {
+        setType(ModelBase::stringFromJson(val[U("type")]));
+                
+    }
+    if(val.has_field(U("message")))
+    {
+        setMessage(ModelBase::stringFromJson(val[U("message")]));
+                
+    }
+    
 }
 
 void ApiResponse::toMultipart(std::shared_ptr<MultipartFormData> multipart, const std::string& namePrefix) const
@@ -61,6 +78,10 @@ void ApiResponse::setCode(int32_t value)
 	m_Code = value;
 }
  
+bool ApiResponse::CodeIsSet() 
+{
+    return m_CodeIsSet;
+}
 void ApiResponse::unsetCode() 
 {
     m_CodeIsSet = false;
@@ -75,6 +96,10 @@ void ApiResponse::setType(utility::string_t value)
 	m_Type = value;
 }
  
+bool ApiResponse::TypeIsSet() 
+{
+    return m_TypeIsSet;
+}
 void ApiResponse::unsetType() 
 {
     m_TypeIsSet = false;
@@ -89,6 +114,10 @@ void ApiResponse::setMessage(utility::string_t value)
 	m_Message = value;
 }
  
+bool ApiResponse::MessageIsSet() 
+{
+    return m_MessageIsSet;
+}
 void ApiResponse::unsetMessage() 
 {
     m_MessageIsSet = false;

@@ -22,7 +22,10 @@ web::json::value Tag::toJson() const
 {
     web::json::value val;
      
-	val[U("id")] = ModelBase::toJson(m_Id);
+	if(m_IdIsSet)
+    {
+        val[U("id")] = ModelBase::toJson(m_Id);
+    }
     if(m_NameIsSet)
     {
         val[U("name")] = ModelBase::toJson(m_Name);
@@ -33,9 +36,18 @@ web::json::value Tag::toJson() const
     return val;
 }
 
-void Tag::fromJson(web::json::value& json)
+void Tag::fromJson(web::json::value& val)
 {
-	
+    if(val.has_field(U("id")))
+    {
+        setId(ModelBase::int64_tFromJson(val[U("id")]));
+    }
+    if(val.has_field(U("name")))
+    {
+        setName(ModelBase::stringFromJson(val[U("name")]));
+                
+    }
+    
 }
 
 void Tag::toMultipart(std::shared_ptr<MultipartFormData> multipart, const std::string& namePrefix) const
@@ -56,6 +68,10 @@ void Tag::setId(int64_t value)
 	m_Id = value;
 }
  
+bool Tag::IdIsSet() 
+{
+    return m_IdIsSet;
+}
 void Tag::unsetId() 
 {
     m_IdIsSet = false;
@@ -70,6 +86,10 @@ void Tag::setName(utility::string_t value)
 	m_Name = value;
 }
  
+bool Tag::NameIsSet() 
+{
+    return m_NameIsSet;
+}
 void Tag::unsetName() 
 {
     m_NameIsSet = false;

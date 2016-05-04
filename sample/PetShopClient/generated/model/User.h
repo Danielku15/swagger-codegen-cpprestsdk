@@ -44,6 +44,7 @@ public:
      */ 
     int64_t getId() const;
     void setId(int64_t value);
+    bool IdIsSet();
     void unsetId();
     
     
@@ -52,6 +53,7 @@ public:
      */ 
     utility::string_t getUsername() const;
     void setUsername(utility::string_t value);
+    bool UsernameIsSet();
     void unsetUsername();
     
     
@@ -60,6 +62,7 @@ public:
      */ 
     utility::string_t getFirstName() const;
     void setFirstName(utility::string_t value);
+    bool FirstNameIsSet();
     void unsetFirstName();
     
     
@@ -68,6 +71,7 @@ public:
      */ 
     utility::string_t getLastName() const;
     void setLastName(utility::string_t value);
+    bool LastNameIsSet();
     void unsetLastName();
     
     
@@ -76,6 +80,7 @@ public:
      */ 
     utility::string_t getEmail() const;
     void setEmail(utility::string_t value);
+    bool EmailIsSet();
     void unsetEmail();
     
     
@@ -84,6 +89,7 @@ public:
      */ 
     utility::string_t getPassword() const;
     void setPassword(utility::string_t value);
+    bool PasswordIsSet();
     void unsetPassword();
     
     
@@ -92,6 +98,7 @@ public:
      */ 
     utility::string_t getPhone() const;
     void setPhone(utility::string_t value);
+    bool PhoneIsSet();
     void unsetPhone();
     
     
@@ -100,6 +107,7 @@ public:
      */ 
     int32_t getUserStatus() const;
     void setUserStatus(int32_t value);
+    bool UserStatusIsSet();
     void unsetUserStatus();
     
     

@@ -47,6 +47,7 @@ public:
      */ 
     int64_t getId() const;
     void setId(int64_t value);
+    bool IdIsSet();
     void unsetId();
     
     
@@ -55,6 +56,7 @@ public:
      */ 
     std::shared_ptr<Category> getCategory() const;
     void setCategory(std::shared_ptr<Category> value);
+    bool CategoryIsSet();
     void unsetCategory();
     
     
@@ -75,6 +77,7 @@ public:
      * 
      */ 
     std::vector<std::shared_ptr<Tag>>& getTags();
+    bool TagsIsSet();
     void unsetTags();
     
     
@@ -83,6 +86,7 @@ public:
      */ 
     utility::string_t getStatus() const;
     void setStatus(utility::string_t value);
+    bool StatusIsSet();
     void unsetStatus();
     
     

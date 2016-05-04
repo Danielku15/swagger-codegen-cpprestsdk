@@ -44,6 +44,7 @@ public:
      */ 
     int64_t getId() const;
     void setId(int64_t value);
+    bool IdIsSet();
     void unsetId();
     
     
@@ -52,6 +53,7 @@ public:
      */ 
     int64_t getPetId() const;
     void setPetId(int64_t value);
+    bool PetIdIsSet();
     void unsetPetId();
     
     
@@ -60,6 +62,7 @@ public:
      */ 
     int32_t getQuantity() const;
     void setQuantity(int32_t value);
+    bool QuantityIsSet();
     void unsetQuantity();
     
     
@@ -68,6 +71,7 @@ public:
      */ 
     utility::datetime getShipDate() const;
     void setShipDate(utility::datetime value);
+    bool ShipDateIsSet();
     void unsetShipDate();
     
     
@@ -76,6 +80,7 @@ public:
      */ 
     utility::string_t getStatus() const;
     void setStatus(utility::string_t value);
+    bool StatusIsSet();
     void unsetStatus();
     
     
@@ -84,6 +89,7 @@ public:
      */ 
     bool getComplete() const;
     void setComplete(bool value);
+    bool CompleteIsSet();
     void unsetComplete();
     
     

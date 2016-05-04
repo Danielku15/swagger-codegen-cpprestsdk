@@ -40,6 +40,12 @@ public:
     static web::json::value toJson( int64_t value );
     static web::json::value toJson( double value );
     
+    static int64_t int64_tFromJson(web::json::value& val);
+    static int32_t int32_tFromJson(web::json::value& val);
+    static utility::string_t stringFromJson(web::json::value& val);
+    static utility::datetime dateFromJson(web::json::value& val);
+    static bool boolFromJson(web::json::value& val);
+        
     static std::shared_ptr<HttpContent> toMultipart( const std::string& name, const utility::string_t& value, const std::string& contentType = "");
     static std::shared_ptr<HttpContent> toMultipart( const std::string& name, const utility::datetime& value, const std::string& contentType = "" );
     static std::shared_ptr<HttpContent> toMultipart( const std::string& name, std::shared_ptr<HttpContent> value );

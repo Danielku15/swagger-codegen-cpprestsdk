@@ -44,6 +44,7 @@ public:
      */ 
     int64_t getId() const;
     void setId(int64_t value);
+    bool IdIsSet();
     void unsetId();
     
     
@@ -52,6 +53,7 @@ public:
      */ 
     utility::string_t getName() const;
     void setName(utility::string_t value);
+    bool NameIsSet();
     void unsetName();
     
     
