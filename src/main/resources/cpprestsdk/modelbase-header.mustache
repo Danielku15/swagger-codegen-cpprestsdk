@@ -61,7 +61,9 @@ public:
     static bool boolFromHttpContent(std::shared_ptr<HttpContent> val);
     
 
-    static std::shared_ptr<HttpContent> streamFromBase64( const web::json::value& value );
+    static utility::string_t toBase64( utility::string_t value );
+    static utility::string_t toBase64( std::shared_ptr<std::iostream> value );
+    static std::shared_ptr<std::iostream> fromBase64( const utility::string_t& encoded );
     static std::string wstringToString( const std::wstring& value );
     static std::wstring stringToWstring( const std::string& value );
 };

@@ -32,50 +32,9 @@ web::json::value ModelBase::toJson( double value )
     return web::json::value::number(value);
 }
 
-// base64 encoding/decoding based on : https://en.wikibooks.org/wiki/Algorithm_Implementation/Miscellaneous/Base64#C.2B.2B
-const static char Base64Chars[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-const static char Base64PadChar = '=';
 web::json::value ModelBase::toJson( std::shared_ptr<HttpContent> content )
 {
-    std::shared_ptr<std::iostream> value = content->getData();
-    value->seekg( 0, value->end );
-    size_t length = value->tellg();
-    value->seekg( 0, value->beg );
-    utility::string_t base64;
-    base64.reserve( ((length / 3) + (length % 3 > 0)) * 4 );
-    char read[3] = { 0 };
-    uint32_t temp;
-    for ( size_t idx = 0; idx < length / 3; idx++ )
-    {
-        value->read( read, 3 );
-        temp = (read[0]) << 16;
-        temp += (read[1]) << 8;
-        temp += (read[2]);
-        base64.append( 1, Base64Chars[(temp & 0x00FC0000) >> 18] );
-        base64.append( 1, Base64Chars[(temp & 0x0003F000) >> 12] );
-        base64.append( 1, Base64Chars[(temp & 0x00000FC0) >> 6] );
-        base64.append( 1, Base64Chars[(temp & 0x0000003F)] );
-    }
-    switch ( length % 3 )
-    {
-        case 1:
-            value->read( read, 1 );
-            temp = read[0] << 16; 
-            base64.append( 1, Base64Chars[(temp & 0x00FC0000) >> 18] );
-            base64.append( 1, Base64Chars[(temp & 0x0003F000) >> 12] );
-            base64.append( 2, Base64PadChar );
-            break;
-        case 2:
-            value->read( read, 2 );
-            temp = read[0] << 16; 
-            temp += read[1] << 8;
-            base64.append( 1, Base64Chars[(temp & 0x00FC0000) >> 18] );
-            base64.append( 1, Base64Chars[(temp & 0x0003F000) >> 12] );
-            base64.append( 1, Base64Chars[(temp & 0x00000FC0) >> 6] );
-            base64.append( 1, Base64PadChar );
-            break;
-    }
-    return web::json::value::string( base64 );
+    return web::json::value::string( ModelBase::toBase64(content->getData()) );
 }
 
 std::shared_ptr<HttpContent> ModelBase::toHttpContent( const std::string& name, const utility::string_t& value, const std::string& contentType)
@@ -143,14 +102,61 @@ std::shared_ptr<HttpContent> ModelBase::toHttpContent( const std::string& name, 
     return content;
 }
 
-std::shared_ptr<HttpContent> ModelBase::streamFromBase64( const web::json::value& value )
+// base64 encoding/decoding based on : https://en.wikibooks.org/wiki/Algorithm_Implementation/Miscellaneous/Base64#C.2B.2B
+const static char Base64Chars[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+const static char Base64PadChar = '=';
+utility::string_t ModelBase::toBase64( utility::string_t value )
 {
-  	std::shared_ptr<HttpContent> content;
-    std::shared_ptr<std::iostream> result(new std::stringstream);
-    content->setData(result);
-    
-    utility::string_t encoded = value.as_string();
+    std::shared_ptr<std::iostream> source( new std::stringstream( ModelBase::wstringToString(value) ) );
+    return ModelBase::toBase64(source);
+}
+utility::string_t ModelBase::toBase64( std::shared_ptr<std::iostream> value )
+{
+    value->seekg( 0, value->end );
+    size_t length = value->tellg();
+    value->seekg( 0, value->beg );
+    utility::string_t base64;
+    base64.reserve( ((length / 3) + (length % 3 > 0)) * 4 );
+    char read[3] = { 0 };
+    uint32_t temp;
+    for ( size_t idx = 0; idx < length / 3; idx++ )
+    {
+        value->read( read, 3 );
+        temp = (read[0]) << 16;
+        temp += (read[1]) << 8;
+        temp += (read[2]);
+        base64.append( 1, Base64Chars[(temp & 0x00FC0000) >> 18] );
+        base64.append( 1, Base64Chars[(temp & 0x0003F000) >> 12] );
+        base64.append( 1, Base64Chars[(temp & 0x00000FC0) >> 6] );
+        base64.append( 1, Base64Chars[(temp & 0x0000003F)] );
+    }
+    switch ( length % 3 )
+    {
+        case 1:
+            value->read( read, 1 );
+            temp = read[0] << 16; 
+            base64.append( 1, Base64Chars[(temp & 0x00FC0000) >> 18] );
+            base64.append( 1, Base64Chars[(temp & 0x0003F000) >> 12] );
+            base64.append( 2, Base64PadChar );
+            break;
+        case 2:
+            value->read( read, 2 );
+            temp = read[0] << 16; 
+            temp += read[1] << 8;
+            base64.append( 1, Base64Chars[(temp & 0x00FC0000) >> 18] );
+            base64.append( 1, Base64Chars[(temp & 0x0003F000) >> 12] );
+            base64.append( 1, Base64Chars[(temp & 0x00000FC0) >> 6] );
+            base64.append( 1, Base64PadChar );
+            break;
+    }
+    return base64;
+}
 
+
+std::shared_ptr<std::iostream> ModelBase::fromBase64( const utility::string_t& encoded )
+{
+    std::shared_ptr<std::iostream> result(new std::stringstream);
+    
     char outBuf[3] = { 0 };
     uint32_t temp = 0;
 
@@ -188,11 +194,11 @@ std::shared_ptr<HttpContent> ModelBase::streamFromBase64( const web::json::value
                         outBuf[0] = (temp >> 16) & 0x000000FF;
                         outBuf[1] = (temp >> 8) & 0x000000FF;
                         result->write( outBuf, 2 );
-                        return content;
+                        return result;
                     case 2: //Two pad characters
                         outBuf[0] = (temp >> 10) & 0x000000FF;
                         result->write( outBuf, 1 );
-                        return content;
+                        return result;
                     default:
                         throw web::json::json_exception( U( "Invalid Padding in Base 64!" ) );
                 }
@@ -210,8 +216,7 @@ std::shared_ptr<HttpContent> ModelBase::streamFromBase64( const web::json::value
         result->write( outBuf, 3 );
     }
 
-    return content;
-
+    return result;
 }
 
 std::string ModelBase::wstringToString( const std::wstring& value )

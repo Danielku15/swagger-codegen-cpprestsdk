@@ -33,18 +33,7 @@ public:
     /// {{notes}}
     /// </remarks>
     {{#allParams}}/// <param name="{{paramName}}">{{description}}{{^required}} (optional{{#defaultValue}}, default to {{.}}{{/defaultValue}}){{/required}}</param>{{/allParams}}
-    {{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}void{{/returnType}} {{operationId}}({{#allParams}}{{{dataType}}} {{paramName}}{{^required}}{{/required}}{{#hasMore}}, {{/hasMore}}{{/allParams}});
-    {{/operation}}
-
-    {{#operation}}
-    /// <summary>
-    /// {{summary}}
-    /// </summary>
-    /// <remarks>
-    /// {{notes}}
-    /// </remarks>
-    {{#allParams}}/// <param name="{{paramName}}">{{description}}{{^required}} (optional{{#defaultValue}}, default to {{.}}{{/defaultValue}}){{/required}}</param>{{/allParams}}
-    pplx::task<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}void{{/returnType}}> {{operationId}}Async({{#allParams}}{{{dataType}}} {{paramName}}{{^required}}{{/required}}{{#hasMore}}, {{/hasMore}}{{/allParams}});
+    pplx::task<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}void{{/returnType}}> {{operationId}}({{#allParams}}{{{dataType}}} {{paramName}}{{^required}}{{/required}}{{#hasMore}}, {{/hasMore}}{{/allParams}});
     {{/operation}}
 };
     

@@ -88,7 +88,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;PETSHOPCLIENT_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)generated;$(ProjectDir)generated\model;$(ProjectDir)generated\client;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)generated;$(ProjectDir)generated\model;$(ProjectDir)generated\api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -102,6 +102,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;PETSHOPCLIENT_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)Generated\Models;$(ProjectDir)Generated\Api;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -117,7 +118,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;PETSHOPCLIENT_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)generated;$(ProjectDir)generated\model;$(ProjectDir)generated\client;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)generated;$(ProjectDir)generated\model;$(ProjectDir)generated\api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -135,6 +136,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;PETSHOPCLIENT_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)Generated\Models;$(ProjectDir)Generated\Api;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -147,10 +149,13 @@
     <ClInclude Include="Commons.h" />
     <ClInclude Include="generated\ApiBase.h" />
     <ClInclude Include="generated\ApiConfiguration.h" />
-    <ClInclude Include="generated\client\PetApi.h" />
-    <ClInclude Include="generated\client\StoreApi.h" />
-    <ClInclude Include="generated\client\UserApi.h" />
+    <ClInclude Include="generated\ApiException.h" />
+    <ClInclude Include="generated\api\PetApi.h" />
+    <ClInclude Include="generated\api\StoreApi.h" />
+    <ClInclude Include="generated\api\UserApi.h" />
     <ClInclude Include="generated\HttpContent.h" />
+    <ClInclude Include="generated\IHttpBody.h" />
+    <ClInclude Include="generated\JsonBody.h" />
     <ClInclude Include="generated\ModelBase.h" />
     <ClInclude Include="generated\model\ApiResponse.h" />
     <ClInclude Include="generated\model\Category.h" />
@@ -159,7 +164,6 @@
     <ClInclude Include="generated\model\Tag.h" />
     <ClInclude Include="generated\model\User.h" />
     <ClInclude Include="generated\MultipartFormData.h" />
-    <ClInclude Include="generated\Object.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -178,10 +182,12 @@
     </ClCompile>
     <ClCompile Include="generated\ApiBase.cpp" />
     <ClCompile Include="generated\ApiConfiguration.cpp" />
-    <ClCompile Include="generated\client\PetApi.cpp" />
-    <ClCompile Include="generated\client\StoreApi.cpp" />
-    <ClCompile Include="generated\client\UserApi.cpp" />
+    <ClCompile Include="generated\ApiException.cpp" />
+    <ClCompile Include="generated\api\PetApi.cpp" />
+    <ClCompile Include="generated\api\StoreApi.cpp" />
+    <ClCompile Include="generated\api\UserApi.cpp" />
     <ClCompile Include="generated\HttpContent.cpp" />
+    <ClCompile Include="generated\JsonBody.cpp" />
     <ClCompile Include="generated\ModelBase.cpp" />
     <ClCompile Include="generated\model\ApiResponse.cpp" />
     <ClCompile Include="generated\model\Category.cpp" />
@@ -190,7 +196,6 @@
     <ClCompile Include="generated\model\Tag.cpp" />
     <ClCompile Include="generated\model\User.cpp" />
     <ClCompile Include="generated\MultipartFormData.cpp" />
-    <ClCompile Include="generated\Object.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -62,6 +62,12 @@ void HttpContent::setData( std::shared_ptr<std::iostream> value )
     m_Data = value;
 }
 
+void HttpContent::writeTo( std::ostream& stream )
+{
+    m_Data->seekg( 0, m_Data->beg );
+    stream << m_Data->rdbuf();
+}
+
 }
 
 END_SDK_NS

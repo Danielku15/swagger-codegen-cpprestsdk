@@ -37,6 +37,45 @@ std::map<utility::string_t, utility::string_t>& ApiConfiguration::getDefaultHead
     return m_DefaultHeaders;
 }
 
+bool ApiConfiguration::hasBasicAuthentication() const
+{
+    return m_Username.size() > 0 && m_Password.size() > 0;
+}
+
+utility::string_t ApiConfiguration::getUsername() const
+{
+    return m_UserAgent;
+}
+
+utility::string_t ApiConfiguration::getPassword() const
+{
+    return m_Password;
+}
+
+bool ApiConfiguration::hasAccessToken() const
+{
+    return m_AccessToken.size() > 0;
+}
+
+utility::string_t ApiConfiguration::getAccessToken() const
+{
+    return m_AccessToken;
+}
+
+utility::string_t ApiConfiguration::getApiKey( const utility::string_t& prefix) const
+{
+    auto result = m_ApiKeys.find(prefix);
+    if( result != m_ApiKeys.end() )
+    {
+        return result->second;
+    }
+    return U("");
+}
+
+void ApiConfiguration::setApiKey( const utility::string_t& prefix, const utility::string_t& apiKey )
+{
+    m_ApiKeys[prefix] = apiKey;
+}
 
 }
 

@@ -12,6 +12,19 @@ ApiBase::~ApiBase()
 {
 }
 
+utility::string_t ApiBase::parameterToString(utility::string_t value)
+{
+    return value;
+}
+utility::string_t ApiBase::parameterToString(int64_t value)
+{
+    return std::to_wstring(value);
+}
+utility::string_t ApiBase::parameterToString(int32_t value)
+{
+    return std::to_wstring(value);
+}
+
 }
 
 END_SDK_NS

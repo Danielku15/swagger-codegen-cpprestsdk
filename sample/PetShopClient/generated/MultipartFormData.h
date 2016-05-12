@@ -8,6 +8,7 @@
 #define MultipartFormData_H_
 
 #include "Commons.h"
+#include "IHttpBody.h"
 #include "HttpContent.h"
 
 #include <cpprest/details/basic_types.h>
@@ -20,6 +21,7 @@ BEGIN_SDK_NS
 namespace model {
 
 class SDK_DECLSPEC MultipartFormData
+    : public IHttpBody
 {
 public:
     MultipartFormData();

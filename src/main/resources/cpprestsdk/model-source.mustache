@@ -50,12 +50,12 @@ web::json::value {{classname}}::toJson() const
     {
         {{#isString}}val[U("{{baseName}}")] = ModelBase::toJson(m_{{name}});
         {{/isString}}{{^isString}}{{#isDateTime}}val[U("{{baseName}}")] = ModelBase::toJson(m_{{name}});
-        {{/isDateTime}}{{^isDateTime}}val[U("{{baseName}}")] = m_{{name}}->toJson();
+        {{/isDateTime}}{{^isDateTime}}val[U("{{baseName}}")] = m_{{name}}.get() ? m_{{name}}->toJson() : web::json::value::null();
         {{/isDateTime}}{{/isString}}        
     }
     {{/required}}{{#required}}{{#isString}}val[U("{{baseName}}")] = ModelBase::toJson(m_{{name}});
     {{/isString}}{{^isString}}
-    val[U("{{baseName}}")] = m_{{name}}->toJson();
+    val[U("{{baseName}}")] = m_{{name}}.get() ? m_{{name}}->toJson() : web::json::value::null();
     {{/isString}}{{/required}}{{/isListContainer}}{{/isPrimitiveType}}{{/vars}}
 
     return val;

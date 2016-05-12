@@ -1,8 +1,15 @@
 {{#operations}}
 
 #include "{{classname}}.h"
+#include "IHttpBody.h"
+#include "JsonBody.h"
+#include "MultipartFormData.h"
+
+#include <unordered_set>
 
 BEGIN_SDK_NS
+
+USE_SDK_NS(model)
 
 namespace api {
 
@@ -16,20 +23,150 @@ namespace api {
 }
 
 {{#operation}}
-{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}void{{/returnType}} {{classname}}::{{operationId}}({{#allParams}}{{{dataType}}} {{paramName}}{{^required}}{{/required}}{{#hasMore}}, {{/hasMore}}{{/allParams}})
+pplx::task<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}void{{/returnType}}> {{classname}}::{{operationId}}({{#allParams}}{{{dataType}}} {{paramName}}{{^required}}{{/required}}{{#hasMore}}, {{/hasMore}}{{/allParams}})
 {
-    auto task = {{operationId}}Async({{#allParams}}{{paramName}}{{^required}}{{/required}}{{#hasMore}}, {{/hasMore}}{{/allParams}});
-    {{#returnType}}
-    return task.get();
-    {{/returnType}}{{^returnType}}
-    task.wait();
-    {{/returnType}}
-}
-{{/operation}}
+    {{#allParams}}{{#required}}{{^isPrimitiveType}}{{^isContainer}}
+    // verify the required parameter '{{paramName}}' is set
+    if ({{paramName}} == nullptr)
+    {
+        throw ApiException(400, U("Missing required parameter '{{paramName}}' when calling {{classname}}->{{operationId}}"));
+    }
+    {{/isContainer}}{{/isPrimitiveType}}{{/required}}{{/allParams}}
+    
+    utility::string_t path = U("{{path}}");
+    std::map<utility::string_t, utility::string_t> pathParams;
+    std::map<utility::string_t, utility::string_t> queryParams;
+    std::map<utility::string_t, utility::string_t> headerParams( m_Configuration->getDefaultHeaders() );
+    std::map<utility::string_t, utility::string_t> formParams;
+    std::map<utility::string_t, std::shared_ptr<HttpContent>> fileParams;
 
-{{#operation}}
-pplx::task<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}void{{/returnType}}> {{classname}}::{{operationId}}Async({{#allParams}}{{{dataType}}} {{paramName}}{{^required}}{{/required}}{{#hasMore}}, {{/hasMore}}{{/allParams}})
-{
+    std::unordered_set<utility::string_t> acceptHttpContentTypes;
+    {{#produces}}acceptHttpContentTypes.insert( U("{{mediaType}}") );
+    {{/produces}}
+    
+    std::unordered_set<utility::string_t> consumeHttpContentTypes;
+    {{#consumes}}consumeHttpContentTypes.insert( U("{{mediaType}}") );
+    {{/consumes}}
+    
+    {{#allParams}}{{^isBodyParam}}{{^isPrimitiveType}}{{^isContainer}}if ({{paramName}} != nullptr){{/isContainer}}{{/isPrimitiveType}}
+    {
+        {{#isContainer}}{{#isPathParam}}pathParams[U("{{baseName}}")] = ApiBase::parameterToArrayString<{{items.datatype}}>({{paramName}});
+        {{/isPathParam}}{{#isQueryParam}}queryParams[U("{{baseName}}")] = ApiBase::parameterToArrayString<{{items.datatype}}>({{paramName}});
+        {{/isQueryParam}}{{#isHeaderParam}}headerParams[U("{{baseName}}")] = ApiBase::parameterToArrayString<{{items.datatype}}>({{paramName}});
+        {{/isHeaderParam}}{{#isFormParam}}{{^isFile}}formParams[ U("{{baseName}}") ] = ApiBase::parameterToArrayString<{{items.datatype}}>({{paramName}});
+        {{/isFile}}{{/isFormParam}}{{/isContainer}}{{^isContainer}}{{#isPathParam}}pathParams[U("{{baseName}}")] = ApiBase::parameterToString({{paramName}});
+        {{/isPathParam}}{{#isQueryParam}}queryParams[U("{{baseName}}")] = ApiBase::parameterToString({{paramName}});
+        {{/isQueryParam}}{{#isHeaderParam}}headerParams[U("{{baseName}}")] = ApiBase::parameterToString({{paramName}});
+        {{/isHeaderParam}}{{#isFormParam}}{{#isFile}}fileParams[ U("{{baseName}}") ] = {{paramName}};
+        {{/isFile}}{{^isFile}}formParams[ U("{{baseName}}") ] = ApiBase::parameterToString({{paramName}});
+        {{/isFile}}{{/isFormParam}}{{/isContainer}}
+    }
+    {{/isBodyParam}}{{/allParams}}
+    
+    {{#bodyParam}}
+    
+    std::shared_ptr<IHttpBody> httpBody;
+    
+    // use JSON if possible
+    if ( consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
+    {
+        web::json::value json;
+ 
+        {{#isPrimitiveType}} json = ModelBase::toJson({{paramName}});
+        {{/isPrimitiveType}}{{^isPrimitiveType}}{{#isListContainer}}
+        {
+            std::vector<web::json::value> jsonArray;
+            for( auto& item : {{paramName}} )
+            {
+                {{#items.isPrimitiveType}}jsonArray.push_back(ModelBase::toJson(item));
+                {{/items.isPrimitiveType}}{{^items.isPrimitiveType}}{{#items.isString}}jsonArray.push_back(ModelBase::toJson(item));
+                {{/items.isString}}{{^items.isString}}{{#items.isDateTime}}jsonArray.push_back(ModelBase::toJson(item));
+                {{/items.isDateTime}}{{^items.isDateTime}}jsonArray.push_back( item.get() ? item->toJson() : web::json::value::null() );
+                {{/items.isDateTime}}{{/items.isString}}{{/items.isPrimitiveType}}
+            }
+            json = web::json::value::array(jsonArray);
+        }
+        {{/isListContainer}}{{^isListContainer}}{{#isString}}json = ModelBase::toJson({{paramName}});
+        {{/isString}}{{^isString}}
+        json = {{paramName}}.get() ? {{paramName}}->toJson() : web::json::value::null();
+        {{/isString}}{{/isListContainer}}{{/isPrimitiveType}}
+        
+        httpBody = std::shared_ptr<IHttpBody>( new JsonBody( json ) );
+    }
+    // multipart formdata 
+    else if( consumeHttpContentTypes.find(U("multipart/form-data")) != consumeHttpContentTypes.end() )
+    {
+        std::shared_ptr<MultipartFormData> multipart(new MultipartFormData);
+        {{#isPrimitiveType}} multipart->add(ModelBase::toHttpContent("{{paramName}}", {{paramName}}));
+        {{/isPrimitiveType}}{{^isPrimitiveType}}{{#isListContainer}}
+        {
+            std::vector<web::json::value> jsonArray;
+            for( auto& item : {{paramName}} )
+            {
+                {{#items.isPrimitiveType}}jsonArray.push_back(ModelBase::toJson(item));
+                {{/items.isPrimitiveType}}{{^items.isPrimitiveType}}{{#items.isString}}jsonArray.push_back(ModelBase::toJson(item));
+                {{/items.isString}}{{^items.isString}}{{#items.isDateTime}}jsonArray.push_back(ModelBase::toJson(item));
+                {{/items.isDateTime}}{{^items.isDateTime}}jsonArray.push_back( item.get() ? item->toJson() : web::json::value::null() );
+                {{/items.isDateTime}}{{/items.isString}}{{/items.isPrimitiveType}}
+            }
+            multipart->add(ModelBase::toHttpContent("{{paramName}}", web::json::value::array(jsonArray), "application/json"));
+        }
+        {{/isListContainer}}{{^isListContainer}}{{#isString}}multipart->add(ModelBase::toHttpContent("{{paramName}}", {{paramName}}));
+        {{/isString}}{{^isString}}
+        if({{paramName}}.get())
+        {
+            {{paramName}}->toMultipart(multipart, "{{paramName}}");
+        }
+        {{/isString}}{{/isListContainer}}{{/isPrimitiveType}}
+
+        httpBody = multipart;
+    }
+    else
+    {
+        throw ApiException(415, U("{{classname}}->{{operationId}} does not consume any supported media type"));
+    }    
+    {{/bodyParam}}
+    
+    {{#authMethods}}
+    // authentication ({{name}}) required
+    {{#isApiKey}}
+    {{#isKeyInHeader}}
+    {
+        utility::string_t apiKey = m_Configuration->getApiKey(U("{{keyParamName}}"));
+        if ( apiKey.size() > 0 )
+        {
+            headerParams[U("{{keyParamName}}")] = apiKey;
+        }
+    }
+    {{/isKeyInHeader}}
+    {{#isKeyInQuery}}
+    {
+        utility::string_t apiKey = m_Configuration->getApiKey(U("{{keyParamName}}"));
+        if ( apiKey.size() > 0 )
+        {
+            queryParams[U("{{keyParamName}}")] = apiKey;
+        }
+    }
+    {{/isKeyInQuery}}
+    {{/isApiKey}}
+    {{#isBasic}}
+    {
+        if ( m_Configuration->hasBasicAuthentication() )
+        {
+            headerParams[U("Authorization")] = U("Basic ") + ModelBase::toBase64(m_Configuration->getUsername() + ":" + m_Configuration->getPassword());
+        }
+    }
+    {{/isBasic}}
+    {{#isOAuth}}
+    {
+        if ( m_Configuration->hasAccessToken() )
+        {
+            headerParams[U("Authorization")] = U("Bearer ") + m_Configuration->getAccessToken();
+        }
+    }    
+    {{/isOAuth}}
+    {{/authMethods}}
+    
     return pplx::task<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}void{{/returnType}}> ();
 }
 {{/operation}}

@@ -37,6 +37,8 @@ public:
     virtual std::shared_ptr<std::iostream> getData();
     virtual void setData( std::shared_ptr<std::iostream> value );
     
+    virtual void writeTo( std::ostream& stream );
+       
 protected:
 	// NOTE: no utility::string_t here because those strings can only contain ascii
     std::string m_ContentDisposition;

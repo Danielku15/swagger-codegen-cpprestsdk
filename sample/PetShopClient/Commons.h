@@ -2,6 +2,7 @@
 #define Commons_H_
 
 #pragma warning (disable: 4251)
+#pragma warning (disable: 4275)
 
 #ifdef PETSHOPCLIENT_EXPORTS
 #define SDK_DECLSPEC __declspec(dllexport)

@@ -58,12 +58,15 @@ public class CpprestsdkGenerator extends DefaultCodegen implements CodegenConfig
 		supportingFiles.add(new SupportingFile("apibase-source.mustache", "", "ApiBase.cpp"));
 		supportingFiles.add(new SupportingFile("apiconfiguration-header.mustache", "", "ApiConfiguration.h"));
 		supportingFiles.add(new SupportingFile("apiconfiguration-source.mustache", "", "ApiConfiguration.cpp"));
+		supportingFiles.add(new SupportingFile("apiexception-header.mustache", "", "ApiException.h"));
+		supportingFiles.add(new SupportingFile("apiexception-source.mustache", "", "ApiException.cpp"));
+		supportingFiles.add(new SupportingFile("ihttpbody-header.mustache", "", "IHttpBody.h"));
+		supportingFiles.add(new SupportingFile("jsonbody-header.mustache", "", "JsonBody.h"));
+		supportingFiles.add(new SupportingFile("jsonbody-source.mustache", "", "JsonBody.cpp"));
 		supportingFiles.add(new SupportingFile("httpcontent-header.mustache", "", "HttpContent.h"));
 		supportingFiles.add(new SupportingFile("httpcontent-source.mustache", "", "HttpContent.cpp"));
 		supportingFiles.add(new SupportingFile("multipart-header.mustache", "", "MultipartFormData.h"));
 		supportingFiles.add(new SupportingFile("multipart-source.mustache", "", "MultipartFormData.cpp"));
-		supportingFiles.add(new SupportingFile("object-header.mustache", "", "Object.h"));
-		supportingFiles.add(new SupportingFile("object-source.mustache", "", "Object.cpp"));
 
 		languageSpecificPrimitives = new HashSet<String>(
 				Arrays.asList("int", "char", "bool", "long", "float", "double", "int32_t", "int64_t"));
@@ -117,7 +120,7 @@ public class CpprestsdkGenerator extends DefaultCodegen implements CodegenConfig
 	 */
 	@Override
 	public String apiFileFolder() {
-		return outputFolder + "/client";
+		return outputFolder + "/api";
 	}
 
 	@Override

@@ -29,7 +29,7 @@ web::json::value Pet::toJson() const
     }
     if(m_CategoryIsSet)
     {
-        val[U("category")] = m_Category->toJson();
+        val[U("category")] = m_Category.get() ? m_Category->toJson() : web::json::value::null();
                 
     }
     val[U("name")] = ModelBase::toJson(m_Name);
