@@ -7,11 +7,16 @@
 
 #include <unordered_set>
 
-BEGIN_SDK_NS
 
-USE_SDK_NS(model)
+
+namespace swagger {
+
+namespace petshop {
 
 namespace api {
+
+
+using namespace swagger::petshop::model;
 
 StoreApi::StoreApi( std::shared_ptr<ApiConfiguration> configuration )
     : ApiBase(configuration)
@@ -305,8 +310,13 @@ pplx::task<std::shared_ptr<Order>> StoreApi::placeOrder(std::shared_ptr<Order> b
     });            
 }
 
+
+
 }
 
-END_SDK_NS
+}
+
+}
+
 
 

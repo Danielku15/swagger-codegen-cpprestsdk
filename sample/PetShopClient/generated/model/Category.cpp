@@ -2,9 +2,13 @@
 
 #include "Category.h"
 
-BEGIN_SDK_NS
+
+namespace swagger {
+
+namespace petshop {
 
 namespace model {
+
 
 Category::Category()
 {
@@ -118,8 +122,12 @@ void Category::unsetName()
 
 
 
+
 }
 
-END_SDK_NS
+}
+
+}
+
 
 

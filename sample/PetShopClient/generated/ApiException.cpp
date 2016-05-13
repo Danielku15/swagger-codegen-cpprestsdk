@@ -1,8 +1,12 @@
- #include "ApiException.h"
+#include "ApiException.h"
 
-BEGIN_SDK_NS
+
+namespace swagger {
+
+namespace petshop {
 
 namespace api {
+
 
 ApiException::ApiException( uint32_t statusCode, const utility::string_t& message, std::shared_ptr<std::iostream> content )
     : m_StatusCode(statusCode)
@@ -33,6 +37,9 @@ const char* ApiException::what() const throw()
     return message;
 }
 
+
 }
 
-END_SDK_NS
+}
+
+}

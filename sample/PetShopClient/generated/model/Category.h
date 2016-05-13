@@ -13,14 +13,18 @@
 #include <cpprest/details/basic_types.h>
 
 
-BEGIN_SDK_NS
+
+namespace swagger {
+
+namespace petshop {
 
 namespace model {
+
 
 /// <summary>
 /// 
 /// </summary>
-class SDK_DECLSPEC Category
+class PETSHOP_DECLSPEC Category
 	: public ModelBase
 {
 public:
@@ -71,9 +75,13 @@ protected:
     
 };
 
+
 }
 
-END_SDK_NS
+}
+
+}
+
 
 #endif /* Category_H_ */
 

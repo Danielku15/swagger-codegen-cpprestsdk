@@ -7,20 +7,20 @@
 #ifndef {{classname}}_H_
 #define {{classname}}_H_
 
-#include "Commons.h"
+{{{defaultInclude}}}
 #include "ModelBase.h"
 
 {{#imports}}{{{this}}}
 {{/imports}}
 
-BEGIN_SDK_NS
-
-namespace model {
+{{#modelNamespaceDeclarations}}
+namespace {{this}} {
+{{/modelNamespaceDeclarations}}
 
 /// <summary>
 /// {{description}}
 /// </summary>
-class SDK_DECLSPEC {{classname}}
+class {{declspec}} {{classname}}
 	: public ModelBase
 {
 public:
@@ -60,9 +60,9 @@ protected:
     {{/vars}}
 };
 
+{{#modelNamespaceDeclarations}}
 }
-
-END_SDK_NS
+{{/modelNamespaceDeclarations}}
 
 #endif /* {{classname}}_H_ */
 {{/model}}

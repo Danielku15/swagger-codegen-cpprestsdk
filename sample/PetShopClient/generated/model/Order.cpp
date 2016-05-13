@@ -2,9 +2,13 @@
 
 #include "Order.h"
 
-BEGIN_SDK_NS
+
+namespace swagger {
+
+namespace petshop {
 
 namespace model {
+
 
 Order::Order()
 {
@@ -258,8 +262,12 @@ void Order::unsetComplete()
 
 
 
+
 }
 
-END_SDK_NS
+}
+
+}
+
 
 

@@ -1,8 +1,12 @@
 #include "ApiConfiguration.h"
 
-BEGIN_SDK_NS
+
+namespace swagger {
+
+namespace petshop {
 
 namespace api {
+
 
 ApiConfiguration::ApiConfiguration()
 {
@@ -77,6 +81,9 @@ void ApiConfiguration::setApiKey( const utility::string_t& prefix, const utility
     m_ApiKeys[prefix] = apiKey;
 }
 
+
 }
 
-END_SDK_NS
+}
+
+}

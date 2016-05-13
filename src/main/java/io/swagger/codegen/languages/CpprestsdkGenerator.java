@@ -9,6 +9,13 @@ import java.io.File;
 
 public class CpprestsdkGenerator extends DefaultCodegen implements CodegenConfig {
 
+    public static final String DECLSPEC = "declspec";
+    public static final String DEFAULT_INCLUDE = "defaultInclude";
+
+    protected String packageVersion = "1.0.0";
+    protected String declspec = "";
+    protected String defaultInclude = "";
+
 	/**
 	 * Configures the type of generator.
 	 * 
@@ -42,6 +49,10 @@ public class CpprestsdkGenerator extends DefaultCodegen implements CodegenConfig
 	public CpprestsdkGenerator() {
 		super();
 
+        apiPackage  = "io.swagger.client.api";
+        modelPackage = "io.swagger.client.model";
+        
+    
 		modelTemplateFiles.put("model-header.mustache", ".h");
 		modelTemplateFiles.put("model-source.mustache", ".cpp");
 
@@ -49,6 +60,25 @@ public class CpprestsdkGenerator extends DefaultCodegen implements CodegenConfig
 		apiTemplateFiles.put("api-source.mustache", ".cpp");
 
 		templateDir = "cpprestsdk";
+        
+        cliOptions.clear();
+
+        // CLI options
+        addOption(CodegenConstants.MODEL_PACKAGE,
+                "C++ namespace for models (convention: name.space.model).",
+                this.modelPackage);
+        addOption(CodegenConstants.API_PACKAGE,
+                "C++ namespace for apis (convention: name.space.api).",
+                this.apiPackage);
+        addOption(CodegenConstants.PACKAGE_VERSION,
+                "C++ package version.",
+                this.packageVersion);
+        addOption(DECLSPEC,
+                "C++ preprocessor to place before the class name for handling dllexport/dllimport.",
+                this.declspec);
+        addOption(DEFAULT_INCLUDE,
+                "The default include statement that should be placed in all headers for including things like the declspec (convention: #include \"Commons.h\" ",
+                this.defaultInclude);
 
 		reservedWords = new HashSet<String>();
 
@@ -93,7 +123,36 @@ public class CpprestsdkGenerator extends DefaultCodegen implements CodegenConfig
 		importMapping.put("utility::string_t", "#include <cpprest/details/basic_types.h>");
 		importMapping.put("utility::datetime", "#include <cpprest/details/basic_types.h>");
 	}
+    
+    protected void addOption(String key, String description, String defaultValue) {
+        CliOption option = new CliOption(key, description);
+        if (defaultValue != null) option.defaultValue(defaultValue);
+        cliOptions.add(option);
+    }
 
+    
+    @Override
+    public void processOpts() {
+        super.processOpts();
+        
+        if(additionalProperties.containsKey(DECLSPEC))
+        {
+            declspec = additionalProperties.get(DECLSPEC).toString();
+        }
+
+        if(additionalProperties.containsKey(DEFAULT_INCLUDE))
+        {
+            defaultInclude = additionalProperties.get(DEFAULT_INCLUDE).toString();
+        }
+
+        additionalProperties.put("modelNamespaceDeclarations", modelPackage.split("\\."));
+        additionalProperties.put("modelNamespace", modelPackage.replaceAll("\\.", "::"));
+        additionalProperties.put("apiNamespaceDeclarations", apiPackage.split("\\."));
+        additionalProperties.put("apiNamespace", apiPackage.replaceAll("\\.", "::"));
+        additionalProperties.put("declspec", declspec);
+        additionalProperties.put("defaultInclude", defaultInclude);
+    }
+    
 	/**
 	 * Escapes a reserved word as defined in the `reservedWords` array. Handle
 	 * escaping those terms here. This logic is only called if a variable

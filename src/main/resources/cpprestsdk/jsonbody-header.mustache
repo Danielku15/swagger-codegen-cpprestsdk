@@ -7,17 +7,17 @@
 #ifndef JsonBody_H_
 #define JsonBody_H_
 
-#include "Commons.h"
+{{{defaultInclude}}}
 #include "IHttpBody.h"
 
 #include <cpprest/details/basic_types.h>
 #include <cpprest/json.h> 
 
-BEGIN_SDK_NS
+{{#modelNamespaceDeclarations}}
+namespace {{this}} {
+{{/modelNamespaceDeclarations}}
 
-namespace model {
-
-class SDK_DECLSPEC JsonBody
+class {{declspec}} JsonBody
     : public IHttpBody
 {
 public:
@@ -30,8 +30,8 @@ protected:
     web::json::value m_Json;
 };
 
+{{#modelNamespaceDeclarations}}
 }
-
-END_SDK_NS
+{{/modelNamespaceDeclarations}}
 
 #endif /* JsonBody_H_ */

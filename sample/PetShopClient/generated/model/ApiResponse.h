@@ -13,14 +13,18 @@
 #include <cpprest/details/basic_types.h>
 
 
-BEGIN_SDK_NS
+
+namespace swagger {
+
+namespace petshop {
 
 namespace model {
+
 
 /// <summary>
 /// 
 /// </summary>
-class SDK_DECLSPEC ApiResponse
+class PETSHOP_DECLSPEC ApiResponse
 	: public ModelBase
 {
 public:
@@ -83,9 +87,13 @@ protected:
     
 };
 
+
 }
 
-END_SDK_NS
+}
+
+}
+
 
 #endif /* ApiResponse_H_ */
 

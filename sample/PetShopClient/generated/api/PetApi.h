@@ -16,13 +16,17 @@
 #include "HttpContent.h"
 
 
-BEGIN_SDK_NS
+
+namespace swagger {
+
+namespace petshop {
 
 namespace api {
 
-USE_SDK_NS(model)
 
-class SDK_DECLSPEC PetApi
+using namespace swagger::petshop::model;
+
+class PETSHOP_DECLSPEC PetApi
 	: public ApiBase
 {
 public:
@@ -103,9 +107,13 @@ public:
     
 };
     
+
 }
 
-END_SDK_NS
+}
+
+}
+
 
 #endif /* PetApi_H_ */
 

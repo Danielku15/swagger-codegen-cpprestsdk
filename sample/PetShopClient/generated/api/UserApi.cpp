@@ -7,11 +7,16 @@
 
 #include <unordered_set>
 
-BEGIN_SDK_NS
 
-USE_SDK_NS(model)
+
+namespace swagger {
+
+namespace petshop {
 
 namespace api {
+
+
+using namespace swagger::petshop::model;
 
 UserApi::UserApi( std::shared_ptr<ApiConfiguration> configuration )
     : ApiBase(configuration)
@@ -626,8 +631,13 @@ pplx::task<void> UserApi::updateUser(utility::string_t username, std::shared_ptr
     });            
 }
 
+
+
 }
 
-END_SDK_NS
+}
+
+}
+
 
 

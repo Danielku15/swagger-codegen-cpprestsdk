@@ -14,13 +14,17 @@
 #include "Order.h"
 
 
-BEGIN_SDK_NS
+
+namespace swagger {
+
+namespace petshop {
 
 namespace api {
 
-USE_SDK_NS(model)
 
-class SDK_DECLSPEC StoreApi
+using namespace swagger::petshop::model;
+
+class PETSHOP_DECLSPEC StoreApi
 	: public ApiBase
 {
 public:
@@ -65,9 +69,13 @@ public:
     
 };
     
+
 }
 
-END_SDK_NS
+}
+
+}
+
 
 #endif /* StoreApi_H_ */
 

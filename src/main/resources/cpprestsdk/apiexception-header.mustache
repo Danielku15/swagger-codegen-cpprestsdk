@@ -7,19 +7,20 @@
 #ifndef ApiException_H_
 #define ApiException_H_
 
-#include "Commons.h"
-
-#include <cpprest/details/basic_types.h>
+{{{defaultInclude}}}
 
 #include <iostream> 
 #include <memory> 
 #include <exception>
 
-BEGIN_SDK_NS
+#include <cpprest/details/basic_types.h>
 
-namespace api {
 
-class SDK_DECLSPEC ApiException
+{{#apiNamespaceDeclarations}}
+namespace {{this}} {
+{{/apiNamespaceDeclarations}}
+
+class {{declspec}} ApiException
     : public std::exception
 {
 public:
@@ -38,8 +39,8 @@ protected:
     std::shared_ptr<std::iostream> m_Content;    
 };
 
+{{#apiNamespaceDeclarations}}
 }
-
-END_SDK_NS
+{{/apiNamespaceDeclarations}}
 
 #endif /* ApiBase_H_ */

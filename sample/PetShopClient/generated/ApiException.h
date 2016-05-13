@@ -9,17 +9,22 @@
 
 #include "Commons.h"
 
-#include <cpprest/details/basic_types.h>
-
 #include <iostream> 
 #include <memory> 
 #include <exception>
 
-BEGIN_SDK_NS
+#include <cpprest/details/basic_types.h>
+
+
+
+namespace swagger {
+
+namespace petshop {
 
 namespace api {
 
-class SDK_DECLSPEC ApiException
+
+class PETSHOP_DECLSPEC ApiException
     : public std::exception
 {
 public:
@@ -38,8 +43,12 @@ protected:
     std::shared_ptr<std::iostream> m_Content;    
 };
 
+
 }
 
-END_SDK_NS
+}
+
+}
+
 
 #endif /* ApiBase_H_ */

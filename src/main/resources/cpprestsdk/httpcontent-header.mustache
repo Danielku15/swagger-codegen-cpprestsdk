@@ -7,16 +7,17 @@
 #ifndef HttpContent_H_
 #define HttpContent_H_
 
-#include "Commons.h"
+{{{defaultInclude}}}
 
-#include <cpprest/details/basic_types.h> 
 #include <memory>
 
-BEGIN_SDK_NS
+#include <cpprest/details/basic_types.h> 
 
-namespace model {
+{{#modelNamespaceDeclarations}}
+namespace {{this}} {
+{{/modelNamespaceDeclarations}}
 
-class SDK_DECLSPEC HttpContent
+class {{declspec}} HttpContent
 {
 public:
     HttpContent();
@@ -48,8 +49,8 @@ protected:
     std::shared_ptr<std::iostream> m_Data;
 };
 
+{{#modelNamespaceDeclarations}}
 }
-
-END_SDK_NS
+{{/modelNamespaceDeclarations}}
 
 #endif /* HttpContent_H_ */

@@ -8,18 +8,21 @@
 #define ModelBase_H_
 
 #include "Commons.h"
+#include "HttpContent.h"
+#include "MultipartFormData.h"
 
 #include <cpprest/details/basic_types.h>
 #include <cpprest/json.h> 
 
-#include "HttpContent.h"
-#include "MultipartFormData.h"
 
-BEGIN_SDK_NS
+namespace swagger {
+
+namespace petshop {
 
 namespace model {
 
-class SDK_DECLSPEC ModelBase
+
+class PETSHOP_DECLSPEC ModelBase
 {
 public:
     ModelBase();
@@ -68,8 +71,12 @@ public:
     static std::wstring stringToWstring( const std::string& value );
 };
 
+
 }
 
-END_SDK_NS
+}
+
+}
+
 
 #endif /* ModelBase_H_ */

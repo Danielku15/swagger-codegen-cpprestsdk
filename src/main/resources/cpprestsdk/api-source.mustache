@@ -7,11 +7,12 @@
 
 #include <unordered_set>
 
-BEGIN_SDK_NS
 
-USE_SDK_NS(model)
+{{#apiNamespaceDeclarations}}
+namespace {{this}} {
+{{/apiNamespaceDeclarations}}
 
-namespace api {
+using namespace {{modelNamespace}};
 
 {{classname}}::{{classname}}( std::shared_ptr<ApiConfiguration> configuration )
     : ApiBase(configuration)
@@ -187,8 +188,9 @@ pplx::task<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}void{{/r
     });            
 }
 {{/operation}}
-}
 
-END_SDK_NS
+{{#apiNamespaceDeclarations}}
+}
+{{/apiNamespaceDeclarations}}
 
 {{/operations}}

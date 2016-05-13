@@ -7,16 +7,18 @@
 #ifndef IHttpBody_H_
 #define IHttpBody_H_
 
-#include "Commons.h"
+{{{defaultInclude}}}
 
-#include <cpprest/details/basic_types.h> 
 #include <memory>
 
-BEGIN_SDK_NS
+#include <cpprest/details/basic_types.h> 
 
-namespace model {
 
-class SDK_DECLSPEC IHttpBody
+{{#modelNamespaceDeclarations}}
+namespace {{this}} {
+{{/modelNamespaceDeclarations}}
+
+class {{declspec}} IHttpBody
 {
 public:
     virtual ~IHttpBody() { }
@@ -24,8 +26,8 @@ public:
     virtual void writeTo( std::ostream& stream ) = 0;
 };
 
+{{#modelNamespaceDeclarations}}
 }
-
-END_SDK_NS
+{{/modelNamespaceDeclarations}}
 
 #endif /* IHttpBody_H_ */

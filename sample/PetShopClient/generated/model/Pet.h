@@ -16,14 +16,18 @@
 #include <vector>
 
 
-BEGIN_SDK_NS
+
+namespace swagger {
+
+namespace petshop {
 
 namespace model {
+
 
 /// <summary>
 /// 
 /// </summary>
-class SDK_DECLSPEC Pet
+class PETSHOP_DECLSPEC Pet
 	: public ModelBase
 {
 public:
@@ -114,9 +118,13 @@ protected:
     
 };
 
+
 }
 
-END_SDK_NS
+}
+
+}
+
 
 #endif /* Pet_H_ */
 

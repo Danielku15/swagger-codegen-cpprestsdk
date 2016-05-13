@@ -3,9 +3,13 @@
 #include <boost/uuid/random_generator.hpp>
 #include <boost/uuid/uuid_io.hpp> 
 
-BEGIN_SDK_NS
+
+namespace swagger {
+
+namespace petshop {
 
 namespace model {
+
 
 MultipartFormData::MultipartFormData()
 {
@@ -81,6 +85,9 @@ void MultipartFormData::writeTo( std::ostream& target )
     target << "\r\n--" << m_Boundary << "--\r\n";
 }
 
+
 }
 
-END_SDK_NS
+}
+
+}

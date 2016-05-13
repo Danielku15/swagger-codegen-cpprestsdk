@@ -1,8 +1,12 @@
 #include "HttpContent.h"
 
-BEGIN_SDK_NS
+
+namespace swagger {
+
+namespace petshop {
 
 namespace model {
+
 
 HttpContent::HttpContent()
 {
@@ -68,6 +72,9 @@ void HttpContent::writeTo( std::ostream& stream )
     stream << m_Data->rdbuf();
 }
 
+
 }
 
-END_SDK_NS
+}
+
+}

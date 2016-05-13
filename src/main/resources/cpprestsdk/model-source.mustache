@@ -2,9 +2,9 @@
 
 #include "{{classname}}.h"
 
-BEGIN_SDK_NS
-
-namespace model {
+{{#modelNamespaceDeclarations}}
+namespace {{this}} {
+{{/modelNamespaceDeclarations}}
 
 {{classname}}::{{classname}}()
 {
@@ -238,9 +238,9 @@ void {{classname}}::unset{{name}}()
 {{/required}}
 {{/vars}}
 
+{{#modelNamespaceDeclarations}}
 }
-
-END_SDK_NS
+{{/modelNamespaceDeclarations}}
 
 {{/model}}
 {{/models}}

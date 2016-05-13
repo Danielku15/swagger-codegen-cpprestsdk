@@ -1,10 +1,14 @@
 #include "ApiBase.h"
 
-BEGIN_SDK_NS
+
+namespace swagger {
+
+namespace petshop {
 
 namespace api {
 
-USE_SDK_NS(model)
+
+using namespace swagger::petshop::model;
 
 ApiBase::ApiBase(std::shared_ptr<ApiConfiguration> configuration )
     : m_Configuration(configuration)
@@ -39,15 +43,6 @@ pplx::task<web::http::http_response> ApiBase::callApi(
     const utility::string_t& contentType
 )
 {
-    // TODO: make http_client_config part of ApiConfiguration
-    web::http::client::http_client_config config;
-
-    web::http::uri_builder builder( m_Configuration->getBaseUrl() );
-    web::http::client::http_client client(m_Configuration->getBaseUrl(), config);
-
-    web::http::method httpMethod;
-
-    
     return pplx::task<web::http::http_response>([=]()
     {
         return web::http::http_response();
@@ -57,4 +52,6 @@ pplx::task<web::http::http_response> ApiBase::callApi(
 
 }
 
-END_SDK_NS
+}
+
+}

@@ -2,9 +2,13 @@
 
 #include "ApiResponse.h"
 
-BEGIN_SDK_NS
+
+namespace swagger {
+
+namespace petshop {
 
 namespace model {
+
 
 ApiResponse::ApiResponse()
 {
@@ -156,8 +160,12 @@ void ApiResponse::unsetMessage()
 
 
 
+
 }
 
-END_SDK_NS
+}
+
+}
+
 
 

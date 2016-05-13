@@ -7,11 +7,16 @@
 
 #include <unordered_set>
 
-BEGIN_SDK_NS
 
-USE_SDK_NS(model)
+
+namespace swagger {
+
+namespace petshop {
 
 namespace api {
+
+
+using namespace swagger::petshop::model;
 
 PetApi::PetApi( std::shared_ptr<ApiConfiguration> configuration )
     : ApiBase(configuration)
@@ -697,8 +702,13 @@ pplx::task<std::shared_ptr<ApiResponse>> PetApi::uploadFile(int64_t petId, utili
     });            
 }
 
+
+
 }
 
-END_SDK_NS
+}
+
+}
+
 
 

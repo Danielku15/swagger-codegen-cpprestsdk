@@ -9,14 +9,20 @@
 
 #include "Commons.h"
 
-#include <cpprest/details/basic_types.h> 
 #include <memory>
 
-BEGIN_SDK_NS
+#include <cpprest/details/basic_types.h> 
+
+
+
+namespace swagger {
+
+namespace petshop {
 
 namespace model {
 
-class SDK_DECLSPEC IHttpBody
+
+class PETSHOP_DECLSPEC IHttpBody
 {
 public:
     virtual ~IHttpBody() { }
@@ -24,8 +30,12 @@ public:
     virtual void writeTo( std::ostream& stream ) = 0;
 };
 
+
 }
 
-END_SDK_NS
+}
+
+}
+
 
 #endif /* IHttpBody_H_ */

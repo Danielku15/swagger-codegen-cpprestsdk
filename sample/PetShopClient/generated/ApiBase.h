@@ -13,19 +13,23 @@
 #include "IHttpBody.h"
 #include "HttpContent.h"
 
-#include <cpprest/details/basic_types.h>
-#include <cpprest/http_client.h>
 #include <memory> 
 #include <vector> 
 
+#include <cpprest/details/basic_types.h>
+#include <cpprest/http_client.h>
 
-BEGIN_SDK_NS
+
+namespace swagger {
+
+namespace petshop {
 
 namespace api {
 
-USE_SDK_NS(model)
 
-class SDK_DECLSPEC ApiBase
+using namespace swagger::petshop::model;
+
+class PETSHOP_DECLSPEC ApiBase
 {
 public:
     ApiBase( std::shared_ptr<ApiConfiguration> configuration );
@@ -66,8 +70,12 @@ protected:
     std::shared_ptr<ApiConfiguration> m_Configuration;
 };
 
+
 }
 
-END_SDK_NS
+}
+
+}
+
 
 #endif /* ApiBase_H_ */

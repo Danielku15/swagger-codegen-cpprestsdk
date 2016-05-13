@@ -1,10 +1,10 @@
 #include "ApiBase.h"
 
-BEGIN_SDK_NS
+{{#apiNamespaceDeclarations}}
+namespace {{this}} {
+{{/apiNamespaceDeclarations}}
 
-namespace api {
-
-USE_SDK_NS(model)
+using namespace {{modelNamespace}};
 
 ApiBase::ApiBase(std::shared_ptr<ApiConfiguration> configuration )
     : m_Configuration(configuration)
@@ -45,7 +45,6 @@ pplx::task<web::http::http_response> ApiBase::callApi(
     });
 }
 
-
+{{#apiNamespaceDeclarations}}
 }
-
-END_SDK_NS
+{{/apiNamespaceDeclarations}}

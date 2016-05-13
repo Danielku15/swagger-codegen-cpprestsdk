@@ -9,14 +9,19 @@
 
 #include "Commons.h"
 
-#include <cpprest/details/basic_types.h> 
 #include <memory>
 
-BEGIN_SDK_NS
+#include <cpprest/details/basic_types.h> 
+
+
+namespace swagger {
+
+namespace petshop {
 
 namespace model {
 
-class SDK_DECLSPEC HttpContent
+
+class PETSHOP_DECLSPEC HttpContent
 {
 public:
     HttpContent();
@@ -48,8 +53,12 @@ protected:
     std::shared_ptr<std::iostream> m_Data;
 };
 
+
 }
 
-END_SDK_NS
+}
+
+}
+
 
 #endif /* HttpContent_H_ */

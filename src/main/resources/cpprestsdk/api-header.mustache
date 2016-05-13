@@ -7,19 +7,19 @@
 #ifndef {{classname}}_H_
 #define {{classname}}_H_
 
-#include "Commons.h"
+{{{defaultInclude}}}
 #include "ApiBase.h"
 
 {{#imports}}{{{import}}}
 {{/imports}}
 
-BEGIN_SDK_NS
+{{#apiNamespaceDeclarations}}
+namespace {{this}} {
+{{/apiNamespaceDeclarations}}
 
-namespace api {
+using namespace {{modelNamespace}};
 
-USE_SDK_NS(model)
-
-class SDK_DECLSPEC {{classname}}
+class {{declspec}} {{classname}}
 	: public ApiBase
 {
 public:
@@ -37,9 +37,9 @@ public:
     {{/operation}}
 };
     
+{{#apiNamespaceDeclarations}}
 }
-
-END_SDK_NS
+{{/apiNamespaceDeclarations}}
 
 #endif /* {{classname}}_H_ */
 

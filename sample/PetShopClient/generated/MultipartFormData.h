@@ -11,16 +11,22 @@
 #include "IHttpBody.h"
 #include "HttpContent.h"
 
-#include <cpprest/details/basic_types.h>
 #include <vector>
 #include <map>
 #include <memory>
 
-BEGIN_SDK_NS
+#include <cpprest/details/basic_types.h>
+
+
+
+namespace swagger {
+
+namespace petshop {
 
 namespace model {
 
-class SDK_DECLSPEC MultipartFormData
+
+class PETSHOP_DECLSPEC MultipartFormData
     : public IHttpBody
 {
 public:
@@ -39,8 +45,12 @@ protected:
     std::map<std::string, std::shared_ptr<HttpContent>> m_ContentLookup;
 };
 
+
 }
 
-END_SDK_NS
+}
+
+}
+
 
 #endif /* MultipartFormData_H_ */

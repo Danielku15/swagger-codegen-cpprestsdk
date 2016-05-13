@@ -1,0 +1,6 @@
+{
+    "modelPackage": "swagger.petshop.model",
+    "apiPackage": "swagger.petshop.api",
+    "declspec": "PETSHOP_DECLSPEC",
+    "defaultInclude": "#include \"Commons.h\""
+}

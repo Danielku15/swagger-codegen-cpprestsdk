@@ -9,14 +9,19 @@
 
 #include "Commons.h"
 
-#include <cpprest/details/basic_types.h> 
 #include <map>
 
-BEGIN_SDK_NS
+#include <cpprest/details/basic_types.h> 
+
+
+namespace swagger {
+
+namespace petshop {
 
 namespace api {
 
-class SDK_DECLSPEC ApiConfiguration
+
+class PETSHOP_DECLSPEC ApiConfiguration
 {
 public:
     ApiConfiguration();
@@ -52,8 +57,11 @@ protected:
     
 };
 
+
 }
 
-END_SDK_NS
+}
+
+}
 
 #endif /* ApiConfiguration_H_ */

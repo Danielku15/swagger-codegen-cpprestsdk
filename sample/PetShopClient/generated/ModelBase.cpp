@@ -1,8 +1,12 @@
 #include "ModelBase.h"
 
-BEGIN_SDK_NS
+
+namespace swagger {
+
+namespace petshop {
 
 namespace model {
+
 
 ModelBase::ModelBase()
 {
@@ -302,4 +306,6 @@ bool ModelBase::boolFromHttpContent(std::shared_ptr<HttpContent> val)
 
 }
 
-END_SDK_NS
+}
+
+}

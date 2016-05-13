@@ -15,13 +15,17 @@
 #include <cpprest/details/basic_types.h>
 
 
-BEGIN_SDK_NS
+
+namespace swagger {
+
+namespace petshop {
 
 namespace api {
 
-USE_SDK_NS(model)
 
-class SDK_DECLSPEC UserApi
+using namespace swagger::petshop::model;
+
+class PETSHOP_DECLSPEC UserApi
 	: public ApiBase
 {
 public:
@@ -102,9 +106,13 @@ public:
     
 };
     
+
 }
 
-END_SDK_NS
+}
+
+}
+
 
 #endif /* UserApi_H_ */
 

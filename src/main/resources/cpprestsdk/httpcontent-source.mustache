@@ -1,8 +1,8 @@
 #include "HttpContent.h"
 
-BEGIN_SDK_NS
-
-namespace model {
+{{#modelNamespaceDeclarations}}
+namespace {{this}} {
+{{/modelNamespaceDeclarations}}
 
 HttpContent::HttpContent()
 {
@@ -68,6 +68,6 @@ void HttpContent::writeTo( std::ostream& stream )
     stream << m_Data->rdbuf();
 }
 
+{{#modelNamespaceDeclarations}}
 }
-
-END_SDK_NS
+{{/modelNamespaceDeclarations}}

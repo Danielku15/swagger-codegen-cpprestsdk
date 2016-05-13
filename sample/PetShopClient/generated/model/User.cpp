@@ -2,9 +2,13 @@
 
 #include "User.h"
 
-BEGIN_SDK_NS
+
+namespace swagger {
+
+namespace petshop {
 
 namespace model {
+
 
 User::User()
 {
@@ -342,8 +346,12 @@ void User::unsetUserStatus()
 
 
 
+
 }
 
-END_SDK_NS
+}
+
+}
+
 
 

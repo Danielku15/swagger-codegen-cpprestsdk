@@ -3,9 +3,9 @@
 #include <boost/uuid/random_generator.hpp>
 #include <boost/uuid/uuid_io.hpp> 
 
-BEGIN_SDK_NS
-
-namespace model {
+{{#modelNamespaceDeclarations}}
+namespace {{this}} {
+{{/modelNamespaceDeclarations}}
 
 MultipartFormData::MultipartFormData()
 {
@@ -81,6 +81,6 @@ void MultipartFormData::writeTo( std::ostream& target )
     target << "\r\n--" << m_Boundary << "--\r\n";
 }
 
+{{#modelNamespaceDeclarations}}
 }
-
-END_SDK_NS
+{{/modelNamespaceDeclarations}}

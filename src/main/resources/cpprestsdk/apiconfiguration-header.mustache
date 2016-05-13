@@ -7,16 +7,17 @@
 #ifndef ApiConfiguration_H_
 #define ApiConfiguration_H_
 
-#include "Commons.h"
+{{{defaultInclude}}}
 
-#include <cpprest/details/basic_types.h> 
 #include <map>
 
-BEGIN_SDK_NS
+#include <cpprest/details/basic_types.h> 
 
-namespace api {
+{{#apiNamespaceDeclarations}}
+namespace {{this}} {
+{{/apiNamespaceDeclarations}}
 
-class SDK_DECLSPEC ApiConfiguration
+class {{declspec}} ApiConfiguration
 {
 public:
     ApiConfiguration();
@@ -52,8 +53,7 @@ protected:
     
 };
 
+{{#apiNamespaceDeclarations}}
 }
-
-END_SDK_NS
-
+{{/apiNamespaceDeclarations}}
 #endif /* ApiConfiguration_H_ */

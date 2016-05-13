@@ -13,11 +13,15 @@
 #include <cpprest/details/basic_types.h>
 #include <cpprest/json.h> 
 
-BEGIN_SDK_NS
+
+namespace swagger {
+
+namespace petshop {
 
 namespace model {
 
-class SDK_DECLSPEC JsonBody
+
+class PETSHOP_DECLSPEC JsonBody
     : public IHttpBody
 {
 public:
@@ -30,8 +34,12 @@ protected:
     web::json::value m_Json;
 };
 
+
 }
 
-END_SDK_NS
+}
+
+}
+
 
 #endif /* JsonBody_H_ */

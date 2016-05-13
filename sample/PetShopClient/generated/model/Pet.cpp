@@ -2,9 +2,13 @@
 
 #include "Pet.h"
 
-BEGIN_SDK_NS
+
+namespace swagger {
+
+namespace petshop {
 
 namespace model {
+
 
 Pet::Pet()
 {
@@ -325,8 +329,12 @@ void Pet::unsetStatus()
 
 
 
+
 }
 
-END_SDK_NS
+}
+
+}
+
 
 

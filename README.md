@@ -14,11 +14,8 @@ Check out [OpenAPI-Spec](https://github.com/OAI/OpenAPI-Specification) for addit
 
 ## Details about generated classes
 
-* All model classes can be serialized as JSON and as application/x-multipart-formdata. 
+* All model classes can be serialized as JSON and as multipart/form-data. 
 * All reference types are kept as std::shared_ptr instances which reduces the number of copy steps and allows better passing of models across the API boundaries without worrying about memory leaks or access violations. 
 * For non required properties an additional unset method is provided to completely exclude them from the serialization. 
 * Collection type properties have no setters. use the getter to access the collection itself and modify it via this reference.
-* All classes include the `Common.h` header by default to include required preprocessors described below. 
-* All classes specify the preprocessor `SDK_DECLSPEC` for dllexport/dllimport handling on Windows Platform. 
-* All classes are wrapped into `BEGIN_SDK_NS` and `END_SDK_NS`. Define them to your desired namespace declaration. 
-* When serializing objects to application/x-multipart-formdata arrays are stored as JSON. 
+* When serializing objects to multipart/form-data arrays are stored as JSON. 

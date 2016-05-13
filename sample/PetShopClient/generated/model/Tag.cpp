@@ -2,9 +2,13 @@
 
 #include "Tag.h"
 
-BEGIN_SDK_NS
+
+namespace swagger {
+
+namespace petshop {
 
 namespace model {
+
 
 Tag::Tag()
 {
@@ -118,8 +122,12 @@ void Tag::unsetName()
 
 
 
+
 }
 
-END_SDK_NS
+}
+
+}
+
 
 
