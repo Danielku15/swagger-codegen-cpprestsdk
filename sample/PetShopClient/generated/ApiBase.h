@@ -10,8 +10,11 @@
 #include "Commons.h"
 #include "ApiConfiguration.h"
 #include "ApiException.h"
+#include "IHttpBody.h"
+#include "HttpContent.h"
 
 #include <cpprest/details/basic_types.h>
+#include <cpprest/http_client.h>
 #include <memory> 
 #include <vector> 
 
@@ -19,6 +22,8 @@
 BEGIN_SDK_NS
 
 namespace api {
+
+USE_SDK_NS(model)
 
 class SDK_DECLSPEC ApiBase
 {
@@ -46,6 +51,18 @@ public:
     }
     
 protected:
+    pplx::task<web::http::http_response> callApi( 
+        const utility::string_t& path, 
+        const utility::string_t& method, 
+        const std::map<utility::string_t, utility::string_t> queryParams, 
+        const std::shared_ptr<IHttpBody> postBody, 
+        const std::map<utility::string_t, utility::string_t> headerParams, 
+        const std::map<utility::string_t, utility::string_t> formParams, 
+        const std::map<utility::string_t, std::shared_ptr<HttpContent>> fileParams, 
+        const std::map<utility::string_t, utility::string_t> pathParams, 
+        const utility::string_t& contentType
+    );
+
     std::shared_ptr<ApiConfiguration> m_Configuration;
 };
 

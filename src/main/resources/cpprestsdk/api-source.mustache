@@ -62,14 +62,16 @@ pplx::task<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}void{{/r
         {{/isFile}}{{/isFormParam}}{{/isContainer}}
     }
     {{/isBodyParam}}{{/allParams}}
-    
-    {{#bodyParam}}
-    
+
     std::shared_ptr<IHttpBody> httpBody;
-    
+    utility::string_t httpContentType;
+   
     // use JSON if possible
     if ( consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
     {
+        httpContentType = U("application/json");
+
+        {{#bodyParam}}
         web::json::value json;
  
         {{#isPrimitiveType}} json = ModelBase::toJson({{paramName}});
@@ -92,10 +94,15 @@ pplx::task<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}void{{/r
         {{/isString}}{{/isListContainer}}{{/isPrimitiveType}}
         
         httpBody = std::shared_ptr<IHttpBody>( new JsonBody( json ) );
+        
+        {{/bodyParam}}
     }
     // multipart formdata 
     else if( consumeHttpContentTypes.find(U("multipart/form-data")) != consumeHttpContentTypes.end() )
     {
+        httpContentType = U("multipart/form-data");
+        
+        {{#bodyParam}}
         std::shared_ptr<MultipartFormData> multipart(new MultipartFormData);
         {{#isPrimitiveType}} multipart->add(ModelBase::toHttpContent("{{paramName}}", {{paramName}}));
         {{/isPrimitiveType}}{{^isPrimitiveType}}{{#isListContainer}}
@@ -120,12 +127,12 @@ pplx::task<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}void{{/r
         {{/isString}}{{/isListContainer}}{{/isPrimitiveType}}
 
         httpBody = multipart;
+        {{/bodyParam}}
     }
     else
     {
         throw ApiException(415, U("{{classname}}->{{operationId}} does not consume any supported media type"));
     }    
-    {{/bodyParam}}
     
     {{#authMethods}}
     // authentication ({{name}}) required
@@ -167,11 +174,19 @@ pplx::task<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}void{{/r
     {{/isOAuth}}
     {{/authMethods}}
     
-    return pplx::task<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}void{{/returnType}}> ();
+    return ApiBase::callApi(path, U("{{httpMethod}}"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    .then([=](web::http::http_response response)
+    {
+        printf("Received response status code:%u\n", response.status_code());
+        return response.extract_string();
+    })
+    .then([=](utility::string_t result)
+    {
+        std::wcout << result << std::endl;
+        return {{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}void{{/returnType}}();
+    });            
 }
 {{/operation}}
-
-
 }
 
 END_SDK_NS

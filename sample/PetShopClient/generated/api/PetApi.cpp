@@ -51,14 +51,16 @@ pplx::task<void> PetApi::addPet(std::shared_ptr<Pet> body)
     
     
     
-    
-    
-    
+
     std::shared_ptr<IHttpBody> httpBody;
-    
+    utility::string_t httpContentType;
+   
     // use JSON if possible
     if ( consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
     {
+        httpContentType = U("application/json");
+
+        
         web::json::value json;
  
         
@@ -66,10 +68,15 @@ pplx::task<void> PetApi::addPet(std::shared_ptr<Pet> body)
         
         
         httpBody = std::shared_ptr<IHttpBody>( new JsonBody( json ) );
+        
+        
     }
     // multipart formdata 
     else if( consumeHttpContentTypes.find(U("multipart/form-data")) != consumeHttpContentTypes.end() )
     {
+        httpContentType = U("multipart/form-data");
+        
+        
         std::shared_ptr<MultipartFormData> multipart(new MultipartFormData);
         
         if(body.get())
@@ -79,12 +86,12 @@ pplx::task<void> PetApi::addPet(std::shared_ptr<Pet> body)
         
 
         httpBody = multipart;
+        
     }
     else
     {
         throw ApiException(415, U("PetApi->addPet does not consume any supported media type"));
     }    
-    
     
     
     // authentication (petstore_auth) required
@@ -100,7 +107,17 @@ pplx::task<void> PetApi::addPet(std::shared_ptr<Pet> body)
     
     
     
-    return pplx::task<void> ();
+    return ApiBase::callApi(path, U("POST"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    .then([=](web::http::http_response response)
+    {
+        printf("Received response status code:%u\n", response.status_code());
+        return response.extract_string();
+    })
+    .then([=](utility::string_t result)
+    {
+        std::wcout << result << std::endl;
+        return void();
+    });            
 }
 
 pplx::task<void> PetApi::deletePet(int64_t petId, utility::string_t apiKey)
@@ -133,8 +150,28 @@ pplx::task<void> PetApi::deletePet(int64_t petId, utility::string_t apiKey)
         
     }
     
-    
-    
+
+    std::shared_ptr<IHttpBody> httpBody;
+    utility::string_t httpContentType;
+   
+    // use JSON if possible
+    if ( consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
+    {
+        httpContentType = U("application/json");
+
+        
+    }
+    // multipart formdata 
+    else if( consumeHttpContentTypes.find(U("multipart/form-data")) != consumeHttpContentTypes.end() )
+    {
+        httpContentType = U("multipart/form-data");
+        
+        
+    }
+    else
+    {
+        throw ApiException(415, U("PetApi->deletePet does not consume any supported media type"));
+    }    
     
     
     // authentication (petstore_auth) required
@@ -150,7 +187,17 @@ pplx::task<void> PetApi::deletePet(int64_t petId, utility::string_t apiKey)
     
     
     
-    return pplx::task<void> ();
+    return ApiBase::callApi(path, U("DELETE"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    .then([=](web::http::http_response response)
+    {
+        printf("Received response status code:%u\n", response.status_code());
+        return response.extract_string();
+    })
+    .then([=](utility::string_t result)
+    {
+        std::wcout << result << std::endl;
+        return void();
+    });            
 }
 
 pplx::task<std::vector<std::shared_ptr<Pet>>> PetApi::findPetsByStatus(std::vector<utility::string_t> status)
@@ -178,8 +225,28 @@ pplx::task<std::vector<std::shared_ptr<Pet>>> PetApi::findPetsByStatus(std::vect
         
     }
     
-    
-    
+
+    std::shared_ptr<IHttpBody> httpBody;
+    utility::string_t httpContentType;
+   
+    // use JSON if possible
+    if ( consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
+    {
+        httpContentType = U("application/json");
+
+        
+    }
+    // multipart formdata 
+    else if( consumeHttpContentTypes.find(U("multipart/form-data")) != consumeHttpContentTypes.end() )
+    {
+        httpContentType = U("multipart/form-data");
+        
+        
+    }
+    else
+    {
+        throw ApiException(415, U("PetApi->findPetsByStatus does not consume any supported media type"));
+    }    
     
     
     // authentication (petstore_auth) required
@@ -195,7 +262,17 @@ pplx::task<std::vector<std::shared_ptr<Pet>>> PetApi::findPetsByStatus(std::vect
     
     
     
-    return pplx::task<std::vector<std::shared_ptr<Pet>>> ();
+    return ApiBase::callApi(path, U("GET"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    .then([=](web::http::http_response response)
+    {
+        printf("Received response status code:%u\n", response.status_code());
+        return response.extract_string();
+    })
+    .then([=](utility::string_t result)
+    {
+        std::wcout << result << std::endl;
+        return std::vector<std::shared_ptr<Pet>>();
+    });            
 }
 
 pplx::task<std::vector<std::shared_ptr<Pet>>> PetApi::findPetsByTags(std::vector<utility::string_t> tags)
@@ -223,8 +300,28 @@ pplx::task<std::vector<std::shared_ptr<Pet>>> PetApi::findPetsByTags(std::vector
         
     }
     
-    
-    
+
+    std::shared_ptr<IHttpBody> httpBody;
+    utility::string_t httpContentType;
+   
+    // use JSON if possible
+    if ( consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
+    {
+        httpContentType = U("application/json");
+
+        
+    }
+    // multipart formdata 
+    else if( consumeHttpContentTypes.find(U("multipart/form-data")) != consumeHttpContentTypes.end() )
+    {
+        httpContentType = U("multipart/form-data");
+        
+        
+    }
+    else
+    {
+        throw ApiException(415, U("PetApi->findPetsByTags does not consume any supported media type"));
+    }    
     
     
     // authentication (petstore_auth) required
@@ -240,7 +337,17 @@ pplx::task<std::vector<std::shared_ptr<Pet>>> PetApi::findPetsByTags(std::vector
     
     
     
-    return pplx::task<std::vector<std::shared_ptr<Pet>>> ();
+    return ApiBase::callApi(path, U("GET"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    .then([=](web::http::http_response response)
+    {
+        printf("Received response status code:%u\n", response.status_code());
+        return response.extract_string();
+    })
+    .then([=](utility::string_t result)
+    {
+        std::wcout << result << std::endl;
+        return std::vector<std::shared_ptr<Pet>>();
+    });            
 }
 
 pplx::task<std::shared_ptr<Pet>> PetApi::getPetById(int64_t petId)
@@ -268,8 +375,28 @@ pplx::task<std::shared_ptr<Pet>> PetApi::getPetById(int64_t petId)
         
     }
     
-    
-    
+
+    std::shared_ptr<IHttpBody> httpBody;
+    utility::string_t httpContentType;
+   
+    // use JSON if possible
+    if ( consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
+    {
+        httpContentType = U("application/json");
+
+        
+    }
+    // multipart formdata 
+    else if( consumeHttpContentTypes.find(U("multipart/form-data")) != consumeHttpContentTypes.end() )
+    {
+        httpContentType = U("multipart/form-data");
+        
+        
+    }
+    else
+    {
+        throw ApiException(415, U("PetApi->getPetById does not consume any supported media type"));
+    }    
     
     
     // authentication (api_key) required
@@ -289,7 +416,17 @@ pplx::task<std::shared_ptr<Pet>> PetApi::getPetById(int64_t petId)
     
     
     
-    return pplx::task<std::shared_ptr<Pet>> ();
+    return ApiBase::callApi(path, U("GET"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    .then([=](web::http::http_response response)
+    {
+        printf("Received response status code:%u\n", response.status_code());
+        return response.extract_string();
+    })
+    .then([=](utility::string_t result)
+    {
+        std::wcout << result << std::endl;
+        return std::shared_ptr<Pet>();
+    });            
 }
 
 pplx::task<void> PetApi::updatePet(std::shared_ptr<Pet> body)
@@ -320,14 +457,16 @@ pplx::task<void> PetApi::updatePet(std::shared_ptr<Pet> body)
     
     
     
-    
-    
-    
+
     std::shared_ptr<IHttpBody> httpBody;
-    
+    utility::string_t httpContentType;
+   
     // use JSON if possible
     if ( consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
     {
+        httpContentType = U("application/json");
+
+        
         web::json::value json;
  
         
@@ -335,10 +474,15 @@ pplx::task<void> PetApi::updatePet(std::shared_ptr<Pet> body)
         
         
         httpBody = std::shared_ptr<IHttpBody>( new JsonBody( json ) );
+        
+        
     }
     // multipart formdata 
     else if( consumeHttpContentTypes.find(U("multipart/form-data")) != consumeHttpContentTypes.end() )
     {
+        httpContentType = U("multipart/form-data");
+        
+        
         std::shared_ptr<MultipartFormData> multipart(new MultipartFormData);
         
         if(body.get())
@@ -348,12 +492,12 @@ pplx::task<void> PetApi::updatePet(std::shared_ptr<Pet> body)
         
 
         httpBody = multipart;
+        
     }
     else
     {
         throw ApiException(415, U("PetApi->updatePet does not consume any supported media type"));
     }    
-    
     
     
     // authentication (petstore_auth) required
@@ -369,7 +513,17 @@ pplx::task<void> PetApi::updatePet(std::shared_ptr<Pet> body)
     
     
     
-    return pplx::task<void> ();
+    return ApiBase::callApi(path, U("PUT"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    .then([=](web::http::http_response response)
+    {
+        printf("Received response status code:%u\n", response.status_code());
+        return response.extract_string();
+    })
+    .then([=](utility::string_t result)
+    {
+        std::wcout << result << std::endl;
+        return void();
+    });            
 }
 
 pplx::task<void> PetApi::updatePetWithForm(int64_t petId, utility::string_t name, utility::string_t status)
@@ -408,8 +562,28 @@ pplx::task<void> PetApi::updatePetWithForm(int64_t petId, utility::string_t name
         
     }
     
-    
-    
+
+    std::shared_ptr<IHttpBody> httpBody;
+    utility::string_t httpContentType;
+   
+    // use JSON if possible
+    if ( consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
+    {
+        httpContentType = U("application/json");
+
+        
+    }
+    // multipart formdata 
+    else if( consumeHttpContentTypes.find(U("multipart/form-data")) != consumeHttpContentTypes.end() )
+    {
+        httpContentType = U("multipart/form-data");
+        
+        
+    }
+    else
+    {
+        throw ApiException(415, U("PetApi->updatePetWithForm does not consume any supported media type"));
+    }    
     
     
     // authentication (petstore_auth) required
@@ -425,7 +599,17 @@ pplx::task<void> PetApi::updatePetWithForm(int64_t petId, utility::string_t name
     
     
     
-    return pplx::task<void> ();
+    return ApiBase::callApi(path, U("POST"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    .then([=](web::http::http_response response)
+    {
+        printf("Received response status code:%u\n", response.status_code());
+        return response.extract_string();
+    })
+    .then([=](utility::string_t result)
+    {
+        std::wcout << result << std::endl;
+        return void();
+    });            
 }
 
 pplx::task<std::shared_ptr<ApiResponse>> PetApi::uploadFile(int64_t petId, utility::string_t additionalMetadata, std::shared_ptr<HttpContent> file)
@@ -463,8 +647,28 @@ pplx::task<std::shared_ptr<ApiResponse>> PetApi::uploadFile(int64_t petId, utili
         
     }
     
-    
-    
+
+    std::shared_ptr<IHttpBody> httpBody;
+    utility::string_t httpContentType;
+   
+    // use JSON if possible
+    if ( consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
+    {
+        httpContentType = U("application/json");
+
+        
+    }
+    // multipart formdata 
+    else if( consumeHttpContentTypes.find(U("multipart/form-data")) != consumeHttpContentTypes.end() )
+    {
+        httpContentType = U("multipart/form-data");
+        
+        
+    }
+    else
+    {
+        throw ApiException(415, U("PetApi->uploadFile does not consume any supported media type"));
+    }    
     
     
     // authentication (petstore_auth) required
@@ -480,10 +684,18 @@ pplx::task<std::shared_ptr<ApiResponse>> PetApi::uploadFile(int64_t petId, utili
     
     
     
-    return pplx::task<std::shared_ptr<ApiResponse>> ();
+    return ApiBase::callApi(path, U("POST"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    .then([=](web::http::http_response response)
+    {
+        printf("Received response status code:%u\n", response.status_code());
+        return response.extract_string();
+    })
+    .then([=](utility::string_t result)
+    {
+        std::wcout << result << std::endl;
+        return std::shared_ptr<ApiResponse>();
+    });            
 }
-
-
 
 }
 

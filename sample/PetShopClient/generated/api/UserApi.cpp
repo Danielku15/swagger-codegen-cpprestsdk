@@ -49,14 +49,16 @@ pplx::task<void> UserApi::createUser(std::shared_ptr<User> body)
     
     
     
-    
-    
-    
+
     std::shared_ptr<IHttpBody> httpBody;
-    
+    utility::string_t httpContentType;
+   
     // use JSON if possible
     if ( consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
     {
+        httpContentType = U("application/json");
+
+        
         web::json::value json;
  
         
@@ -64,10 +66,15 @@ pplx::task<void> UserApi::createUser(std::shared_ptr<User> body)
         
         
         httpBody = std::shared_ptr<IHttpBody>( new JsonBody( json ) );
+        
+        
     }
     // multipart formdata 
     else if( consumeHttpContentTypes.find(U("multipart/form-data")) != consumeHttpContentTypes.end() )
     {
+        httpContentType = U("multipart/form-data");
+        
+        
         std::shared_ptr<MultipartFormData> multipart(new MultipartFormData);
         
         if(body.get())
@@ -77,6 +84,7 @@ pplx::task<void> UserApi::createUser(std::shared_ptr<User> body)
         
 
         httpBody = multipart;
+        
     }
     else
     {
@@ -85,8 +93,17 @@ pplx::task<void> UserApi::createUser(std::shared_ptr<User> body)
     
     
     
-    
-    return pplx::task<void> ();
+    return ApiBase::callApi(path, U("POST"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    .then([=](web::http::http_response response)
+    {
+        printf("Received response status code:%u\n", response.status_code());
+        return response.extract_string();
+    })
+    .then([=](utility::string_t result)
+    {
+        std::wcout << result << std::endl;
+        return void();
+    });            
 }
 
 pplx::task<void> UserApi::createUsersWithArrayInput(std::vector<std::shared_ptr<User>> body)
@@ -109,14 +126,16 @@ pplx::task<void> UserApi::createUsersWithArrayInput(std::vector<std::shared_ptr<
     
     
     
-    
-    
-    
+
     std::shared_ptr<IHttpBody> httpBody;
-    
+    utility::string_t httpContentType;
+   
     // use JSON if possible
     if ( consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
     {
+        httpContentType = U("application/json");
+
+        
         web::json::value json;
  
         
@@ -132,10 +151,15 @@ pplx::task<void> UserApi::createUsersWithArrayInput(std::vector<std::shared_ptr<
         
         
         httpBody = std::shared_ptr<IHttpBody>( new JsonBody( json ) );
+        
+        
     }
     // multipart formdata 
     else if( consumeHttpContentTypes.find(U("multipart/form-data")) != consumeHttpContentTypes.end() )
     {
+        httpContentType = U("multipart/form-data");
+        
+        
         std::shared_ptr<MultipartFormData> multipart(new MultipartFormData);
         
         {
@@ -150,6 +174,7 @@ pplx::task<void> UserApi::createUsersWithArrayInput(std::vector<std::shared_ptr<
         
 
         httpBody = multipart;
+        
     }
     else
     {
@@ -158,8 +183,17 @@ pplx::task<void> UserApi::createUsersWithArrayInput(std::vector<std::shared_ptr<
     
     
     
-    
-    return pplx::task<void> ();
+    return ApiBase::callApi(path, U("POST"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    .then([=](web::http::http_response response)
+    {
+        printf("Received response status code:%u\n", response.status_code());
+        return response.extract_string();
+    })
+    .then([=](utility::string_t result)
+    {
+        std::wcout << result << std::endl;
+        return void();
+    });            
 }
 
 pplx::task<void> UserApi::createUsersWithListInput(std::vector<std::shared_ptr<User>> body)
@@ -182,14 +216,16 @@ pplx::task<void> UserApi::createUsersWithListInput(std::vector<std::shared_ptr<U
     
     
     
-    
-    
-    
+
     std::shared_ptr<IHttpBody> httpBody;
-    
+    utility::string_t httpContentType;
+   
     // use JSON if possible
     if ( consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
     {
+        httpContentType = U("application/json");
+
+        
         web::json::value json;
  
         
@@ -205,10 +241,15 @@ pplx::task<void> UserApi::createUsersWithListInput(std::vector<std::shared_ptr<U
         
         
         httpBody = std::shared_ptr<IHttpBody>( new JsonBody( json ) );
+        
+        
     }
     // multipart formdata 
     else if( consumeHttpContentTypes.find(U("multipart/form-data")) != consumeHttpContentTypes.end() )
     {
+        httpContentType = U("multipart/form-data");
+        
+        
         std::shared_ptr<MultipartFormData> multipart(new MultipartFormData);
         
         {
@@ -223,6 +264,7 @@ pplx::task<void> UserApi::createUsersWithListInput(std::vector<std::shared_ptr<U
         
 
         httpBody = multipart;
+        
     }
     else
     {
@@ -231,8 +273,17 @@ pplx::task<void> UserApi::createUsersWithListInput(std::vector<std::shared_ptr<U
     
     
     
-    
-    return pplx::task<void> ();
+    return ApiBase::callApi(path, U("POST"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    .then([=](web::http::http_response response)
+    {
+        printf("Received response status code:%u\n", response.status_code());
+        return response.extract_string();
+    })
+    .then([=](utility::string_t result)
+    {
+        std::wcout << result << std::endl;
+        return void();
+    });            
 }
 
 pplx::task<void> UserApi::deleteUser(utility::string_t username)
@@ -260,12 +311,42 @@ pplx::task<void> UserApi::deleteUser(utility::string_t username)
         
     }
     
+
+    std::shared_ptr<IHttpBody> httpBody;
+    utility::string_t httpContentType;
+   
+    // use JSON if possible
+    if ( consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
+    {
+        httpContentType = U("application/json");
+
+        
+    }
+    // multipart formdata 
+    else if( consumeHttpContentTypes.find(U("multipart/form-data")) != consumeHttpContentTypes.end() )
+    {
+        httpContentType = U("multipart/form-data");
+        
+        
+    }
+    else
+    {
+        throw ApiException(415, U("UserApi->deleteUser does not consume any supported media type"));
+    }    
     
     
     
-    
-    
-    return pplx::task<void> ();
+    return ApiBase::callApi(path, U("DELETE"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    .then([=](web::http::http_response response)
+    {
+        printf("Received response status code:%u\n", response.status_code());
+        return response.extract_string();
+    })
+    .then([=](utility::string_t result)
+    {
+        std::wcout << result << std::endl;
+        return void();
+    });            
 }
 
 pplx::task<std::shared_ptr<User>> UserApi::getUserByName(utility::string_t username)
@@ -293,12 +374,42 @@ pplx::task<std::shared_ptr<User>> UserApi::getUserByName(utility::string_t usern
         
     }
     
+
+    std::shared_ptr<IHttpBody> httpBody;
+    utility::string_t httpContentType;
+   
+    // use JSON if possible
+    if ( consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
+    {
+        httpContentType = U("application/json");
+
+        
+    }
+    // multipart formdata 
+    else if( consumeHttpContentTypes.find(U("multipart/form-data")) != consumeHttpContentTypes.end() )
+    {
+        httpContentType = U("multipart/form-data");
+        
+        
+    }
+    else
+    {
+        throw ApiException(415, U("UserApi->getUserByName does not consume any supported media type"));
+    }    
     
     
     
-    
-    
-    return pplx::task<std::shared_ptr<User>> ();
+    return ApiBase::callApi(path, U("GET"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    .then([=](web::http::http_response response)
+    {
+        printf("Received response status code:%u\n", response.status_code());
+        return response.extract_string();
+    })
+    .then([=](utility::string_t result)
+    {
+        std::wcout << result << std::endl;
+        return std::shared_ptr<User>();
+    });            
 }
 
 pplx::task<utility::string_t> UserApi::loginUser(utility::string_t username, utility::string_t password)
@@ -331,12 +442,42 @@ pplx::task<utility::string_t> UserApi::loginUser(utility::string_t username, uti
         
     }
     
+
+    std::shared_ptr<IHttpBody> httpBody;
+    utility::string_t httpContentType;
+   
+    // use JSON if possible
+    if ( consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
+    {
+        httpContentType = U("application/json");
+
+        
+    }
+    // multipart formdata 
+    else if( consumeHttpContentTypes.find(U("multipart/form-data")) != consumeHttpContentTypes.end() )
+    {
+        httpContentType = U("multipart/form-data");
+        
+        
+    }
+    else
+    {
+        throw ApiException(415, U("UserApi->loginUser does not consume any supported media type"));
+    }    
     
     
     
-    
-    
-    return pplx::task<utility::string_t> ();
+    return ApiBase::callApi(path, U("GET"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    .then([=](web::http::http_response response)
+    {
+        printf("Received response status code:%u\n", response.status_code());
+        return response.extract_string();
+    })
+    .then([=](utility::string_t result)
+    {
+        std::wcout << result << std::endl;
+        return utility::string_t();
+    });            
 }
 
 pplx::task<void> UserApi::logoutUser()
@@ -359,12 +500,42 @@ pplx::task<void> UserApi::logoutUser()
     
     
     
+
+    std::shared_ptr<IHttpBody> httpBody;
+    utility::string_t httpContentType;
+   
+    // use JSON if possible
+    if ( consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
+    {
+        httpContentType = U("application/json");
+
+        
+    }
+    // multipart formdata 
+    else if( consumeHttpContentTypes.find(U("multipart/form-data")) != consumeHttpContentTypes.end() )
+    {
+        httpContentType = U("multipart/form-data");
+        
+        
+    }
+    else
+    {
+        throw ApiException(415, U("UserApi->logoutUser does not consume any supported media type"));
+    }    
     
     
     
-    
-    
-    return pplx::task<void> ();
+    return ApiBase::callApi(path, U("GET"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    .then([=](web::http::http_response response)
+    {
+        printf("Received response status code:%u\n", response.status_code());
+        return response.extract_string();
+    })
+    .then([=](utility::string_t result)
+    {
+        std::wcout << result << std::endl;
+        return void();
+    });            
 }
 
 pplx::task<void> UserApi::updateUser(utility::string_t username, std::shared_ptr<User> body)
@@ -398,14 +569,16 @@ pplx::task<void> UserApi::updateUser(utility::string_t username, std::shared_ptr
         
     }
     
-    
-    
-    
+
     std::shared_ptr<IHttpBody> httpBody;
-    
+    utility::string_t httpContentType;
+   
     // use JSON if possible
     if ( consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
     {
+        httpContentType = U("application/json");
+
+        
         web::json::value json;
  
         
@@ -413,10 +586,15 @@ pplx::task<void> UserApi::updateUser(utility::string_t username, std::shared_ptr
         
         
         httpBody = std::shared_ptr<IHttpBody>( new JsonBody( json ) );
+        
+        
     }
     // multipart formdata 
     else if( consumeHttpContentTypes.find(U("multipart/form-data")) != consumeHttpContentTypes.end() )
     {
+        httpContentType = U("multipart/form-data");
+        
+        
         std::shared_ptr<MultipartFormData> multipart(new MultipartFormData);
         
         if(body.get())
@@ -426,6 +604,7 @@ pplx::task<void> UserApi::updateUser(utility::string_t username, std::shared_ptr
         
 
         httpBody = multipart;
+        
     }
     else
     {
@@ -434,11 +613,18 @@ pplx::task<void> UserApi::updateUser(utility::string_t username, std::shared_ptr
     
     
     
-    
-    return pplx::task<void> ();
+    return ApiBase::callApi(path, U("PUT"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    .then([=](web::http::http_response response)
+    {
+        printf("Received response status code:%u\n", response.status_code());
+        return response.extract_string();
+    })
+    .then([=](utility::string_t result)
+    {
+        std::wcout << result << std::endl;
+        return void();
+    });            
 }
-
-
 
 }
 

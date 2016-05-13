@@ -48,12 +48,42 @@ pplx::task<void> StoreApi::deleteOrder(int64_t orderId)
         
     }
     
+
+    std::shared_ptr<IHttpBody> httpBody;
+    utility::string_t httpContentType;
+   
+    // use JSON if possible
+    if ( consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
+    {
+        httpContentType = U("application/json");
+
+        
+    }
+    // multipart formdata 
+    else if( consumeHttpContentTypes.find(U("multipart/form-data")) != consumeHttpContentTypes.end() )
+    {
+        httpContentType = U("multipart/form-data");
+        
+        
+    }
+    else
+    {
+        throw ApiException(415, U("StoreApi->deleteOrder does not consume any supported media type"));
+    }    
     
     
     
-    
-    
-    return pplx::task<void> ();
+    return ApiBase::callApi(path, U("DELETE"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    .then([=](web::http::http_response response)
+    {
+        printf("Received response status code:%u\n", response.status_code());
+        return response.extract_string();
+    })
+    .then([=](utility::string_t result)
+    {
+        std::wcout << result << std::endl;
+        return void();
+    });            
 }
 
 pplx::task<std::map<utility::string_t, int32_t>> StoreApi::getInventory()
@@ -75,8 +105,28 @@ pplx::task<std::map<utility::string_t, int32_t>> StoreApi::getInventory()
     
     
     
-    
-    
+
+    std::shared_ptr<IHttpBody> httpBody;
+    utility::string_t httpContentType;
+   
+    // use JSON if possible
+    if ( consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
+    {
+        httpContentType = U("application/json");
+
+        
+    }
+    // multipart formdata 
+    else if( consumeHttpContentTypes.find(U("multipart/form-data")) != consumeHttpContentTypes.end() )
+    {
+        httpContentType = U("multipart/form-data");
+        
+        
+    }
+    else
+    {
+        throw ApiException(415, U("StoreApi->getInventory does not consume any supported media type"));
+    }    
     
     
     // authentication (api_key) required
@@ -96,7 +146,17 @@ pplx::task<std::map<utility::string_t, int32_t>> StoreApi::getInventory()
     
     
     
-    return pplx::task<std::map<utility::string_t, int32_t>> ();
+    return ApiBase::callApi(path, U("GET"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    .then([=](web::http::http_response response)
+    {
+        printf("Received response status code:%u\n", response.status_code());
+        return response.extract_string();
+    })
+    .then([=](utility::string_t result)
+    {
+        std::wcout << result << std::endl;
+        return std::map<utility::string_t, int32_t>();
+    });            
 }
 
 pplx::task<std::shared_ptr<Order>> StoreApi::getOrderById(int64_t orderId)
@@ -124,12 +184,42 @@ pplx::task<std::shared_ptr<Order>> StoreApi::getOrderById(int64_t orderId)
         
     }
     
+
+    std::shared_ptr<IHttpBody> httpBody;
+    utility::string_t httpContentType;
+   
+    // use JSON if possible
+    if ( consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
+    {
+        httpContentType = U("application/json");
+
+        
+    }
+    // multipart formdata 
+    else if( consumeHttpContentTypes.find(U("multipart/form-data")) != consumeHttpContentTypes.end() )
+    {
+        httpContentType = U("multipart/form-data");
+        
+        
+    }
+    else
+    {
+        throw ApiException(415, U("StoreApi->getOrderById does not consume any supported media type"));
+    }    
     
     
     
-    
-    
-    return pplx::task<std::shared_ptr<Order>> ();
+    return ApiBase::callApi(path, U("GET"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    .then([=](web::http::http_response response)
+    {
+        printf("Received response status code:%u\n", response.status_code());
+        return response.extract_string();
+    })
+    .then([=](utility::string_t result)
+    {
+        std::wcout << result << std::endl;
+        return std::shared_ptr<Order>();
+    });            
 }
 
 pplx::task<std::shared_ptr<Order>> StoreApi::placeOrder(std::shared_ptr<Order> body)
@@ -158,14 +248,16 @@ pplx::task<std::shared_ptr<Order>> StoreApi::placeOrder(std::shared_ptr<Order> b
     
     
     
-    
-    
-    
+
     std::shared_ptr<IHttpBody> httpBody;
-    
+    utility::string_t httpContentType;
+   
     // use JSON if possible
     if ( consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
     {
+        httpContentType = U("application/json");
+
+        
         web::json::value json;
  
         
@@ -173,10 +265,15 @@ pplx::task<std::shared_ptr<Order>> StoreApi::placeOrder(std::shared_ptr<Order> b
         
         
         httpBody = std::shared_ptr<IHttpBody>( new JsonBody( json ) );
+        
+        
     }
     // multipart formdata 
     else if( consumeHttpContentTypes.find(U("multipart/form-data")) != consumeHttpContentTypes.end() )
     {
+        httpContentType = U("multipart/form-data");
+        
+        
         std::shared_ptr<MultipartFormData> multipart(new MultipartFormData);
         
         if(body.get())
@@ -186,6 +283,7 @@ pplx::task<std::shared_ptr<Order>> StoreApi::placeOrder(std::shared_ptr<Order> b
         
 
         httpBody = multipart;
+        
     }
     else
     {
@@ -194,11 +292,18 @@ pplx::task<std::shared_ptr<Order>> StoreApi::placeOrder(std::shared_ptr<Order> b
     
     
     
-    
-    return pplx::task<std::shared_ptr<Order>> ();
+    return ApiBase::callApi(path, U("POST"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    .then([=](web::http::http_response response)
+    {
+        printf("Received response status code:%u\n", response.status_code());
+        return response.extract_string();
+    })
+    .then([=](utility::string_t result)
+    {
+        std::wcout << result << std::endl;
+        return std::shared_ptr<Order>();
+    });            
 }
-
-
 
 }
 
