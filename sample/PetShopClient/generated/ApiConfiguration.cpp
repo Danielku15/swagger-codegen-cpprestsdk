@@ -16,6 +16,16 @@ ApiConfiguration::~ApiConfiguration()
 {
 }
 
+web::http::client::http_client_config& ApiConfiguration::getHttpConfig()
+{
+    return m_HttpConfig;
+}
+
+void ApiConfiguration::setHttpConfig( web::http::client::http_client_config& value )
+{
+    m_HttpConfig = value;
+}
+
 utility::string_t ApiConfiguration::getBaseUrl() const
 {
     return m_BaseUrl;
@@ -39,31 +49,6 @@ void ApiConfiguration::setUserAgent( const utility::string_t value )
 std::map<utility::string_t, utility::string_t>& ApiConfiguration::getDefaultHeaders()
 {
     return m_DefaultHeaders;
-}
-
-bool ApiConfiguration::hasBasicAuthentication() const
-{
-    return m_Username.size() > 0 && m_Password.size() > 0;
-}
-
-utility::string_t ApiConfiguration::getUsername() const
-{
-    return m_UserAgent;
-}
-
-utility::string_t ApiConfiguration::getPassword() const
-{
-    return m_Password;
-}
-
-bool ApiConfiguration::hasAccessToken() const
-{
-    return m_AccessToken.size() > 0;
-}
-
-utility::string_t ApiConfiguration::getAccessToken() const
-{
-    return m_AccessToken;
 }
 
 utility::string_t ApiConfiguration::getApiKey( const utility::string_t& prefix) const

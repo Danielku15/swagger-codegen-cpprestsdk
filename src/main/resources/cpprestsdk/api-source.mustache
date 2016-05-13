@@ -157,20 +157,10 @@ pplx::task<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}void{{/r
     {{/isKeyInQuery}}
     {{/isApiKey}}
     {{#isBasic}}
-    {
-        if ( apiConfiguration->hasBasicAuthentication() )
-        {
-            headerParams[U("Authorization")] = U("Basic ") + ModelBase::toBase64(apiConfiguration->getUsername() + ":" + apiConfiguration->getPassword());
-        }
-    }
+    // Basic authentication is added automatically as part of the http_client_config
     {{/isBasic}}
     {{#isOAuth}}
-    {
-        if ( apiConfiguration->hasAccessToken() )
-        {
-            headerParams[U("Authorization")] = U("Bearer ") + apiConfiguration->getAccessToken();
-        }
-    }    
+    // oauth2 authentication is added automatically as part of the http_client_config
     {{/isOAuth}}
     {{/authMethods}}
     

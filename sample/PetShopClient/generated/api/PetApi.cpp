@@ -103,12 +103,7 @@ pplx::task<void> PetApi::addPet(std::shared_ptr<Pet> body)
     
     
     
-    {
-        if ( apiConfiguration->hasAccessToken() )
-        {
-            headerParams[U("Authorization")] = U("Bearer ") + apiConfiguration->getAccessToken();
-        }
-    }    
+    // oauth2 authentication is added automatically as part of the http_client_config
     
     
     
@@ -184,12 +179,7 @@ pplx::task<void> PetApi::deletePet(int64_t petId, utility::string_t apiKey)
     
     
     
-    {
-        if ( apiConfiguration->hasAccessToken() )
-        {
-            headerParams[U("Authorization")] = U("Bearer ") + apiConfiguration->getAccessToken();
-        }
-    }    
+    // oauth2 authentication is added automatically as part of the http_client_config
     
     
     
@@ -260,12 +250,7 @@ pplx::task<std::vector<std::shared_ptr<Pet>>> PetApi::findPetsByStatus(std::vect
     
     
     
-    {
-        if ( apiConfiguration->hasAccessToken() )
-        {
-            headerParams[U("Authorization")] = U("Bearer ") + apiConfiguration->getAccessToken();
-        }
-    }    
+    // oauth2 authentication is added automatically as part of the http_client_config
     
     
     
@@ -336,12 +321,7 @@ pplx::task<std::vector<std::shared_ptr<Pet>>> PetApi::findPetsByTags(std::vector
     
     
     
-    {
-        if ( apiConfiguration->hasAccessToken() )
-        {
-            headerParams[U("Authorization")] = U("Bearer ") + apiConfiguration->getAccessToken();
-        }
-    }    
+    // oauth2 authentication is added automatically as part of the http_client_config
     
     
     
@@ -513,12 +493,7 @@ pplx::task<void> PetApi::updatePet(std::shared_ptr<Pet> body)
     
     
     
-    {
-        if ( apiConfiguration->hasAccessToken() )
-        {
-            headerParams[U("Authorization")] = U("Bearer ") + apiConfiguration->getAccessToken();
-        }
-    }    
+    // oauth2 authentication is added automatically as part of the http_client_config
     
     
     
@@ -600,12 +575,7 @@ pplx::task<void> PetApi::updatePetWithForm(int64_t petId, utility::string_t name
     
     
     
-    {
-        if ( apiConfiguration->hasAccessToken() )
-        {
-            headerParams[U("Authorization")] = U("Bearer ") + apiConfiguration->getAccessToken();
-        }
-    }    
+    // oauth2 authentication is added automatically as part of the http_client_config
     
     
     
@@ -686,12 +656,7 @@ pplx::task<std::shared_ptr<ApiResponse>> PetApi::uploadFile(int64_t petId, utili
     
     
     
-    {
-        if ( apiConfiguration->hasAccessToken() )
-        {
-            headerParams[U("Authorization")] = U("Bearer ") + apiConfiguration->getAccessToken();
-        }
-    }    
+    // oauth2 authentication is added automatically as part of the http_client_config
     
     
     
