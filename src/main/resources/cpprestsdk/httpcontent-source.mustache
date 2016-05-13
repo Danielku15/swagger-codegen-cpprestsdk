@@ -12,52 +12,52 @@ HttpContent::~HttpContent()
 {
 }
 
-std::string HttpContent::getContentDisposition()
+utility::string_t HttpContent::getContentDisposition()
 {
     return m_ContentDisposition;
 }
 
-void HttpContent::setContentDisposition( const std::string & value )
+void HttpContent::setContentDisposition( const utility::string_t & value )
 {
     m_ContentDisposition = value;
 }
 
-std::string HttpContent::getName()
+utility::string_t HttpContent::getName()
 {
     return m_Name;
 }
 
-void HttpContent::setName( const std::string & value )
+void HttpContent::setName( const utility::string_t & value )
 {
     m_Name = value;
 }
 
-std::string HttpContent::getFileName()
+utility::string_t HttpContent::getFileName()
 {
     return m_FileName;
 }
 
-void HttpContent::setFileName( const std::string & value )
+void HttpContent::setFileName( const utility::string_t & value )
 {
     m_FileName = value;
 }
 
-std::string HttpContent::getContentType()
+utility::string_t HttpContent::getContentType()
 {
     return m_ContentType;
 }
 
-void HttpContent::setContentType( const std::string & value )
+void HttpContent::setContentType( const utility::string_t & value )
 {
     m_ContentType = value;
 }
 
-std::shared_ptr<std::iostream> HttpContent::getData()
+std::shared_ptr<std::istream> HttpContent::getData()
 {
     return m_Data;
 }
 
-void HttpContent::setData( std::shared_ptr<std::iostream> value )
+void HttpContent::setData( std::shared_ptr<std::istream> value )
 {
     m_Data = value;
 }

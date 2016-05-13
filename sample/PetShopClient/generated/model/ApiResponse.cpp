@@ -34,12 +34,10 @@ web::json::value ApiResponse::toJson() const
     if(m_TypeIsSet)
     {
         val[U("type")] = ModelBase::toJson(m_Type);
-                
     }
     if(m_MessageIsSet)
     {
         val[U("message")] = ModelBase::toJson(m_Message);
-                
     }
     
 
@@ -65,39 +63,39 @@ void ApiResponse::fromJson(web::json::value& val)
     
 }
 
-void ApiResponse::toMultipart(std::shared_ptr<MultipartFormData> multipart, const std::string& namePrefix) const
+void ApiResponse::toMultipart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& namePrefix) const
 {
 	if(m_CodeIsSet)
     {
-        multipart->add(ModelBase::toHttpContent(namePrefix + "code", m_Code));
+        multipart->add(ModelBase::toHttpContent(namePrefix + U("code"), m_Code));
     }
     if(m_TypeIsSet)
     {
-        multipart->add(ModelBase::toHttpContent(namePrefix + "type", m_Type));
+        multipart->add(ModelBase::toHttpContent(namePrefix + U("type"), m_Type));
                 
     }
     if(m_MessageIsSet)
     {
-        multipart->add(ModelBase::toHttpContent(namePrefix + "message", m_Message));
+        multipart->add(ModelBase::toHttpContent(namePrefix + U("message"), m_Message));
                 
     }
     
 }
 
-void ApiResponse::fromMultiPart(std::shared_ptr<MultipartFormData> multipart, const std::string& namePrefix)
+void ApiResponse::fromMultiPart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& namePrefix)
 {
-    if(multipart->hasContent("code"))
+    if(multipart->hasContent(U("code")))
     {
-        setCode(ModelBase::int32_tFromHttpContent(multipart->getContent("code")));
+        setCode(ModelBase::int32_tFromHttpContent(multipart->getContent(U("code"))));
     }
-    if(multipart->hasContent("type"))
+    if(multipart->hasContent(U("type")))
     {
-        setType(ModelBase::stringFromHttpContent(multipart->getContent("type")));
+        setType(ModelBase::stringFromHttpContent(multipart->getContent(U("type"))));
                 
     }
-    if(multipart->hasContent("message"))
+    if(multipart->hasContent(U("message")))
     {
-        setMessage(ModelBase::stringFromHttpContent(multipart->getContent("message")));
+        setMessage(ModelBase::stringFromHttpContent(multipart->getContent(U("message"))));
                 
     }
     

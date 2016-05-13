@@ -8,7 +8,7 @@
 #define UserApi_H_
 
 #include "Commons.h"
-#include "ApiBase.h"
+#include "ApiClient.h"
 
 #include "User.h"
 #include <vector>
@@ -26,10 +26,9 @@ namespace api {
 using namespace swagger::petshop::model;
 
 class PETSHOP_DECLSPEC UserApi
-	: public ApiBase
 {
 public:
-    UserApi( std::shared_ptr<ApiConfiguration> configuration );
+    UserApi( std::shared_ptr<ApiClient> apiClient );
     virtual ~UserApi();
     
     /// <summary>
@@ -104,6 +103,9 @@ public:
     /// <param name="username">name that need to be updated</param>/// <param name="body">Updated user object</param>
     pplx::task<void> updateUser(utility::string_t username, std::shared_ptr<User> body);
     
+    
+protected:
+    std::shared_ptr<ApiClient> m_ApiClient;    
 };
     
 

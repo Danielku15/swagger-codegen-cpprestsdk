@@ -34,7 +34,6 @@ web::json::value Tag::toJson() const
     if(m_NameIsSet)
     {
         val[U("name")] = ModelBase::toJson(m_Name);
-                
     }
     
 
@@ -55,29 +54,29 @@ void Tag::fromJson(web::json::value& val)
     
 }
 
-void Tag::toMultipart(std::shared_ptr<MultipartFormData> multipart, const std::string& namePrefix) const
+void Tag::toMultipart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& namePrefix) const
 {
 	if(m_IdIsSet)
     {
-        multipart->add(ModelBase::toHttpContent(namePrefix + "id", m_Id));
+        multipart->add(ModelBase::toHttpContent(namePrefix + U("id"), m_Id));
     }
     if(m_NameIsSet)
     {
-        multipart->add(ModelBase::toHttpContent(namePrefix + "name", m_Name));
+        multipart->add(ModelBase::toHttpContent(namePrefix + U("name"), m_Name));
                 
     }
     
 }
 
-void Tag::fromMultiPart(std::shared_ptr<MultipartFormData> multipart, const std::string& namePrefix)
+void Tag::fromMultiPart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& namePrefix)
 {
-    if(multipart->hasContent("id"))
+    if(multipart->hasContent(U("id")))
     {
-        setId(ModelBase::int64_tFromHttpContent(multipart->getContent("id")));
+        setId(ModelBase::int64_tFromHttpContent(multipart->getContent(U("id"))));
     }
-    if(multipart->hasContent("name"))
+    if(multipart->hasContent(U("name")))
     {
-        setName(ModelBase::stringFromHttpContent(multipart->getContent("name")));
+        setName(ModelBase::stringFromHttpContent(multipart->getContent(U("name"))));
                 
     }
     

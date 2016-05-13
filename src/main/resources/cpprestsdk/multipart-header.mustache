@@ -30,15 +30,15 @@ public:
     virtual ~MultipartFormData();
 
     virtual void add( std::shared_ptr<HttpContent> content );
-    virtual std::string getBoundary();
-    virtual std::shared_ptr<HttpContent> getContent(const std::string& name) const;
-    virtual bool hasContent(const std::string& name) const;
+    virtual utility::string_t getBoundary();
+    virtual std::shared_ptr<HttpContent> getContent(const utility::string_t& name) const;
+    virtual bool hasContent(const utility::string_t& name) const;
     virtual void writeTo( std::ostream& target );
     
 protected:
     std::vector<std::shared_ptr<HttpContent>> m_Contents;
-    std::string m_Boundary;
-    std::map<std::string, std::shared_ptr<HttpContent>> m_ContentLookup;
+    utility::string_t m_Boundary;
+    std::map<utility::string_t, std::shared_ptr<HttpContent>> m_ContentLookup;
 };
 
 {{#modelNamespaceDeclarations}}

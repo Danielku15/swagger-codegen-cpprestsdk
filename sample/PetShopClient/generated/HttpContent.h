@@ -27,30 +27,30 @@ public:
     HttpContent();
     virtual ~HttpContent();
 
-    virtual std::string getContentDisposition();
-    virtual void setContentDisposition( const std::string& value );
+    virtual utility::string_t getContentDisposition();
+    virtual void setContentDisposition( const utility::string_t& value );
 
-    virtual std::string getName();
-    virtual void setName( const std::string& value );
+    virtual utility::string_t getName();
+    virtual void setName( const utility::string_t& value );
 
-    virtual std::string getFileName();
-    virtual void setFileName( const std::string& value );
+    virtual utility::string_t getFileName();
+    virtual void setFileName( const utility::string_t& value );
 
-    virtual std::string getContentType();
-    virtual void setContentType( const std::string& value );
+    virtual utility::string_t getContentType();
+    virtual void setContentType( const utility::string_t& value );
 
-    virtual std::shared_ptr<std::iostream> getData();
-    virtual void setData( std::shared_ptr<std::iostream> value );
+    virtual std::shared_ptr<std::istream> getData();
+    virtual void setData( std::shared_ptr<std::istream> value );
     
     virtual void writeTo( std::ostream& stream );
        
 protected:
 	// NOTE: no utility::string_t here because those strings can only contain ascii
-    std::string m_ContentDisposition;
-    std::string m_Name;
-    std::string m_FileName;
-    std::string m_ContentType;
-    std::shared_ptr<std::iostream> m_Data;
+    utility::string_t m_ContentDisposition;
+    utility::string_t m_Name;
+    utility::string_t m_FileName;
+    utility::string_t m_ContentType;
+    std::shared_ptr<std::istream> m_Data;
 };
 
 

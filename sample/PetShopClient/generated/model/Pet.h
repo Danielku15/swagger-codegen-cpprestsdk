@@ -42,8 +42,8 @@ public:
     virtual web::json::value toJson() const override;
     virtual void fromJson(web::json::value& json) override;
 
-    virtual void toMultipart(std::shared_ptr<MultipartFormData> multipart, const std::string& namePrefix) const override;
-    virtual void fromMultiPart(std::shared_ptr<MultipartFormData> multipart, const std::string& namePrefix) override;
+    virtual void toMultipart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& namePrefix) const override;
+    virtual void fromMultiPart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& namePrefix) override;
     
  	/////////////////////////////////////////////
 	/// Pet members

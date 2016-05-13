@@ -147,7 +147,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Commons.h" />
-    <ClInclude Include="generated\ApiBase.h" />
+    <ClInclude Include="generated\ApiClient.h" />
     <ClInclude Include="generated\ApiConfiguration.h" />
     <ClInclude Include="generated\ApiException.h" />
     <ClInclude Include="generated\api\PetApi.h" />
@@ -180,7 +180,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="generated\ApiBase.cpp" />
+    <ClCompile Include="generated\ApiClient.cpp" />
     <ClCompile Include="generated\ApiConfiguration.cpp" />
     <ClCompile Include="generated\ApiException.cpp" />
     <ClCompile Include="generated\api\PetApi.cpp" />

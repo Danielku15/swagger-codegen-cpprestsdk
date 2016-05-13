@@ -18,8 +18,8 @@ namespace api {
 
 using namespace swagger::petshop::model;
 
-UserApi::UserApi( std::shared_ptr<ApiConfiguration> configuration )
-    : ApiBase(configuration)
+UserApi::UserApi( std::shared_ptr<ApiClient> apiClient )
+    : m_ApiClient(apiClient)
 {
 }
 
@@ -38,10 +38,11 @@ pplx::task<void> UserApi::createUser(std::shared_ptr<User> body)
     }
     
     
+    std::shared_ptr<ApiConfiguration> apiConfiguration( m_ApiClient->getConfiguration() );
     utility::string_t path = U("/user");
     std::map<utility::string_t, utility::string_t> pathParams;
     std::map<utility::string_t, utility::string_t> queryParams;
-    std::map<utility::string_t, utility::string_t> headerParams( m_Configuration->getDefaultHeaders() );
+    std::map<utility::string_t, utility::string_t> headerParams( apiConfiguration->getDefaultHeaders() );
     std::map<utility::string_t, utility::string_t> formParams;
     std::map<utility::string_t, std::shared_ptr<HttpContent>> fileParams;
 
@@ -66,8 +67,7 @@ pplx::task<void> UserApi::createUser(std::shared_ptr<User> body)
         
         web::json::value json;
  
-        
-        json = body.get() ? body->toJson() : web::json::value::null();
+        json = ModelBase::toJson(body);
         
         
         httpBody = std::shared_ptr<IHttpBody>( new JsonBody( json ) );
@@ -84,7 +84,7 @@ pplx::task<void> UserApi::createUser(std::shared_ptr<User> body)
         
         if(body.get())
         {
-            body->toMultipart(multipart, "body");
+            body->toMultipart(multipart, U("body"));
         }
         
 
@@ -98,7 +98,7 @@ pplx::task<void> UserApi::createUser(std::shared_ptr<User> body)
     
     
     
-    return ApiBase::callApi(path, U("POST"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    return m_ApiClient->callApi(path, U("POST"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
     .then([=](web::http::http_response response)
     {
         printf("Received response status code:%u\n", response.status_code());
@@ -115,10 +115,11 @@ pplx::task<void> UserApi::createUsersWithArrayInput(std::vector<std::shared_ptr<
 {
     
     
+    std::shared_ptr<ApiConfiguration> apiConfiguration( m_ApiClient->getConfiguration() );
     utility::string_t path = U("/user/createWithArray");
     std::map<utility::string_t, utility::string_t> pathParams;
     std::map<utility::string_t, utility::string_t> queryParams;
-    std::map<utility::string_t, utility::string_t> headerParams( m_Configuration->getDefaultHeaders() );
+    std::map<utility::string_t, utility::string_t> headerParams( apiConfiguration->getDefaultHeaders() );
     std::map<utility::string_t, utility::string_t> formParams;
     std::map<utility::string_t, std::shared_ptr<HttpContent>> fileParams;
 
@@ -174,7 +175,7 @@ pplx::task<void> UserApi::createUsersWithArrayInput(std::vector<std::shared_ptr<
                 jsonArray.push_back( item.get() ? item->toJson() : web::json::value::null() );
                 
             }
-            multipart->add(ModelBase::toHttpContent("body", web::json::value::array(jsonArray), "application/json"));
+            multipart->add(ModelBase::toHttpContent(U("body"), web::json::value::array(jsonArray), U("application/json")));
         }
         
 
@@ -188,7 +189,7 @@ pplx::task<void> UserApi::createUsersWithArrayInput(std::vector<std::shared_ptr<
     
     
     
-    return ApiBase::callApi(path, U("POST"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    return m_ApiClient->callApi(path, U("POST"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
     .then([=](web::http::http_response response)
     {
         printf("Received response status code:%u\n", response.status_code());
@@ -205,10 +206,11 @@ pplx::task<void> UserApi::createUsersWithListInput(std::vector<std::shared_ptr<U
 {
     
     
+    std::shared_ptr<ApiConfiguration> apiConfiguration( m_ApiClient->getConfiguration() );
     utility::string_t path = U("/user/createWithList");
     std::map<utility::string_t, utility::string_t> pathParams;
     std::map<utility::string_t, utility::string_t> queryParams;
-    std::map<utility::string_t, utility::string_t> headerParams( m_Configuration->getDefaultHeaders() );
+    std::map<utility::string_t, utility::string_t> headerParams( apiConfiguration->getDefaultHeaders() );
     std::map<utility::string_t, utility::string_t> formParams;
     std::map<utility::string_t, std::shared_ptr<HttpContent>> fileParams;
 
@@ -264,7 +266,7 @@ pplx::task<void> UserApi::createUsersWithListInput(std::vector<std::shared_ptr<U
                 jsonArray.push_back( item.get() ? item->toJson() : web::json::value::null() );
                 
             }
-            multipart->add(ModelBase::toHttpContent("body", web::json::value::array(jsonArray), "application/json"));
+            multipart->add(ModelBase::toHttpContent(U("body"), web::json::value::array(jsonArray), U("application/json")));
         }
         
 
@@ -278,7 +280,7 @@ pplx::task<void> UserApi::createUsersWithListInput(std::vector<std::shared_ptr<U
     
     
     
-    return ApiBase::callApi(path, U("POST"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    return m_ApiClient->callApi(path, U("POST"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
     .then([=](web::http::http_response response)
     {
         printf("Received response status code:%u\n", response.status_code());
@@ -295,10 +297,11 @@ pplx::task<void> UserApi::deleteUser(utility::string_t username)
 {
     
     
+    std::shared_ptr<ApiConfiguration> apiConfiguration( m_ApiClient->getConfiguration() );
     utility::string_t path = U("/user/{username}");
     std::map<utility::string_t, utility::string_t> pathParams;
     std::map<utility::string_t, utility::string_t> queryParams;
-    std::map<utility::string_t, utility::string_t> headerParams( m_Configuration->getDefaultHeaders() );
+    std::map<utility::string_t, utility::string_t> headerParams( apiConfiguration->getDefaultHeaders() );
     std::map<utility::string_t, utility::string_t> formParams;
     std::map<utility::string_t, std::shared_ptr<HttpContent>> fileParams;
 
@@ -312,7 +315,7 @@ pplx::task<void> UserApi::deleteUser(utility::string_t username)
     
     
     {
-        pathParams[U("username")] = ApiBase::parameterToString(username);
+        pathParams[U("username")] = ApiClient::parameterToString(username);
         
     }
     
@@ -341,7 +344,7 @@ pplx::task<void> UserApi::deleteUser(utility::string_t username)
     
     
     
-    return ApiBase::callApi(path, U("DELETE"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    return m_ApiClient->callApi(path, U("DELETE"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
     .then([=](web::http::http_response response)
     {
         printf("Received response status code:%u\n", response.status_code());
@@ -358,10 +361,11 @@ pplx::task<std::shared_ptr<User>> UserApi::getUserByName(utility::string_t usern
 {
     
     
+    std::shared_ptr<ApiConfiguration> apiConfiguration( m_ApiClient->getConfiguration() );
     utility::string_t path = U("/user/{username}");
     std::map<utility::string_t, utility::string_t> pathParams;
     std::map<utility::string_t, utility::string_t> queryParams;
-    std::map<utility::string_t, utility::string_t> headerParams( m_Configuration->getDefaultHeaders() );
+    std::map<utility::string_t, utility::string_t> headerParams( apiConfiguration->getDefaultHeaders() );
     std::map<utility::string_t, utility::string_t> formParams;
     std::map<utility::string_t, std::shared_ptr<HttpContent>> fileParams;
 
@@ -375,7 +379,7 @@ pplx::task<std::shared_ptr<User>> UserApi::getUserByName(utility::string_t usern
     
     
     {
-        pathParams[U("username")] = ApiBase::parameterToString(username);
+        pathParams[U("username")] = ApiClient::parameterToString(username);
         
     }
     
@@ -404,7 +408,7 @@ pplx::task<std::shared_ptr<User>> UserApi::getUserByName(utility::string_t usern
     
     
     
-    return ApiBase::callApi(path, U("GET"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    return m_ApiClient->callApi(path, U("GET"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
     .then([=](web::http::http_response response)
     {
         printf("Received response status code:%u\n", response.status_code());
@@ -421,10 +425,11 @@ pplx::task<utility::string_t> UserApi::loginUser(utility::string_t username, uti
 {
     
     
+    std::shared_ptr<ApiConfiguration> apiConfiguration( m_ApiClient->getConfiguration() );
     utility::string_t path = U("/user/login");
     std::map<utility::string_t, utility::string_t> pathParams;
     std::map<utility::string_t, utility::string_t> queryParams;
-    std::map<utility::string_t, utility::string_t> headerParams( m_Configuration->getDefaultHeaders() );
+    std::map<utility::string_t, utility::string_t> headerParams( apiConfiguration->getDefaultHeaders() );
     std::map<utility::string_t, utility::string_t> formParams;
     std::map<utility::string_t, std::shared_ptr<HttpContent>> fileParams;
 
@@ -438,12 +443,12 @@ pplx::task<utility::string_t> UserApi::loginUser(utility::string_t username, uti
     
     
     {
-        queryParams[U("username")] = ApiBase::parameterToString(username);
+        queryParams[U("username")] = ApiClient::parameterToString(username);
         
     }
     
     {
-        queryParams[U("password")] = ApiBase::parameterToString(password);
+        queryParams[U("password")] = ApiClient::parameterToString(password);
         
     }
     
@@ -472,7 +477,7 @@ pplx::task<utility::string_t> UserApi::loginUser(utility::string_t username, uti
     
     
     
-    return ApiBase::callApi(path, U("GET"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    return m_ApiClient->callApi(path, U("GET"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
     .then([=](web::http::http_response response)
     {
         printf("Received response status code:%u\n", response.status_code());
@@ -489,10 +494,11 @@ pplx::task<void> UserApi::logoutUser()
 {
     
     
+    std::shared_ptr<ApiConfiguration> apiConfiguration( m_ApiClient->getConfiguration() );
     utility::string_t path = U("/user/logout");
     std::map<utility::string_t, utility::string_t> pathParams;
     std::map<utility::string_t, utility::string_t> queryParams;
-    std::map<utility::string_t, utility::string_t> headerParams( m_Configuration->getDefaultHeaders() );
+    std::map<utility::string_t, utility::string_t> headerParams( apiConfiguration->getDefaultHeaders() );
     std::map<utility::string_t, utility::string_t> formParams;
     std::map<utility::string_t, std::shared_ptr<HttpContent>> fileParams;
 
@@ -530,7 +536,7 @@ pplx::task<void> UserApi::logoutUser()
     
     
     
-    return ApiBase::callApi(path, U("GET"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    return m_ApiClient->callApi(path, U("GET"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
     .then([=](web::http::http_response response)
     {
         printf("Received response status code:%u\n", response.status_code());
@@ -553,10 +559,11 @@ pplx::task<void> UserApi::updateUser(utility::string_t username, std::shared_ptr
     }
     
     
+    std::shared_ptr<ApiConfiguration> apiConfiguration( m_ApiClient->getConfiguration() );
     utility::string_t path = U("/user/{username}");
     std::map<utility::string_t, utility::string_t> pathParams;
     std::map<utility::string_t, utility::string_t> queryParams;
-    std::map<utility::string_t, utility::string_t> headerParams( m_Configuration->getDefaultHeaders() );
+    std::map<utility::string_t, utility::string_t> headerParams( apiConfiguration->getDefaultHeaders() );
     std::map<utility::string_t, utility::string_t> formParams;
     std::map<utility::string_t, std::shared_ptr<HttpContent>> fileParams;
 
@@ -570,7 +577,7 @@ pplx::task<void> UserApi::updateUser(utility::string_t username, std::shared_ptr
     
     
     {
-        pathParams[U("username")] = ApiBase::parameterToString(username);
+        pathParams[U("username")] = ApiClient::parameterToString(username);
         
     }
     
@@ -586,8 +593,7 @@ pplx::task<void> UserApi::updateUser(utility::string_t username, std::shared_ptr
         
         web::json::value json;
  
-        
-        json = body.get() ? body->toJson() : web::json::value::null();
+        json = ModelBase::toJson(body);
         
         
         httpBody = std::shared_ptr<IHttpBody>( new JsonBody( json ) );
@@ -604,7 +610,7 @@ pplx::task<void> UserApi::updateUser(utility::string_t username, std::shared_ptr
         
         if(body.get())
         {
-            body->toMultipart(multipart, "body");
+            body->toMultipart(multipart, U("body"));
         }
         
 
@@ -618,7 +624,7 @@ pplx::task<void> UserApi::updateUser(utility::string_t username, std::shared_ptr
     
     
     
-    return ApiBase::callApi(path, U("PUT"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    return m_ApiClient->callApi(path, U("PUT"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
     .then([=](web::http::http_response response)
     {
         printf("Received response status code:%u\n", response.status_code());

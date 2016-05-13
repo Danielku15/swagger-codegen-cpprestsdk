@@ -1,33 +1,47 @@
-#include "ApiBase.h"
+#include "ApiClient.h"
 
-{{#apiNamespaceDeclarations}}
-namespace {{this}} {
-{{/apiNamespaceDeclarations}}
 
-using namespace {{modelNamespace}};
+namespace swagger {
 
-ApiBase::ApiBase(std::shared_ptr<ApiConfiguration> configuration )
+namespace petshop {
+
+namespace api {
+
+
+using namespace swagger::petshop::model;
+
+ApiClient::ApiClient(std::shared_ptr<ApiConfiguration> configuration )
     : m_Configuration(configuration)
 {
 }
-ApiBase::~ApiBase()
+ApiClient::~ApiClient()
 {
 }
 
-utility::string_t ApiBase::parameterToString(utility::string_t value)
+std::shared_ptr<ApiConfiguration> ApiClient::getConfiguration()
+{
+    return m_Configuration;
+}
+void ApiClient::setConfiguration(std::shared_ptr<ApiConfiguration> configuration)
+{
+    m_Configuration = configuration;
+}
+
+
+utility::string_t ApiClient::parameterToString(utility::string_t value)
 {
     return value;
 }
-utility::string_t ApiBase::parameterToString(int64_t value)
+utility::string_t ApiClient::parameterToString(int64_t value)
 {
     return std::to_wstring(value);
 }
-utility::string_t ApiBase::parameterToString(int32_t value)
+utility::string_t ApiClient::parameterToString(int32_t value)
 {
     return std::to_wstring(value);
 }
 
-pplx::task<web::http::http_response> ApiBase::callApi( 
+pplx::task<web::http::http_response> ApiClient::callApi( 
     const utility::string_t& path, 
     const utility::string_t& method, 
     const std::map<utility::string_t, utility::string_t> queryParams, 
@@ -45,6 +59,9 @@ pplx::task<web::http::http_response> ApiBase::callApi(
     });
 }
 
-{{#apiNamespaceDeclarations}}
+
 }
-{{/apiNamespaceDeclarations}}
+
+}
+
+}

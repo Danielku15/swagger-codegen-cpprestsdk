@@ -8,7 +8,7 @@
 #define {{classname}}_H_
 
 {{{defaultInclude}}}
-#include "ApiBase.h"
+#include "ApiClient.h"
 
 {{#imports}}{{{import}}}
 {{/imports}}
@@ -20,10 +20,9 @@ namespace {{this}} {
 using namespace {{modelNamespace}};
 
 class {{declspec}} {{classname}}
-	: public ApiBase
 {
 public:
-    {{classname}}( std::shared_ptr<ApiConfiguration> configuration );
+    {{classname}}( std::shared_ptr<ApiClient> apiClient );
     virtual ~{{classname}}();
     {{#operation}}
     /// <summary>
@@ -35,6 +34,9 @@ public:
     {{#allParams}}/// <param name="{{paramName}}">{{description}}{{^required}} (optional{{#defaultValue}}, default to {{.}}{{/defaultValue}}){{/required}}</param>{{/allParams}}
     pplx::task<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}void{{/returnType}}> {{operationId}}({{#allParams}}{{{dataType}}} {{paramName}}{{^required}}{{/required}}{{#hasMore}}, {{/hasMore}}{{/allParams}});
     {{/operation}}
+    
+protected:
+    std::shared_ptr<ApiClient> m_ApiClient;    
 };
     
 {{#apiNamespaceDeclarations}}

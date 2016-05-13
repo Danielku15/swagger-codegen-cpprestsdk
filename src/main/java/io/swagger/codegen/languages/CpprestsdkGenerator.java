@@ -86,6 +86,8 @@ public class CpprestsdkGenerator extends DefaultCodegen implements CodegenConfig
 		supportingFiles.add(new SupportingFile("modelbase-source.mustache", "", "ModelBase.cpp"));
 		supportingFiles.add(new SupportingFile("apibase-header.mustache", "", "ApiBase.h"));
 		supportingFiles.add(new SupportingFile("apibase-source.mustache", "", "ApiBase.cpp"));
+		supportingFiles.add(new SupportingFile("apiclient-header.mustache", "", "ApiClient.h"));
+		supportingFiles.add(new SupportingFile("apiclient-source.mustache", "", "ApiClient.cpp"));
 		supportingFiles.add(new SupportingFile("apiconfiguration-header.mustache", "", "ApiConfiguration.h"));
 		supportingFiles.add(new SupportingFile("apiconfiguration-source.mustache", "", "ApiConfiguration.cpp"));
 		supportingFiles.add(new SupportingFile("apiexception-header.mustache", "", "ApiException.h"));
@@ -203,9 +205,22 @@ public class CpprestsdkGenerator extends DefaultCodegen implements CodegenConfig
 				codegenModel.imports.add(newImp);
 			}
 		}
-
+        
 		return codegenModel;
 	}
+    
+    @Override
+    public void postProcessModelProperty(CodegenModel model, CodegenProperty property){
+        if(isFileProperty(property))
+        {
+            property.vendorExtensions.put("x-codegen-file", true);
+        }
+    }
+    
+    protected boolean isFileProperty(CodegenProperty property)
+    {
+        return property.baseType.equals("HttpContent");
+    }
 
 	@Override
 	public String toModelFilename(String name) {

@@ -18,8 +18,8 @@ namespace api {
 
 using namespace swagger::petshop::model;
 
-StoreApi::StoreApi( std::shared_ptr<ApiConfiguration> configuration )
-    : ApiBase(configuration)
+StoreApi::StoreApi( std::shared_ptr<ApiClient> apiClient )
+    : m_ApiClient(apiClient)
 {
 }
 
@@ -32,10 +32,11 @@ pplx::task<void> StoreApi::deleteOrder(int64_t orderId)
 {
     
     
+    std::shared_ptr<ApiConfiguration> apiConfiguration( m_ApiClient->getConfiguration() );
     utility::string_t path = U("/store/order/{orderId}");
     std::map<utility::string_t, utility::string_t> pathParams;
     std::map<utility::string_t, utility::string_t> queryParams;
-    std::map<utility::string_t, utility::string_t> headerParams( m_Configuration->getDefaultHeaders() );
+    std::map<utility::string_t, utility::string_t> headerParams( apiConfiguration->getDefaultHeaders() );
     std::map<utility::string_t, utility::string_t> formParams;
     std::map<utility::string_t, std::shared_ptr<HttpContent>> fileParams;
 
@@ -49,7 +50,7 @@ pplx::task<void> StoreApi::deleteOrder(int64_t orderId)
     
     
     {
-        pathParams[U("orderId")] = ApiBase::parameterToString(orderId);
+        pathParams[U("orderId")] = ApiClient::parameterToString(orderId);
         
     }
     
@@ -78,7 +79,7 @@ pplx::task<void> StoreApi::deleteOrder(int64_t orderId)
     
     
     
-    return ApiBase::callApi(path, U("DELETE"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    return m_ApiClient->callApi(path, U("DELETE"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
     .then([=](web::http::http_response response)
     {
         printf("Received response status code:%u\n", response.status_code());
@@ -95,10 +96,11 @@ pplx::task<std::map<utility::string_t, int32_t>> StoreApi::getInventory()
 {
     
     
+    std::shared_ptr<ApiConfiguration> apiConfiguration( m_ApiClient->getConfiguration() );
     utility::string_t path = U("/store/inventory");
     std::map<utility::string_t, utility::string_t> pathParams;
     std::map<utility::string_t, utility::string_t> queryParams;
-    std::map<utility::string_t, utility::string_t> headerParams( m_Configuration->getDefaultHeaders() );
+    std::map<utility::string_t, utility::string_t> headerParams( apiConfiguration->getDefaultHeaders() );
     std::map<utility::string_t, utility::string_t> formParams;
     std::map<utility::string_t, std::shared_ptr<HttpContent>> fileParams;
 
@@ -138,7 +140,7 @@ pplx::task<std::map<utility::string_t, int32_t>> StoreApi::getInventory()
     
     
     {
-        utility::string_t apiKey = m_Configuration->getApiKey(U("api_key"));
+        utility::string_t apiKey = apiConfiguration->getApiKey(U("api_key"));
         if ( apiKey.size() > 0 )
         {
             headerParams[U("api_key")] = apiKey;
@@ -151,7 +153,7 @@ pplx::task<std::map<utility::string_t, int32_t>> StoreApi::getInventory()
     
     
     
-    return ApiBase::callApi(path, U("GET"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    return m_ApiClient->callApi(path, U("GET"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
     .then([=](web::http::http_response response)
     {
         printf("Received response status code:%u\n", response.status_code());
@@ -168,10 +170,11 @@ pplx::task<std::shared_ptr<Order>> StoreApi::getOrderById(int64_t orderId)
 {
     
     
+    std::shared_ptr<ApiConfiguration> apiConfiguration( m_ApiClient->getConfiguration() );
     utility::string_t path = U("/store/order/{orderId}");
     std::map<utility::string_t, utility::string_t> pathParams;
     std::map<utility::string_t, utility::string_t> queryParams;
-    std::map<utility::string_t, utility::string_t> headerParams( m_Configuration->getDefaultHeaders() );
+    std::map<utility::string_t, utility::string_t> headerParams( apiConfiguration->getDefaultHeaders() );
     std::map<utility::string_t, utility::string_t> formParams;
     std::map<utility::string_t, std::shared_ptr<HttpContent>> fileParams;
 
@@ -185,7 +188,7 @@ pplx::task<std::shared_ptr<Order>> StoreApi::getOrderById(int64_t orderId)
     
     
     {
-        pathParams[U("orderId")] = ApiBase::parameterToString(orderId);
+        pathParams[U("orderId")] = ApiClient::parameterToString(orderId);
         
     }
     
@@ -214,7 +217,7 @@ pplx::task<std::shared_ptr<Order>> StoreApi::getOrderById(int64_t orderId)
     
     
     
-    return ApiBase::callApi(path, U("GET"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    return m_ApiClient->callApi(path, U("GET"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
     .then([=](web::http::http_response response)
     {
         printf("Received response status code:%u\n", response.status_code());
@@ -237,10 +240,11 @@ pplx::task<std::shared_ptr<Order>> StoreApi::placeOrder(std::shared_ptr<Order> b
     }
     
     
+    std::shared_ptr<ApiConfiguration> apiConfiguration( m_ApiClient->getConfiguration() );
     utility::string_t path = U("/store/order");
     std::map<utility::string_t, utility::string_t> pathParams;
     std::map<utility::string_t, utility::string_t> queryParams;
-    std::map<utility::string_t, utility::string_t> headerParams( m_Configuration->getDefaultHeaders() );
+    std::map<utility::string_t, utility::string_t> headerParams( apiConfiguration->getDefaultHeaders() );
     std::map<utility::string_t, utility::string_t> formParams;
     std::map<utility::string_t, std::shared_ptr<HttpContent>> fileParams;
 
@@ -265,8 +269,7 @@ pplx::task<std::shared_ptr<Order>> StoreApi::placeOrder(std::shared_ptr<Order> b
         
         web::json::value json;
  
-        
-        json = body.get() ? body->toJson() : web::json::value::null();
+        json = ModelBase::toJson(body);
         
         
         httpBody = std::shared_ptr<IHttpBody>( new JsonBody( json ) );
@@ -283,7 +286,7 @@ pplx::task<std::shared_ptr<Order>> StoreApi::placeOrder(std::shared_ptr<Order> b
         
         if(body.get())
         {
-            body->toMultipart(multipart, "body");
+            body->toMultipart(multipart, U("body"));
         }
         
 
@@ -297,7 +300,7 @@ pplx::task<std::shared_ptr<Order>> StoreApi::placeOrder(std::shared_ptr<Order> b
     
     
     
-    return ApiBase::callApi(path, U("POST"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    return m_ApiClient->callApi(path, U("POST"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
     .then([=](web::http::http_response response)
     {
         printf("Received response status code:%u\n", response.status_code());

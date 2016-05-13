@@ -8,7 +8,7 @@
 #define StoreApi_H_
 
 #include "Commons.h"
-#include "ApiBase.h"
+#include "ApiClient.h"
 
 #include <map>
 #include "Order.h"
@@ -25,10 +25,9 @@ namespace api {
 using namespace swagger::petshop::model;
 
 class PETSHOP_DECLSPEC StoreApi
-	: public ApiBase
 {
 public:
-    StoreApi( std::shared_ptr<ApiConfiguration> configuration );
+    StoreApi( std::shared_ptr<ApiClient> apiClient );
     virtual ~StoreApi();
     
     /// <summary>
@@ -67,6 +66,9 @@ public:
     /// <param name="body">order placed for purchasing the pet</param>
     pplx::task<std::shared_ptr<Order>> placeOrder(std::shared_ptr<Order> body);
     
+    
+protected:
+    std::shared_ptr<ApiClient> m_ApiClient;    
 };
     
 

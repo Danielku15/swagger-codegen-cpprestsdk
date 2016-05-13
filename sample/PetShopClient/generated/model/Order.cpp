@@ -42,12 +42,10 @@ web::json::value Order::toJson() const
     if(m_ShipDateIsSet)
     {
         val[U("shipDate")] = ModelBase::toJson(m_ShipDate);
-                
     }
     if(m_StatusIsSet)
     {
         val[U("status")] = ModelBase::toJson(m_Status);
-                
     }
     if(m_CompleteIsSet)
     {
@@ -89,64 +87,64 @@ void Order::fromJson(web::json::value& val)
     
 }
 
-void Order::toMultipart(std::shared_ptr<MultipartFormData> multipart, const std::string& namePrefix) const
+void Order::toMultipart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& namePrefix) const
 {
 	if(m_IdIsSet)
     {
-        multipart->add(ModelBase::toHttpContent(namePrefix + "id", m_Id));
+        multipart->add(ModelBase::toHttpContent(namePrefix + U("id"), m_Id));
     }
     if(m_PetIdIsSet)
     {
-        multipart->add(ModelBase::toHttpContent(namePrefix + "petId", m_PetId));
+        multipart->add(ModelBase::toHttpContent(namePrefix + U("petId"), m_PetId));
     }
     if(m_QuantityIsSet)
     {
-        multipart->add(ModelBase::toHttpContent(namePrefix + "quantity", m_Quantity));
+        multipart->add(ModelBase::toHttpContent(namePrefix + U("quantity"), m_Quantity));
     }
     if(m_ShipDateIsSet)
     {
-        multipart->add(ModelBase::toHttpContent(namePrefix + "shipDate", m_ShipDate));
+        multipart->add(ModelBase::toHttpContent(namePrefix + U("shipDate"), m_ShipDate));
                 
     }
     if(m_StatusIsSet)
     {
-        multipart->add(ModelBase::toHttpContent(namePrefix + "status", m_Status));
+        multipart->add(ModelBase::toHttpContent(namePrefix + U("status"), m_Status));
                 
     }
     if(m_CompleteIsSet)
     {
-        multipart->add(ModelBase::toHttpContent(namePrefix + "complete", m_Complete));
+        multipart->add(ModelBase::toHttpContent(namePrefix + U("complete"), m_Complete));
     }
     
 }
 
-void Order::fromMultiPart(std::shared_ptr<MultipartFormData> multipart, const std::string& namePrefix)
+void Order::fromMultiPart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& namePrefix)
 {
-    if(multipart->hasContent("id"))
+    if(multipart->hasContent(U("id")))
     {
-        setId(ModelBase::int64_tFromHttpContent(multipart->getContent("id")));
+        setId(ModelBase::int64_tFromHttpContent(multipart->getContent(U("id"))));
     }
-    if(multipart->hasContent("petId"))
+    if(multipart->hasContent(U("petId")))
     {
-        setPetId(ModelBase::int64_tFromHttpContent(multipart->getContent("petId")));
+        setPetId(ModelBase::int64_tFromHttpContent(multipart->getContent(U("petId"))));
     }
-    if(multipart->hasContent("quantity"))
+    if(multipart->hasContent(U("quantity")))
     {
-        setQuantity(ModelBase::int32_tFromHttpContent(multipart->getContent("quantity")));
+        setQuantity(ModelBase::int32_tFromHttpContent(multipart->getContent(U("quantity"))));
     }
-    if(multipart->hasContent("shipDate"))
+    if(multipart->hasContent(U("shipDate")))
     {
-        setShipDate(ModelBase::dateFromHttpContent(multipart->getContent("shipDate")));
+        setShipDate(ModelBase::dateFromHttpContent(multipart->getContent(U("shipDate"))));
                 
     }
-    if(multipart->hasContent("status"))
+    if(multipart->hasContent(U("status")))
     {
-        setStatus(ModelBase::stringFromHttpContent(multipart->getContent("status")));
+        setStatus(ModelBase::stringFromHttpContent(multipart->getContent(U("status"))));
                 
     }
-    if(multipart->hasContent("complete"))
+    if(multipart->hasContent(U("complete")))
     {
-        setComplete(ModelBase::boolFromHttpContent(multipart->getContent("complete")));
+        setComplete(ModelBase::boolFromHttpContent(multipart->getContent(U("complete"))));
     }
     
 }

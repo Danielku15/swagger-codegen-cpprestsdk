@@ -14,8 +14,8 @@ namespace {{this}} {
 
 using namespace {{modelNamespace}};
 
-{{classname}}::{{classname}}( std::shared_ptr<ApiConfiguration> configuration )
-    : ApiBase(configuration)
+{{classname}}::{{classname}}( std::shared_ptr<ApiClient> apiClient )
+    : m_ApiClient(apiClient)
 {
 }
 
@@ -34,10 +34,11 @@ pplx::task<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}void{{/r
     }
     {{/isContainer}}{{/isPrimitiveType}}{{/required}}{{/allParams}}
     
+    std::shared_ptr<ApiConfiguration> apiConfiguration( m_ApiClient->getConfiguration() );
     utility::string_t path = U("{{path}}");
     std::map<utility::string_t, utility::string_t> pathParams;
     std::map<utility::string_t, utility::string_t> queryParams;
-    std::map<utility::string_t, utility::string_t> headerParams( m_Configuration->getDefaultHeaders() );
+    std::map<utility::string_t, utility::string_t> headerParams( apiConfiguration->getDefaultHeaders() );
     std::map<utility::string_t, utility::string_t> formParams;
     std::map<utility::string_t, std::shared_ptr<HttpContent>> fileParams;
 
@@ -51,15 +52,15 @@ pplx::task<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}void{{/r
     
     {{#allParams}}{{^isBodyParam}}{{^isPrimitiveType}}{{^isContainer}}if ({{paramName}} != nullptr){{/isContainer}}{{/isPrimitiveType}}
     {
-        {{#isContainer}}{{#isPathParam}}pathParams[U("{{baseName}}")] = ApiBase::parameterToArrayString<{{items.datatype}}>({{paramName}});
-        {{/isPathParam}}{{#isQueryParam}}queryParams[U("{{baseName}}")] = ApiBase::parameterToArrayString<{{items.datatype}}>({{paramName}});
-        {{/isQueryParam}}{{#isHeaderParam}}headerParams[U("{{baseName}}")] = ApiBase::parameterToArrayString<{{items.datatype}}>({{paramName}});
-        {{/isHeaderParam}}{{#isFormParam}}{{^isFile}}formParams[ U("{{baseName}}") ] = ApiBase::parameterToArrayString<{{items.datatype}}>({{paramName}});
-        {{/isFile}}{{/isFormParam}}{{/isContainer}}{{^isContainer}}{{#isPathParam}}pathParams[U("{{baseName}}")] = ApiBase::parameterToString({{paramName}});
-        {{/isPathParam}}{{#isQueryParam}}queryParams[U("{{baseName}}")] = ApiBase::parameterToString({{paramName}});
-        {{/isQueryParam}}{{#isHeaderParam}}headerParams[U("{{baseName}}")] = ApiBase::parameterToString({{paramName}});
+        {{#isContainer}}{{#isPathParam}}pathParams[U("{{baseName}}")] = ApiClient::parameterToArrayString<{{items.datatype}}>({{paramName}});
+        {{/isPathParam}}{{#isQueryParam}}queryParams[U("{{baseName}}")] = ApiClient::parameterToArrayString<{{items.datatype}}>({{paramName}});
+        {{/isQueryParam}}{{#isHeaderParam}}headerParams[U("{{baseName}}")] = ApiClient::parameterToArrayString<{{items.datatype}}>({{paramName}});
+        {{/isHeaderParam}}{{#isFormParam}}{{^isFile}}formParams[ U("{{baseName}}") ] = ApiClient::parameterToArrayString<{{items.datatype}}>({{paramName}});
+        {{/isFile}}{{/isFormParam}}{{/isContainer}}{{^isContainer}}{{#isPathParam}}pathParams[U("{{baseName}}")] = ApiClient::parameterToString({{paramName}});
+        {{/isPathParam}}{{#isQueryParam}}queryParams[U("{{baseName}}")] = ApiClient::parameterToString({{paramName}});
+        {{/isQueryParam}}{{#isHeaderParam}}headerParams[U("{{baseName}}")] = ApiClient::parameterToString({{paramName}});
         {{/isHeaderParam}}{{#isFormParam}}{{#isFile}}fileParams[ U("{{baseName}}") ] = {{paramName}};
-        {{/isFile}}{{^isFile}}formParams[ U("{{baseName}}") ] = ApiBase::parameterToString({{paramName}});
+        {{/isFile}}{{^isFile}}formParams[ U("{{baseName}}") ] = ApiClient::parameterToString({{paramName}});
         {{/isFile}}{{/isFormParam}}{{/isContainer}}
     }
     {{/isBodyParam}}{{/allParams}}
@@ -89,10 +90,8 @@ pplx::task<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}void{{/r
             }
             json = web::json::value::array(jsonArray);
         }
-        {{/isListContainer}}{{^isListContainer}}{{#isString}}json = ModelBase::toJson({{paramName}});
-        {{/isString}}{{^isString}}
-        json = {{paramName}}.get() ? {{paramName}}->toJson() : web::json::value::null();
-        {{/isString}}{{/isListContainer}}{{/isPrimitiveType}}
+        {{/isListContainer}}{{^isListContainer}}json = ModelBase::toJson({{paramName}});
+        {{/isListContainer}}{{/isPrimitiveType}}
         
         httpBody = std::shared_ptr<IHttpBody>( new JsonBody( json ) );
         
@@ -117,13 +116,13 @@ pplx::task<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}void{{/r
                 {{/items.isDateTime}}{{^items.isDateTime}}jsonArray.push_back( item.get() ? item->toJson() : web::json::value::null() );
                 {{/items.isDateTime}}{{/items.isString}}{{/items.isPrimitiveType}}
             }
-            multipart->add(ModelBase::toHttpContent("{{paramName}}", web::json::value::array(jsonArray), "application/json"));
+            multipart->add(ModelBase::toHttpContent(U("{{paramName}}"), web::json::value::array(jsonArray), U("application/json")));
         }
-        {{/isListContainer}}{{^isListContainer}}{{#isString}}multipart->add(ModelBase::toHttpContent("{{paramName}}", {{paramName}}));
+        {{/isListContainer}}{{^isListContainer}}{{#isString}}multipart->add(ModelBase::toHttpContent(U("{{paramName}}"), {{paramName}}));
         {{/isString}}{{^isString}}
         if({{paramName}}.get())
         {
-            {{paramName}}->toMultipart(multipart, "{{paramName}}");
+            {{paramName}}->toMultipart(multipart, U("{{paramName}}"));
         }
         {{/isString}}{{/isListContainer}}{{/isPrimitiveType}}
 
@@ -140,7 +139,7 @@ pplx::task<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}void{{/r
     {{#isApiKey}}
     {{#isKeyInHeader}}
     {
-        utility::string_t apiKey = m_Configuration->getApiKey(U("{{keyParamName}}"));
+        utility::string_t apiKey = apiConfiguration->getApiKey(U("{{keyParamName}}"));
         if ( apiKey.size() > 0 )
         {
             headerParams[U("{{keyParamName}}")] = apiKey;
@@ -149,7 +148,7 @@ pplx::task<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}void{{/r
     {{/isKeyInHeader}}
     {{#isKeyInQuery}}
     {
-        utility::string_t apiKey = m_Configuration->getApiKey(U("{{keyParamName}}"));
+        utility::string_t apiKey = apiConfiguration->getApiKey(U("{{keyParamName}}"));
         if ( apiKey.size() > 0 )
         {
             queryParams[U("{{keyParamName}}")] = apiKey;
@@ -159,23 +158,23 @@ pplx::task<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}void{{/r
     {{/isApiKey}}
     {{#isBasic}}
     {
-        if ( m_Configuration->hasBasicAuthentication() )
+        if ( apiConfiguration->hasBasicAuthentication() )
         {
-            headerParams[U("Authorization")] = U("Basic ") + ModelBase::toBase64(m_Configuration->getUsername() + ":" + m_Configuration->getPassword());
+            headerParams[U("Authorization")] = U("Basic ") + ModelBase::toBase64(apiConfiguration->getUsername() + ":" + apiConfiguration->getPassword());
         }
     }
     {{/isBasic}}
     {{#isOAuth}}
     {
-        if ( m_Configuration->hasAccessToken() )
+        if ( apiConfiguration->hasAccessToken() )
         {
-            headerParams[U("Authorization")] = U("Bearer ") + m_Configuration->getAccessToken();
+            headerParams[U("Authorization")] = U("Bearer ") + apiConfiguration->getAccessToken();
         }
     }    
     {{/isOAuth}}
     {{/authMethods}}
     
-    return ApiBase::callApi(path, U("{{httpMethod}}"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    return m_ApiClient->callApi(path, U("{{httpMethod}}"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
     .then([=](web::http::http_response response)
     {
         printf("Received response status code:%u\n", response.status_code());

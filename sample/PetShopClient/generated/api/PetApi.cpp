@@ -18,8 +18,8 @@ namespace api {
 
 using namespace swagger::petshop::model;
 
-PetApi::PetApi( std::shared_ptr<ApiConfiguration> configuration )
-    : ApiBase(configuration)
+PetApi::PetApi( std::shared_ptr<ApiClient> apiClient )
+    : m_ApiClient(apiClient)
 {
 }
 
@@ -38,10 +38,11 @@ pplx::task<void> PetApi::addPet(std::shared_ptr<Pet> body)
     }
     
     
+    std::shared_ptr<ApiConfiguration> apiConfiguration( m_ApiClient->getConfiguration() );
     utility::string_t path = U("/pet");
     std::map<utility::string_t, utility::string_t> pathParams;
     std::map<utility::string_t, utility::string_t> queryParams;
-    std::map<utility::string_t, utility::string_t> headerParams( m_Configuration->getDefaultHeaders() );
+    std::map<utility::string_t, utility::string_t> headerParams( apiConfiguration->getDefaultHeaders() );
     std::map<utility::string_t, utility::string_t> formParams;
     std::map<utility::string_t, std::shared_ptr<HttpContent>> fileParams;
 
@@ -68,8 +69,7 @@ pplx::task<void> PetApi::addPet(std::shared_ptr<Pet> body)
         
         web::json::value json;
  
-        
-        json = body.get() ? body->toJson() : web::json::value::null();
+        json = ModelBase::toJson(body);
         
         
         httpBody = std::shared_ptr<IHttpBody>( new JsonBody( json ) );
@@ -86,7 +86,7 @@ pplx::task<void> PetApi::addPet(std::shared_ptr<Pet> body)
         
         if(body.get())
         {
-            body->toMultipart(multipart, "body");
+            body->toMultipart(multipart, U("body"));
         }
         
 
@@ -104,15 +104,15 @@ pplx::task<void> PetApi::addPet(std::shared_ptr<Pet> body)
     
     
     {
-        if ( m_Configuration->hasAccessToken() )
+        if ( apiConfiguration->hasAccessToken() )
         {
-            headerParams[U("Authorization")] = U("Bearer ") + m_Configuration->getAccessToken();
+            headerParams[U("Authorization")] = U("Bearer ") + apiConfiguration->getAccessToken();
         }
     }    
     
     
     
-    return ApiBase::callApi(path, U("POST"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    return m_ApiClient->callApi(path, U("POST"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
     .then([=](web::http::http_response response)
     {
         printf("Received response status code:%u\n", response.status_code());
@@ -129,10 +129,11 @@ pplx::task<void> PetApi::deletePet(int64_t petId, utility::string_t apiKey)
 {
     
     
+    std::shared_ptr<ApiConfiguration> apiConfiguration( m_ApiClient->getConfiguration() );
     utility::string_t path = U("/pet/{petId}");
     std::map<utility::string_t, utility::string_t> pathParams;
     std::map<utility::string_t, utility::string_t> queryParams;
-    std::map<utility::string_t, utility::string_t> headerParams( m_Configuration->getDefaultHeaders() );
+    std::map<utility::string_t, utility::string_t> headerParams( apiConfiguration->getDefaultHeaders() );
     std::map<utility::string_t, utility::string_t> formParams;
     std::map<utility::string_t, std::shared_ptr<HttpContent>> fileParams;
 
@@ -146,12 +147,12 @@ pplx::task<void> PetApi::deletePet(int64_t petId, utility::string_t apiKey)
     
     
     {
-        pathParams[U("petId")] = ApiBase::parameterToString(petId);
+        pathParams[U("petId")] = ApiClient::parameterToString(petId);
         
     }
     
     {
-        headerParams[U("api_key")] = ApiBase::parameterToString(apiKey);
+        headerParams[U("api_key")] = ApiClient::parameterToString(apiKey);
         
     }
     
@@ -184,15 +185,15 @@ pplx::task<void> PetApi::deletePet(int64_t petId, utility::string_t apiKey)
     
     
     {
-        if ( m_Configuration->hasAccessToken() )
+        if ( apiConfiguration->hasAccessToken() )
         {
-            headerParams[U("Authorization")] = U("Bearer ") + m_Configuration->getAccessToken();
+            headerParams[U("Authorization")] = U("Bearer ") + apiConfiguration->getAccessToken();
         }
     }    
     
     
     
-    return ApiBase::callApi(path, U("DELETE"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    return m_ApiClient->callApi(path, U("DELETE"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
     .then([=](web::http::http_response response)
     {
         printf("Received response status code:%u\n", response.status_code());
@@ -209,10 +210,11 @@ pplx::task<std::vector<std::shared_ptr<Pet>>> PetApi::findPetsByStatus(std::vect
 {
     
     
+    std::shared_ptr<ApiConfiguration> apiConfiguration( m_ApiClient->getConfiguration() );
     utility::string_t path = U("/pet/findByStatus");
     std::map<utility::string_t, utility::string_t> pathParams;
     std::map<utility::string_t, utility::string_t> queryParams;
-    std::map<utility::string_t, utility::string_t> headerParams( m_Configuration->getDefaultHeaders() );
+    std::map<utility::string_t, utility::string_t> headerParams( apiConfiguration->getDefaultHeaders() );
     std::map<utility::string_t, utility::string_t> formParams;
     std::map<utility::string_t, std::shared_ptr<HttpContent>> fileParams;
 
@@ -226,7 +228,7 @@ pplx::task<std::vector<std::shared_ptr<Pet>>> PetApi::findPetsByStatus(std::vect
     
     
     {
-        queryParams[U("status")] = ApiBase::parameterToArrayString<utility::string_t>(status);
+        queryParams[U("status")] = ApiClient::parameterToArrayString<utility::string_t>(status);
         
     }
     
@@ -259,15 +261,15 @@ pplx::task<std::vector<std::shared_ptr<Pet>>> PetApi::findPetsByStatus(std::vect
     
     
     {
-        if ( m_Configuration->hasAccessToken() )
+        if ( apiConfiguration->hasAccessToken() )
         {
-            headerParams[U("Authorization")] = U("Bearer ") + m_Configuration->getAccessToken();
+            headerParams[U("Authorization")] = U("Bearer ") + apiConfiguration->getAccessToken();
         }
     }    
     
     
     
-    return ApiBase::callApi(path, U("GET"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    return m_ApiClient->callApi(path, U("GET"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
     .then([=](web::http::http_response response)
     {
         printf("Received response status code:%u\n", response.status_code());
@@ -284,10 +286,11 @@ pplx::task<std::vector<std::shared_ptr<Pet>>> PetApi::findPetsByTags(std::vector
 {
     
     
+    std::shared_ptr<ApiConfiguration> apiConfiguration( m_ApiClient->getConfiguration() );
     utility::string_t path = U("/pet/findByTags");
     std::map<utility::string_t, utility::string_t> pathParams;
     std::map<utility::string_t, utility::string_t> queryParams;
-    std::map<utility::string_t, utility::string_t> headerParams( m_Configuration->getDefaultHeaders() );
+    std::map<utility::string_t, utility::string_t> headerParams( apiConfiguration->getDefaultHeaders() );
     std::map<utility::string_t, utility::string_t> formParams;
     std::map<utility::string_t, std::shared_ptr<HttpContent>> fileParams;
 
@@ -301,7 +304,7 @@ pplx::task<std::vector<std::shared_ptr<Pet>>> PetApi::findPetsByTags(std::vector
     
     
     {
-        queryParams[U("tags")] = ApiBase::parameterToArrayString<>(tags);
+        queryParams[U("tags")] = ApiClient::parameterToArrayString<>(tags);
         
     }
     
@@ -334,15 +337,15 @@ pplx::task<std::vector<std::shared_ptr<Pet>>> PetApi::findPetsByTags(std::vector
     
     
     {
-        if ( m_Configuration->hasAccessToken() )
+        if ( apiConfiguration->hasAccessToken() )
         {
-            headerParams[U("Authorization")] = U("Bearer ") + m_Configuration->getAccessToken();
+            headerParams[U("Authorization")] = U("Bearer ") + apiConfiguration->getAccessToken();
         }
     }    
     
     
     
-    return ApiBase::callApi(path, U("GET"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    return m_ApiClient->callApi(path, U("GET"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
     .then([=](web::http::http_response response)
     {
         printf("Received response status code:%u\n", response.status_code());
@@ -359,10 +362,11 @@ pplx::task<std::shared_ptr<Pet>> PetApi::getPetById(int64_t petId)
 {
     
     
+    std::shared_ptr<ApiConfiguration> apiConfiguration( m_ApiClient->getConfiguration() );
     utility::string_t path = U("/pet/{petId}");
     std::map<utility::string_t, utility::string_t> pathParams;
     std::map<utility::string_t, utility::string_t> queryParams;
-    std::map<utility::string_t, utility::string_t> headerParams( m_Configuration->getDefaultHeaders() );
+    std::map<utility::string_t, utility::string_t> headerParams( apiConfiguration->getDefaultHeaders() );
     std::map<utility::string_t, utility::string_t> formParams;
     std::map<utility::string_t, std::shared_ptr<HttpContent>> fileParams;
 
@@ -376,7 +380,7 @@ pplx::task<std::shared_ptr<Pet>> PetApi::getPetById(int64_t petId)
     
     
     {
-        pathParams[U("petId")] = ApiBase::parameterToString(petId);
+        pathParams[U("petId")] = ApiClient::parameterToString(petId);
         
     }
     
@@ -408,7 +412,7 @@ pplx::task<std::shared_ptr<Pet>> PetApi::getPetById(int64_t petId)
     
     
     {
-        utility::string_t apiKey = m_Configuration->getApiKey(U("api_key"));
+        utility::string_t apiKey = apiConfiguration->getApiKey(U("api_key"));
         if ( apiKey.size() > 0 )
         {
             headerParams[U("api_key")] = apiKey;
@@ -421,7 +425,7 @@ pplx::task<std::shared_ptr<Pet>> PetApi::getPetById(int64_t petId)
     
     
     
-    return ApiBase::callApi(path, U("GET"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    return m_ApiClient->callApi(path, U("GET"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
     .then([=](web::http::http_response response)
     {
         printf("Received response status code:%u\n", response.status_code());
@@ -444,10 +448,11 @@ pplx::task<void> PetApi::updatePet(std::shared_ptr<Pet> body)
     }
     
     
+    std::shared_ptr<ApiConfiguration> apiConfiguration( m_ApiClient->getConfiguration() );
     utility::string_t path = U("/pet");
     std::map<utility::string_t, utility::string_t> pathParams;
     std::map<utility::string_t, utility::string_t> queryParams;
-    std::map<utility::string_t, utility::string_t> headerParams( m_Configuration->getDefaultHeaders() );
+    std::map<utility::string_t, utility::string_t> headerParams( apiConfiguration->getDefaultHeaders() );
     std::map<utility::string_t, utility::string_t> formParams;
     std::map<utility::string_t, std::shared_ptr<HttpContent>> fileParams;
 
@@ -474,8 +479,7 @@ pplx::task<void> PetApi::updatePet(std::shared_ptr<Pet> body)
         
         web::json::value json;
  
-        
-        json = body.get() ? body->toJson() : web::json::value::null();
+        json = ModelBase::toJson(body);
         
         
         httpBody = std::shared_ptr<IHttpBody>( new JsonBody( json ) );
@@ -492,7 +496,7 @@ pplx::task<void> PetApi::updatePet(std::shared_ptr<Pet> body)
         
         if(body.get())
         {
-            body->toMultipart(multipart, "body");
+            body->toMultipart(multipart, U("body"));
         }
         
 
@@ -510,15 +514,15 @@ pplx::task<void> PetApi::updatePet(std::shared_ptr<Pet> body)
     
     
     {
-        if ( m_Configuration->hasAccessToken() )
+        if ( apiConfiguration->hasAccessToken() )
         {
-            headerParams[U("Authorization")] = U("Bearer ") + m_Configuration->getAccessToken();
+            headerParams[U("Authorization")] = U("Bearer ") + apiConfiguration->getAccessToken();
         }
     }    
     
     
     
-    return ApiBase::callApi(path, U("PUT"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    return m_ApiClient->callApi(path, U("PUT"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
     .then([=](web::http::http_response response)
     {
         printf("Received response status code:%u\n", response.status_code());
@@ -535,10 +539,11 @@ pplx::task<void> PetApi::updatePetWithForm(int64_t petId, utility::string_t name
 {
     
     
+    std::shared_ptr<ApiConfiguration> apiConfiguration( m_ApiClient->getConfiguration() );
     utility::string_t path = U("/pet/{petId}");
     std::map<utility::string_t, utility::string_t> pathParams;
     std::map<utility::string_t, utility::string_t> queryParams;
-    std::map<utility::string_t, utility::string_t> headerParams( m_Configuration->getDefaultHeaders() );
+    std::map<utility::string_t, utility::string_t> headerParams( apiConfiguration->getDefaultHeaders() );
     std::map<utility::string_t, utility::string_t> formParams;
     std::map<utility::string_t, std::shared_ptr<HttpContent>> fileParams;
 
@@ -553,17 +558,17 @@ pplx::task<void> PetApi::updatePetWithForm(int64_t petId, utility::string_t name
     
     
     {
-        pathParams[U("petId")] = ApiBase::parameterToString(petId);
+        pathParams[U("petId")] = ApiClient::parameterToString(petId);
         
     }
     
     {
-        formParams[ U("name") ] = ApiBase::parameterToString(name);
+        formParams[ U("name") ] = ApiClient::parameterToString(name);
         
     }
     
     {
-        formParams[ U("status") ] = ApiBase::parameterToString(status);
+        formParams[ U("status") ] = ApiClient::parameterToString(status);
         
     }
     
@@ -596,15 +601,15 @@ pplx::task<void> PetApi::updatePetWithForm(int64_t petId, utility::string_t name
     
     
     {
-        if ( m_Configuration->hasAccessToken() )
+        if ( apiConfiguration->hasAccessToken() )
         {
-            headerParams[U("Authorization")] = U("Bearer ") + m_Configuration->getAccessToken();
+            headerParams[U("Authorization")] = U("Bearer ") + apiConfiguration->getAccessToken();
         }
     }    
     
     
     
-    return ApiBase::callApi(path, U("POST"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    return m_ApiClient->callApi(path, U("POST"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
     .then([=](web::http::http_response response)
     {
         printf("Received response status code:%u\n", response.status_code());
@@ -621,10 +626,11 @@ pplx::task<std::shared_ptr<ApiResponse>> PetApi::uploadFile(int64_t petId, utili
 {
     
     
+    std::shared_ptr<ApiConfiguration> apiConfiguration( m_ApiClient->getConfiguration() );
     utility::string_t path = U("/pet/{petId}/uploadImage");
     std::map<utility::string_t, utility::string_t> pathParams;
     std::map<utility::string_t, utility::string_t> queryParams;
-    std::map<utility::string_t, utility::string_t> headerParams( m_Configuration->getDefaultHeaders() );
+    std::map<utility::string_t, utility::string_t> headerParams( apiConfiguration->getDefaultHeaders() );
     std::map<utility::string_t, utility::string_t> formParams;
     std::map<utility::string_t, std::shared_ptr<HttpContent>> fileParams;
 
@@ -638,12 +644,12 @@ pplx::task<std::shared_ptr<ApiResponse>> PetApi::uploadFile(int64_t petId, utili
     
     
     {
-        pathParams[U("petId")] = ApiBase::parameterToString(petId);
+        pathParams[U("petId")] = ApiClient::parameterToString(petId);
         
     }
     
     {
-        formParams[ U("additionalMetadata") ] = ApiBase::parameterToString(additionalMetadata);
+        formParams[ U("additionalMetadata") ] = ApiClient::parameterToString(additionalMetadata);
         
     }
     if (file != nullptr)
@@ -681,15 +687,15 @@ pplx::task<std::shared_ptr<ApiResponse>> PetApi::uploadFile(int64_t petId, utili
     
     
     {
-        if ( m_Configuration->hasAccessToken() )
+        if ( apiConfiguration->hasAccessToken() )
         {
-            headerParams[U("Authorization")] = U("Bearer ") + m_Configuration->getAccessToken();
+            headerParams[U("Authorization")] = U("Bearer ") + apiConfiguration->getAccessToken();
         }
     }    
     
     
     
-    return ApiBase::callApi(path, U("POST"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    return m_ApiClient->callApi(path, U("POST"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
     .then([=](web::http::http_response response)
     {
         printf("Received response status code:%u\n", response.status_code());

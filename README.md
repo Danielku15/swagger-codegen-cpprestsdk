@@ -19,3 +19,13 @@ Check out [OpenAPI-Spec](https://github.com/OAI/OpenAPI-Specification) for addit
 * For non required properties an additional unset method is provided to completely exclude them from the serialization. 
 * Collection type properties have no setters. use the getter to access the collection itself and modify it via this reference.
 * When serializing objects to multipart/form-data arrays are stored as JSON. 
+* When serializing model properties of type file as JSON they are generated with the following schema: 
+
+```
+{
+    "ContentDisposition": "form-data",
+    "ContentType": "application/zip",
+    "FileName": "MyFile.zip",
+    "InputStream": "Base64EncodedBytes"
+}
+```

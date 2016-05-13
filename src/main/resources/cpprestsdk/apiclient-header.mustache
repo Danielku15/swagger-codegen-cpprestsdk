@@ -1,11 +1,11 @@
 /*
- * ApiBase.h
+ * ApiClient.h
  * 
- * This is the base class for all API classes
+ * This is an API client responsible for stating the HTTP calls 
  */
 
-#ifndef ApiBase_H_
-#define ApiBase_H_
+#ifndef ApiClient_H_
+#define ApiClient_H_
 
 {{{defaultInclude}}}
 #include "ApiConfiguration.h"
@@ -25,11 +25,15 @@ namespace {{this}} {
 
 using namespace {{modelNamespace}};
 
-class {{declspec}} ApiBase
+class {{declspec}} ApiClient
 {
 public:
-    ApiBase( std::shared_ptr<ApiConfiguration> configuration );
-    virtual ~ApiBase();
+    ApiClient( std::shared_ptr<ApiConfiguration> configuration = nullptr );
+    ApiClient( const utility::string_t& basePath );
+    virtual ~ApiClient();
+    
+    std::shared_ptr<ApiConfiguration> getConfiguration();
+    void setConfiguration(std::shared_ptr<ApiConfiguration> configuration);
     
     static utility::string_t parameterToString(utility::string_t value);
     static utility::string_t parameterToString(int32_t value);
@@ -44,13 +48,12 @@ public:
         for( size_t i = 0; i < value.size(); i++)
         {
             if( i > 0) ss << U(", ");
-            ss << ApiBase::parameterToString(value[i]);
+            ss << ApiClient::parameterToString(value[i]);
         }
 
         return ss.str();        
     }
     
-protected:
     pplx::task<web::http::http_response> callApi( 
         const utility::string_t& path, 
         const utility::string_t& method, 
@@ -62,6 +65,8 @@ protected:
         const std::map<utility::string_t, utility::string_t> pathParams, 
         const utility::string_t& contentType
     );
+    
+protected:
 
     std::shared_ptr<ApiConfiguration> m_Configuration;
 };
@@ -70,4 +75,4 @@ protected:
 }
 {{/apiNamespaceDeclarations}}
 
-#endif /* ApiBase_H_ */
+#endif /* ApiClient_H_ */

@@ -27,109 +27,109 @@
     <ClCompile Include="dllmain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="generated\ApiBase.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="generated\ApiClient.cpp">
+      <Filter>Generated\Api</Filter>
     </ClCompile>
     <ClCompile Include="generated\ApiConfiguration.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Generated\Api</Filter>
     </ClCompile>
     <ClCompile Include="generated\ApiException.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="generated\HttpContent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="generated\JsonBody.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="generated\ModelBase.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="generated\MultipartFormData.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Generated\Api</Filter>
     </ClCompile>
     <ClCompile Include="generated\model\ApiResponse.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="generated\model\Category.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="generated\model\Order.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="generated\model\Pet.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="generated\model\Tag.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="generated\model\User.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="generated\api\PetApi.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="generated\api\StoreApi.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Generated\Api</Filter>
     </ClCompile>
     <ClCompile Include="generated\api\UserApi.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Generated\Api</Filter>
+    </ClCompile>
+    <ClCompile Include="generated\api\StoreApi.cpp">
+      <Filter>Generated\Api</Filter>
+    </ClCompile>
+    <ClCompile Include="generated\api\PetApi.cpp">
+      <Filter>Generated\Api</Filter>
+    </ClCompile>
+    <ClCompile Include="generated\model\Category.cpp">
+      <Filter>Generated\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="generated\HttpContent.cpp">
+      <Filter>Generated\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="generated\JsonBody.cpp">
+      <Filter>Generated\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="generated\ModelBase.cpp">
+      <Filter>Generated\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="generated\MultipartFormData.cpp">
+      <Filter>Generated\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="generated\model\Order.cpp">
+      <Filter>Generated\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="generated\model\Pet.cpp">
+      <Filter>Generated\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="generated\model\Tag.cpp">
+      <Filter>Generated\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="generated\model\User.cpp">
+      <Filter>Generated\Models</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Commons.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="generated\MultipartFormData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="generated\ApiBase.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="generated\ApiClient.h">
+      <Filter>Generated\Api</Filter>
     </ClInclude>
     <ClInclude Include="generated\ApiConfiguration.h">
-      <Filter>Header Files</Filter>
+      <Filter>Generated\Api</Filter>
     </ClInclude>
     <ClInclude Include="generated\ApiException.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="generated\HttpContent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="generated\IHttpBody.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="generated\JsonBody.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="generated\ModelBase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="generated\model\User.h">
-      <Filter>Header Files</Filter>
+      <Filter>Generated\Api</Filter>
     </ClInclude>
     <ClInclude Include="generated\model\ApiResponse.h">
-      <Filter>Header Files</Filter>
+      <Filter>Generated\Api</Filter>
     </ClInclude>
     <ClInclude Include="generated\model\Category.h">
-      <Filter>Header Files</Filter>
+      <Filter>Generated\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="generated\HttpContent.h">
+      <Filter>Generated\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="generated\IHttpBody.h">
+      <Filter>Generated\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="generated\JsonBody.h">
+      <Filter>Generated\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="generated\ModelBase.h">
+      <Filter>Generated\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="generated\MultipartFormData.h">
+      <Filter>Generated\Models</Filter>
     </ClInclude>
     <ClInclude Include="generated\model\Order.h">
-      <Filter>Header Files</Filter>
+      <Filter>Generated\Models</Filter>
     </ClInclude>
     <ClInclude Include="generated\model\Pet.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="generated\model\Tag.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="generated\api\PetApi.h">
-      <Filter>Header Files</Filter>
+      <Filter>Generated\Models</Filter>
     </ClInclude>
     <ClInclude Include="generated\api\StoreApi.h">
-      <Filter>Header Files</Filter>
+      <Filter>Generated\Api</Filter>
+    </ClInclude>
+    <ClInclude Include="generated\api\PetApi.h">
+      <Filter>Generated\Api</Filter>
+    </ClInclude>
+    <ClInclude Include="generated\model\Tag.h">
+      <Filter>Generated\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="generated\model\User.h">
+      <Filter>Generated\Models</Filter>
     </ClInclude>
     <ClInclude Include="generated\api\UserApi.h">
-      <Filter>Header Files</Filter>
+      <Filter>Generated\Api</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

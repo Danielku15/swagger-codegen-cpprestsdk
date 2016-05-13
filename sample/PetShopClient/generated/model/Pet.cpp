@@ -33,8 +33,7 @@ web::json::value Pet::toJson() const
     }
     if(m_CategoryIsSet)
     {
-        val[U("category")] = m_Category.get() ? m_Category->toJson() : web::json::value::null();
-                
+        val[U("category")] = ModelBase::toJson(m_Category);
     }
     val[U("name")] = ModelBase::toJson(m_Name);
     {
@@ -42,7 +41,6 @@ web::json::value Pet::toJson() const
         for( auto& item : m_PhotoUrls )
         {
             jsonArray.push_back(ModelBase::toJson(item));
-            
         }
         val[U("photoUrls")] = web::json::value::array(jsonArray);
         
@@ -51,8 +49,7 @@ web::json::value Pet::toJson() const
         std::vector<web::json::value> jsonArray;
         for( auto& item : m_Tags )
         {
-            jsonArray.push_back( item.get() ? item->toJson() : web::json::value::null() );
-            
+            jsonArray.push_back(ModelBase::toJson(item));
         }
         
         if(jsonArray.size() > 0) 
@@ -64,7 +61,6 @@ web::json::value Pet::toJson() const
     if(m_StatusIsSet)
     {
         val[U("status")] = ModelBase::toJson(m_Status);
-                
     }
     
 
@@ -132,75 +128,73 @@ void Pet::fromJson(web::json::value& val)
     
 }
 
-void Pet::toMultipart(std::shared_ptr<MultipartFormData> multipart, const std::string& namePrefix) const
+void Pet::toMultipart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& namePrefix) const
 {
 	if(m_IdIsSet)
     {
-        multipart->add(ModelBase::toHttpContent(namePrefix + "id", m_Id));
+        multipart->add(ModelBase::toHttpContent(namePrefix + U("id"), m_Id));
     }
     if(m_CategoryIsSet)
     {
         if (m_Category.get())
         {
-            m_Category->toMultipart(multipart, "category.");
+            m_Category->toMultipart(multipart, U("category."));
         }
                 
     }
-    multipart->add(ModelBase::toHttpContent(namePrefix + "name", m_Name));
+    multipart->add(ModelBase::toHttpContent(namePrefix + U("name"), m_Name));
     {
         std::vector<web::json::value> jsonArray;
         for( auto& item : m_PhotoUrls )
         {
             jsonArray.push_back(ModelBase::toJson(item));
-            
         }
-        multipart->add(ModelBase::toHttpContent(namePrefix + "photoUrls", web::json::value::array(jsonArray), "application/json"));
+        multipart->add(ModelBase::toHttpContent(namePrefix + U("photoUrls"), web::json::value::array(jsonArray), U("application/json")));
         
     }
     {
         std::vector<web::json::value> jsonArray;
         for( auto& item : m_Tags )
         {
-            jsonArray.push_back( item.get() ? item->toJson() : web::json::value::null() );
-            
+            jsonArray.push_back(ModelBase::toJson(item));
         }
         
         if(jsonArray.size() > 0) 
         {
-            multipart->add(ModelBase::toHttpContent(namePrefix + "tags", web::json::value::array(jsonArray), "application/json"));
+            multipart->add(ModelBase::toHttpContent(namePrefix + U("tags"), web::json::value::array(jsonArray), U("application/json")));
         }
         
     }
     if(m_StatusIsSet)
     {
-        multipart->add(ModelBase::toHttpContent(namePrefix + "status", m_Status));
+        multipart->add(ModelBase::toHttpContent(namePrefix + U("status"), m_Status));
                 
     }
     
 }
 
-void Pet::fromMultiPart(std::shared_ptr<MultipartFormData> multipart, const std::string& namePrefix)
+void Pet::fromMultiPart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& namePrefix)
 {
-    if(multipart->hasContent("id"))
+    if(multipart->hasContent(U("id")))
     {
-        setId(ModelBase::int64_tFromHttpContent(multipart->getContent("id")));
+        setId(ModelBase::int64_tFromHttpContent(multipart->getContent(U("id"))));
     }
-    if(multipart->hasContent("category"))
+    if(multipart->hasContent(U("category")))
     {
-        if(multipart->hasContent("category"))
+        if(multipart->hasContent(U("category")))
         {
             std::shared_ptr<Category> newItem(new Category());
-            newItem->fromMultiPart(multipart, "category.");
+            newItem->fromMultiPart(multipart, U("category."));
             setCategory( newItem );
         }
                 
     }
-    setName(ModelBase::stringFromHttpContent(multipart->getContent("name")));
+    setName(ModelBase::stringFromHttpContent(multipart->getContent(U("name"))));
     {
         m_PhotoUrls.clear();
         
         
-        web::json::value jsonArray = web::json::value::parse(ModelBase::stringFromHttpContent(multipart->getContent("photoUrls")));
+        web::json::value jsonArray = web::json::value::parse(ModelBase::stringFromHttpContent(multipart->getContent(U("photoUrls"))));
         for( auto& item : jsonArray.as_array() )
         {
             m_PhotoUrls.push_back(ModelBase::stringFromJson(item));
@@ -210,11 +204,11 @@ void Pet::fromMultiPart(std::shared_ptr<MultipartFormData> multipart, const std:
     }
     {
         m_Tags.clear();
-        if(multipart->hasContent("tags"))
+        if(multipart->hasContent(U("tags")))
         {            
         
         
-        web::json::value jsonArray = web::json::value::parse(ModelBase::stringFromHttpContent(multipart->getContent("tags")));
+        web::json::value jsonArray = web::json::value::parse(ModelBase::stringFromHttpContent(multipart->getContent(U("tags"))));
         for( auto& item : jsonArray.as_array() )
         {
             
@@ -234,9 +228,9 @@ void Pet::fromMultiPart(std::shared_ptr<MultipartFormData> multipart, const std:
         }
         
     }
-    if(multipart->hasContent("status"))
+    if(multipart->hasContent(U("status")))
     {
-        setStatus(ModelBase::stringFromHttpContent(multipart->getContent("status")));
+        setStatus(ModelBase::stringFromHttpContent(multipart->getContent(U("status"))));
                 
     }
     
