@@ -1,10 +1,11 @@
 [ {
-  "importPath" : ".Pet",
+  "importPath" : "swagger.petshop.api.Pet",
   "licenseUrl" : "http://www.apache.org/licenses/LICENSE-2.0.html",
   "appVersion" : "1.0.0",
   "generatorClass" : "class io.swagger.codegen.languages.CpprestsdkGenerator",
-  "modelPackage" : "",
+  "modelPackage" : "swagger.petshop.model",
   "sortParamsByRequiredFlag" : true,
+  "declspec" : "PETSHOP_DECLSPEC",
   "hasMore" : "true",
   "licenseInfo" : "Apache 2.0",
   "classVarName" : "pet",
@@ -45,7 +46,7 @@
         "isBodyParam" : true,
         "baseName" : "body",
         "paramName" : "body",
-        "dataType" : "Pet",
+        "dataType" : "std::shared_ptr<Pet>",
         "description" : "Pet object that needs to be added to the store",
         "baseType" : "Pet",
         "jsonSchema" : "{\r\n  \"in\" : \"body\",\r\n  \"name\" : \"body\",\r\n  \"description\" : \"Pet object that needs to be added to the store\",\r\n  \"required\" : true,\r\n  \"schema\" : {\r\n    \"$ref\" : \"#/definitions/Pet\"\r\n  }\r\n}",
@@ -58,7 +59,7 @@
         "isBodyParam" : true,
         "baseName" : "body",
         "paramName" : "body",
-        "dataType" : "Pet",
+        "dataType" : "std::shared_ptr<Pet>",
         "description" : "Pet object that needs to be added to the store",
         "baseType" : "Pet",
         "jsonSchema" : "{\r\n  \"in\" : \"body\",\r\n  \"name\" : \"body\",\r\n  \"description\" : \"Pet object that needs to be added to the store\",\r\n  \"required\" : true,\r\n  \"schema\" : {\r\n    \"$ref\" : \"#/definitions/Pet\"\r\n  }\r\n}",
@@ -71,7 +72,7 @@
         "isBodyParam" : true,
         "baseName" : "body",
         "paramName" : "body",
-        "dataType" : "Pet",
+        "dataType" : "std::shared_ptr<Pet>",
         "description" : "Pet object that needs to be added to the store",
         "baseType" : "Pet",
         "jsonSchema" : "{\r\n  \"in\" : \"body\",\r\n  \"name\" : \"body\",\r\n  \"description\" : \"Pet object that needs to be added to the store\",\r\n  \"required\" : true,\r\n  \"schema\" : {\r\n    \"$ref\" : \"#/definitions/Pet\"\r\n  }\r\n}",
@@ -126,8 +127,8 @@
       "operationIdLowerCase" : "addpet",
       "hasHeaderParams" : false,
       "hasQueryParams" : false,
-      "hasFormParams" : false,
       "hasPathParams" : false,
+      "hasFormParams" : false,
       "hasBodyParam" : true
     }, {
       "responseHeaders" : [ ],
@@ -261,8 +262,8 @@
       "operationIdLowerCase" : "deletepet",
       "hasHeaderParams" : true,
       "hasQueryParams" : false,
-      "hasFormParams" : false,
       "hasPathParams" : true,
+      "hasFormParams" : false,
       "hasBodyParam" : false
     }, {
       "responseHeaders" : [ ],
@@ -439,13 +440,50 @@
         "contentType" : "application/json",
         "example" : "[ {\r\n  \"photoUrls\" : [ \"aeiou\" ],\r\n  \"name\" : \"doggie\",\r\n  \"id\" : 123456789,\r\n  \"category\" : {\r\n    \"name\" : \"aeiou\",\r\n    \"id\" : 123456789\r\n  },\r\n  \"tags\" : [ {\r\n    \"name\" : \"aeiou\",\r\n    \"id\" : 123456789\r\n  } ],\r\n  \"status\" : \"aeiou\"\r\n} ]"
       } ],
-      "vendorExtensions" : { },
+      "vendorExtensions" : {
+        "x-codegen-response" : {
+          "baseName" : "response",
+          "complexType" : "Pet",
+          "getter" : "getResponse",
+          "setter" : "setResponse",
+          "datatype" : "std::vector<std::shared_ptr<Pet>>",
+          "datatypeWithEnum" : "std::vector<std::shared_ptr<Pet>>",
+          "name" : "Response",
+          "defaultValue" : "std::vector<std::shared_ptr<Pet>>()",
+          "defaultValueWithParam" : " = data.response;",
+          "baseType" : "std::vector",
+          "containerType" : "array",
+          "example" : "null",
+          "jsonSchema" : "{\r\n  \"type\" : \"array\",\r\n  \"items\" : {\r\n    \"$ref\" : \"#/definitions/Pet\"\r\n  }\r\n}",
+          "isContainer" : true,
+          "isListContainer" : true,
+          "isEnum" : false,
+          "items" : {
+            "baseName" : "Response",
+            "complexType" : "Pet",
+            "getter" : "getResponse",
+            "setter" : "setResponse",
+            "datatype" : "std::shared_ptr<Pet>",
+            "datatypeWithEnum" : "std::shared_ptr<Pet>",
+            "name" : "Response",
+            "defaultValue" : "new Pet()",
+            "defaultValueWithParam" : " = data.Response;",
+            "baseType" : "Pet",
+            "example" : "null",
+            "jsonSchema" : "{\r\n  \"$ref\" : \"#/definitions/Pet\"\r\n}",
+            "isNotContainer" : true,
+            "isEnum" : false,
+            "vendorExtensions" : { }
+          },
+          "vendorExtensions" : { }
+        }
+      },
       "nickname" : "findPetsByStatus",
       "operationIdLowerCase" : "findpetsbystatus",
       "hasHeaderParams" : false,
       "hasQueryParams" : true,
-      "hasFormParams" : false,
       "hasPathParams" : false,
+      "hasFormParams" : false,
       "hasBodyParam" : false
     }, {
       "responseHeaders" : [ ],
@@ -576,13 +614,50 @@
         "contentType" : "application/json",
         "example" : "[ {\r\n  \"photoUrls\" : [ \"aeiou\" ],\r\n  \"name\" : \"doggie\",\r\n  \"id\" : 123456789,\r\n  \"category\" : {\r\n    \"name\" : \"aeiou\",\r\n    \"id\" : 123456789\r\n  },\r\n  \"tags\" : [ {\r\n    \"name\" : \"aeiou\",\r\n    \"id\" : 123456789\r\n  } ],\r\n  \"status\" : \"aeiou\"\r\n} ]"
       } ],
-      "vendorExtensions" : { },
+      "vendorExtensions" : {
+        "x-codegen-response" : {
+          "baseName" : "response",
+          "complexType" : "Pet",
+          "getter" : "getResponse",
+          "setter" : "setResponse",
+          "datatype" : "std::vector<std::shared_ptr<Pet>>",
+          "datatypeWithEnum" : "std::vector<std::shared_ptr<Pet>>",
+          "name" : "Response",
+          "defaultValue" : "std::vector<std::shared_ptr<Pet>>()",
+          "defaultValueWithParam" : " = data.response;",
+          "baseType" : "std::vector",
+          "containerType" : "array",
+          "example" : "null",
+          "jsonSchema" : "{\r\n  \"type\" : \"array\",\r\n  \"items\" : {\r\n    \"$ref\" : \"#/definitions/Pet\"\r\n  }\r\n}",
+          "isContainer" : true,
+          "isListContainer" : true,
+          "isEnum" : false,
+          "items" : {
+            "baseName" : "Response",
+            "complexType" : "Pet",
+            "getter" : "getResponse",
+            "setter" : "setResponse",
+            "datatype" : "std::shared_ptr<Pet>",
+            "datatypeWithEnum" : "std::shared_ptr<Pet>",
+            "name" : "Response",
+            "defaultValue" : "new Pet()",
+            "defaultValueWithParam" : " = data.Response;",
+            "baseType" : "Pet",
+            "example" : "null",
+            "jsonSchema" : "{\r\n  \"$ref\" : \"#/definitions/Pet\"\r\n}",
+            "isNotContainer" : true,
+            "isEnum" : false,
+            "vendorExtensions" : { }
+          },
+          "vendorExtensions" : { }
+        }
+      },
       "nickname" : "findPetsByTags",
       "operationIdLowerCase" : "findpetsbytags",
       "hasHeaderParams" : false,
       "hasQueryParams" : true,
-      "hasFormParams" : false,
       "hasPathParams" : false,
+      "hasFormParams" : false,
       "hasBodyParam" : false
     }, {
       "responseHeaders" : [ ],
@@ -704,13 +779,31 @@
         "contentType" : "application/json",
         "example" : "{\r\n  \"photoUrls\" : [ \"aeiou\" ],\r\n  \"name\" : \"doggie\",\r\n  \"id\" : 123456789,\r\n  \"category\" : {\r\n    \"name\" : \"aeiou\",\r\n    \"id\" : 123456789\r\n  },\r\n  \"tags\" : [ {\r\n    \"name\" : \"aeiou\",\r\n    \"id\" : 123456789\r\n  } ],\r\n  \"status\" : \"aeiou\"\r\n}"
       } ],
-      "vendorExtensions" : { },
+      "vendorExtensions" : {
+        "x-codegen-response" : {
+          "baseName" : "response",
+          "complexType" : "Pet",
+          "getter" : "getResponse",
+          "setter" : "setResponse",
+          "datatype" : "std::shared_ptr<Pet>",
+          "datatypeWithEnum" : "std::shared_ptr<Pet>",
+          "name" : "Response",
+          "defaultValue" : "new Pet()",
+          "defaultValueWithParam" : " = data.response;",
+          "baseType" : "Pet",
+          "example" : "null",
+          "jsonSchema" : "{\r\n  \"$ref\" : \"#/definitions/Pet\"\r\n}",
+          "isNotContainer" : true,
+          "isEnum" : false,
+          "vendorExtensions" : { }
+        }
+      },
       "nickname" : "getPetById",
       "operationIdLowerCase" : "getpetbyid",
       "hasHeaderParams" : false,
       "hasQueryParams" : false,
-      "hasFormParams" : false,
       "hasPathParams" : true,
+      "hasFormParams" : false,
       "hasBodyParam" : false
     }, {
       "responseHeaders" : [ ],
@@ -745,7 +838,7 @@
         "isBodyParam" : true,
         "baseName" : "body",
         "paramName" : "body",
-        "dataType" : "Pet",
+        "dataType" : "std::shared_ptr<Pet>",
         "description" : "Pet object that needs to be added to the store",
         "baseType" : "Pet",
         "jsonSchema" : "{\r\n  \"in\" : \"body\",\r\n  \"name\" : \"body\",\r\n  \"description\" : \"Pet object that needs to be added to the store\",\r\n  \"required\" : true,\r\n  \"schema\" : {\r\n    \"$ref\" : \"#/definitions/Pet\"\r\n  }\r\n}",
@@ -758,7 +851,7 @@
         "isBodyParam" : true,
         "baseName" : "body",
         "paramName" : "body",
-        "dataType" : "Pet",
+        "dataType" : "std::shared_ptr<Pet>",
         "description" : "Pet object that needs to be added to the store",
         "baseType" : "Pet",
         "jsonSchema" : "{\r\n  \"in\" : \"body\",\r\n  \"name\" : \"body\",\r\n  \"description\" : \"Pet object that needs to be added to the store\",\r\n  \"required\" : true,\r\n  \"schema\" : {\r\n    \"$ref\" : \"#/definitions/Pet\"\r\n  }\r\n}",
@@ -771,7 +864,7 @@
         "isBodyParam" : true,
         "baseName" : "body",
         "paramName" : "body",
-        "dataType" : "Pet",
+        "dataType" : "std::shared_ptr<Pet>",
         "description" : "Pet object that needs to be added to the store",
         "baseType" : "Pet",
         "jsonSchema" : "{\r\n  \"in\" : \"body\",\r\n  \"name\" : \"body\",\r\n  \"description\" : \"Pet object that needs to be added to the store\",\r\n  \"required\" : true,\r\n  \"schema\" : {\r\n    \"$ref\" : \"#/definitions/Pet\"\r\n  }\r\n}",
@@ -852,8 +945,8 @@
       "operationIdLowerCase" : "updatepet",
       "hasHeaderParams" : false,
       "hasQueryParams" : false,
-      "hasFormParams" : false,
       "hasPathParams" : false,
+      "hasFormParams" : false,
       "hasBodyParam" : true
     }, {
       "responseHeaders" : [ ],
@@ -1011,8 +1104,8 @@
       "operationIdLowerCase" : "updatepetwithform",
       "hasHeaderParams" : false,
       "hasQueryParams" : false,
-      "hasFormParams" : true,
       "hasPathParams" : true,
+      "hasFormParams" : true,
       "hasBodyParam" : false
     }, {
       "responseHeaders" : [ ],
@@ -1169,20 +1262,40 @@
         "contentType" : "application/json",
         "example" : "{\r\n  \"code\" : 123,\r\n  \"type\" : \"aeiou\",\r\n  \"message\" : \"aeiou\"\r\n}"
       } ],
-      "vendorExtensions" : { },
+      "vendorExtensions" : {
+        "x-codegen-response" : {
+          "baseName" : "response",
+          "complexType" : "ApiResponse",
+          "getter" : "getResponse",
+          "setter" : "setResponse",
+          "datatype" : "std::shared_ptr<ApiResponse>",
+          "datatypeWithEnum" : "std::shared_ptr<ApiResponse>",
+          "name" : "Response",
+          "defaultValue" : "new ApiResponse()",
+          "defaultValueWithParam" : " = data.response;",
+          "baseType" : "ApiResponse",
+          "example" : "null",
+          "jsonSchema" : "{\r\n  \"$ref\" : \"#/definitions/ApiResponse\"\r\n}",
+          "isNotContainer" : true,
+          "isEnum" : false,
+          "vendorExtensions" : { }
+        }
+      },
       "nickname" : "uploadFile",
       "operationIdLowerCase" : "uploadfile",
       "hasHeaderParams" : false,
       "hasQueryParams" : false,
-      "hasFormParams" : true,
       "hasPathParams" : true,
+      "hasFormParams" : true,
       "hasBodyParam" : false
     } ],
     "pathPrefix" : "pet"
   },
   "infoUrl" : null,
+  "defaultInclude" : "#include \"Commons.h\"",
+  "modelNamespace" : "swagger::petshop::model",
   "baseName" : "Pet",
-  "package" : "",
+  "package" : "swagger.petshop.api",
   "imports" : [ {
     "import" : "#include \"Pet.h\""
   }, {
@@ -1198,19 +1311,24 @@
   "termsOfService" : "http://swagger.io/terms/",
   "releaseNote" : "Minor update",
   "version" : "1.0.0",
+  "apiPackage" : "swagger.petshop.api",
+  "apiNamespace" : "swagger::petshop::api",
   "basePath" : "http://petstore.swagger.io/v2",
   "classname" : "PetApi",
   "gitRepoId" : "YOUR_GIT_REPO_ID",
-  "generatedDate" : "2016-05-04T18:39:34.329+02:00",
+  "generatedDate" : "2016-05-16T20:29:27.093+02:00",
   "infoEmail" : "apiteam@swagger.io",
-  "gitUserId" : "YOUR_GIT_USR_ID"
+  "apiNamespaceDeclarations" : [ "swagger", "petshop", "api" ],
+  "gitUserId" : "YOUR_GIT_USR_ID",
+  "modelNamespaceDeclarations" : [ "swagger", "petshop", "model" ]
 }, {
-  "importPath" : ".Store",
+  "importPath" : "swagger.petshop.api.Store",
   "licenseUrl" : "http://www.apache.org/licenses/LICENSE-2.0.html",
   "appVersion" : "1.0.0",
   "generatorClass" : "class io.swagger.codegen.languages.CpprestsdkGenerator",
-  "modelPackage" : "",
+  "modelPackage" : "swagger.petshop.model",
   "sortParamsByRequiredFlag" : true,
+  "declspec" : "PETSHOP_DECLSPEC",
   "hasMore" : "true",
   "licenseInfo" : "Apache 2.0",
   "classVarName" : "store",
@@ -1306,8 +1424,8 @@
       "operationIdLowerCase" : "deleteorder",
       "hasHeaderParams" : false,
       "hasQueryParams" : false,
-      "hasFormParams" : false,
       "hasPathParams" : true,
+      "hasFormParams" : false,
       "hasBodyParam" : false
     }, {
       "responseHeaders" : [ ],
@@ -1379,13 +1497,51 @@
         "contentType" : "application/json",
         "example" : "{\r\n  \"key\" : 123\r\n}"
       } ],
-      "vendorExtensions" : { },
+      "vendorExtensions" : {
+        "x-codegen-response" : {
+          "baseName" : "response",
+          "getter" : "getResponse",
+          "setter" : "setResponse",
+          "datatype" : "std::map<utility::string_t, int32_t>",
+          "datatypeWithEnum" : "std::map<utility::string_t, int32_t>",
+          "name" : "Response",
+          "defaultValue" : "std::map<utility::string_t, int32_t>()",
+          "defaultValueWithParam" : " = data.response;",
+          "baseType" : "std::map",
+          "containerType" : "map",
+          "example" : "null",
+          "jsonSchema" : "{\r\n  \"type\" : \"object\",\r\n  \"additionalProperties\" : {\r\n    \"type\" : \"integer\",\r\n    \"format\" : \"int32\"\r\n  }\r\n}",
+          "isPrimitiveType" : true,
+          "isContainer" : true,
+          "isMapContainer" : true,
+          "isEnum" : false,
+          "items" : {
+            "baseName" : "inner",
+            "getter" : "getInner",
+            "setter" : "setInner",
+            "datatype" : "int32_t",
+            "datatypeWithEnum" : "int32_t",
+            "name" : "Inner",
+            "defaultValue" : "0",
+            "defaultValueWithParam" : " = data.inner;",
+            "baseType" : "int32_t",
+            "example" : "null",
+            "jsonSchema" : "{\r\n  \"type\" : \"integer\",\r\n  \"format\" : \"int32\"\r\n}",
+            "isPrimitiveType" : true,
+            "isNotContainer" : true,
+            "isInteger" : true,
+            "isEnum" : false,
+            "vendorExtensions" : { }
+          },
+          "vendorExtensions" : { }
+        }
+      },
       "nickname" : "getInventory",
       "operationIdLowerCase" : "getinventory",
       "hasHeaderParams" : false,
       "hasQueryParams" : false,
-      "hasFormParams" : false,
       "hasPathParams" : false,
+      "hasFormParams" : false,
       "hasBodyParam" : false
     }, {
       "responseHeaders" : [ ],
@@ -1499,13 +1655,31 @@
         "contentType" : "application/json",
         "example" : "{\r\n  \"petId\" : 123456789,\r\n  \"quantity\" : 123,\r\n  \"id\" : 123456789,\r\n  \"shipDate\" : \"2000-01-23T04:56:07.000+0000\",\r\n  \"complete\" : true,\r\n  \"status\" : \"aeiou\"\r\n}"
       } ],
-      "vendorExtensions" : { },
+      "vendorExtensions" : {
+        "x-codegen-response" : {
+          "baseName" : "response",
+          "complexType" : "Order",
+          "getter" : "getResponse",
+          "setter" : "setResponse",
+          "datatype" : "std::shared_ptr<Order>",
+          "datatypeWithEnum" : "std::shared_ptr<Order>",
+          "name" : "Response",
+          "defaultValue" : "new Order()",
+          "defaultValueWithParam" : " = data.response;",
+          "baseType" : "Order",
+          "example" : "null",
+          "jsonSchema" : "{\r\n  \"$ref\" : \"#/definitions/Order\"\r\n}",
+          "isNotContainer" : true,
+          "isEnum" : false,
+          "vendorExtensions" : { }
+        }
+      },
       "nickname" : "getOrderById",
       "operationIdLowerCase" : "getorderbyid",
       "hasHeaderParams" : false,
       "hasQueryParams" : false,
-      "hasFormParams" : false,
       "hasPathParams" : true,
+      "hasFormParams" : false,
       "hasBodyParam" : false
     }, {
       "responseHeaders" : [ ],
@@ -1535,7 +1709,7 @@
         "isBodyParam" : true,
         "baseName" : "body",
         "paramName" : "body",
-        "dataType" : "Order",
+        "dataType" : "std::shared_ptr<Order>",
         "description" : "order placed for purchasing the pet",
         "baseType" : "Order",
         "jsonSchema" : "{\r\n  \"in\" : \"body\",\r\n  \"name\" : \"body\",\r\n  \"description\" : \"order placed for purchasing the pet\",\r\n  \"required\" : true,\r\n  \"schema\" : {\r\n    \"$ref\" : \"#/definitions/Order\"\r\n  }\r\n}",
@@ -1548,7 +1722,7 @@
         "isBodyParam" : true,
         "baseName" : "body",
         "paramName" : "body",
-        "dataType" : "Order",
+        "dataType" : "std::shared_ptr<Order>",
         "description" : "order placed for purchasing the pet",
         "baseType" : "Order",
         "jsonSchema" : "{\r\n  \"in\" : \"body\",\r\n  \"name\" : \"body\",\r\n  \"description\" : \"order placed for purchasing the pet\",\r\n  \"required\" : true,\r\n  \"schema\" : {\r\n    \"$ref\" : \"#/definitions/Order\"\r\n  }\r\n}",
@@ -1561,7 +1735,7 @@
         "isBodyParam" : true,
         "baseName" : "body",
         "paramName" : "body",
-        "dataType" : "Order",
+        "dataType" : "std::shared_ptr<Order>",
         "description" : "order placed for purchasing the pet",
         "baseType" : "Order",
         "jsonSchema" : "{\r\n  \"in\" : \"body\",\r\n  \"name\" : \"body\",\r\n  \"description\" : \"order placed for purchasing the pet\",\r\n  \"required\" : true,\r\n  \"schema\" : {\r\n    \"$ref\" : \"#/definitions/Order\"\r\n  }\r\n}",
@@ -1613,20 +1787,40 @@
         "contentType" : "application/json",
         "example" : "{\r\n  \"petId\" : 123456789,\r\n  \"quantity\" : 123,\r\n  \"id\" : 123456789,\r\n  \"shipDate\" : \"2000-01-23T04:56:07.000+0000\",\r\n  \"complete\" : true,\r\n  \"status\" : \"aeiou\"\r\n}"
       } ],
-      "vendorExtensions" : { },
+      "vendorExtensions" : {
+        "x-codegen-response" : {
+          "baseName" : "response",
+          "complexType" : "Order",
+          "getter" : "getResponse",
+          "setter" : "setResponse",
+          "datatype" : "std::shared_ptr<Order>",
+          "datatypeWithEnum" : "std::shared_ptr<Order>",
+          "name" : "Response",
+          "defaultValue" : "new Order()",
+          "defaultValueWithParam" : " = data.response;",
+          "baseType" : "Order",
+          "example" : "null",
+          "jsonSchema" : "{\r\n  \"$ref\" : \"#/definitions/Order\"\r\n}",
+          "isNotContainer" : true,
+          "isEnum" : false,
+          "vendorExtensions" : { }
+        }
+      },
       "nickname" : "placeOrder",
       "operationIdLowerCase" : "placeorder",
       "hasHeaderParams" : false,
       "hasQueryParams" : false,
-      "hasFormParams" : false,
       "hasPathParams" : false,
+      "hasFormParams" : false,
       "hasBodyParam" : true
     } ],
     "pathPrefix" : "store"
   },
   "infoUrl" : null,
+  "defaultInclude" : "#include \"Commons.h\"",
+  "modelNamespace" : "swagger::petshop::model",
   "baseName" : "Store",
-  "package" : "",
+  "package" : "swagger.petshop.api",
   "imports" : [ {
     "import" : "#include <map>"
   }, {
@@ -1638,19 +1832,24 @@
   "termsOfService" : "http://swagger.io/terms/",
   "releaseNote" : "Minor update",
   "version" : "1.0.0",
+  "apiPackage" : "swagger.petshop.api",
+  "apiNamespace" : "swagger::petshop::api",
   "basePath" : "http://petstore.swagger.io/v2",
   "classname" : "StoreApi",
   "gitRepoId" : "YOUR_GIT_REPO_ID",
-  "generatedDate" : "2016-05-04T18:39:34.329+02:00",
+  "generatedDate" : "2016-05-16T20:29:27.093+02:00",
   "infoEmail" : "apiteam@swagger.io",
-  "gitUserId" : "YOUR_GIT_USR_ID"
+  "apiNamespaceDeclarations" : [ "swagger", "petshop", "api" ],
+  "gitUserId" : "YOUR_GIT_USR_ID",
+  "modelNamespaceDeclarations" : [ "swagger", "petshop", "model" ]
 }, {
-  "importPath" : ".User",
+  "importPath" : "swagger.petshop.api.User",
   "licenseUrl" : "http://www.apache.org/licenses/LICENSE-2.0.html",
   "appVersion" : "1.0.0",
   "generatorClass" : "class io.swagger.codegen.languages.CpprestsdkGenerator",
-  "modelPackage" : "",
+  "modelPackage" : "swagger.petshop.model",
   "sortParamsByRequiredFlag" : true,
+  "declspec" : "PETSHOP_DECLSPEC",
   "licenseInfo" : "Apache 2.0",
   "classVarName" : "user",
   "hasImport" : true,
@@ -1682,7 +1881,7 @@
         "isBodyParam" : true,
         "baseName" : "body",
         "paramName" : "body",
-        "dataType" : "User",
+        "dataType" : "std::shared_ptr<User>",
         "description" : "Created user object",
         "baseType" : "User",
         "jsonSchema" : "{\r\n  \"in\" : \"body\",\r\n  \"name\" : \"body\",\r\n  \"description\" : \"Created user object\",\r\n  \"required\" : true,\r\n  \"schema\" : {\r\n    \"$ref\" : \"#/definitions/User\"\r\n  }\r\n}",
@@ -1695,7 +1894,7 @@
         "isBodyParam" : true,
         "baseName" : "body",
         "paramName" : "body",
-        "dataType" : "User",
+        "dataType" : "std::shared_ptr<User>",
         "description" : "Created user object",
         "baseType" : "User",
         "jsonSchema" : "{\r\n  \"in\" : \"body\",\r\n  \"name\" : \"body\",\r\n  \"description\" : \"Created user object\",\r\n  \"required\" : true,\r\n  \"schema\" : {\r\n    \"$ref\" : \"#/definitions/User\"\r\n  }\r\n}",
@@ -1708,7 +1907,7 @@
         "isBodyParam" : true,
         "baseName" : "body",
         "paramName" : "body",
-        "dataType" : "User",
+        "dataType" : "std::shared_ptr<User>",
         "description" : "Created user object",
         "baseType" : "User",
         "jsonSchema" : "{\r\n  \"in\" : \"body\",\r\n  \"name\" : \"body\",\r\n  \"description\" : \"Created user object\",\r\n  \"required\" : true,\r\n  \"schema\" : {\r\n    \"$ref\" : \"#/definitions/User\"\r\n  }\r\n}",
@@ -1742,8 +1941,8 @@
       "operationIdLowerCase" : "createuser",
       "hasHeaderParams" : false,
       "hasQueryParams" : false,
-      "hasFormParams" : false,
       "hasPathParams" : false,
+      "hasFormParams" : false,
       "hasBodyParam" : true
     }, {
       "responseHeaders" : [ ],
@@ -1836,8 +2035,8 @@
       "operationIdLowerCase" : "createuserswitharrayinput",
       "hasHeaderParams" : false,
       "hasQueryParams" : false,
-      "hasFormParams" : false,
       "hasPathParams" : false,
+      "hasFormParams" : false,
       "hasBodyParam" : true
     }, {
       "responseHeaders" : [ ],
@@ -1930,8 +2129,8 @@
       "operationIdLowerCase" : "createuserswithlistinput",
       "hasHeaderParams" : false,
       "hasQueryParams" : false,
-      "hasFormParams" : false,
       "hasPathParams" : false,
+      "hasFormParams" : false,
       "hasBodyParam" : true
     }, {
       "responseHeaders" : [ ],
@@ -2019,8 +2218,8 @@
       "operationIdLowerCase" : "deleteuser",
       "hasHeaderParams" : false,
       "hasQueryParams" : false,
-      "hasFormParams" : false,
       "hasPathParams" : true,
+      "hasFormParams" : false,
       "hasBodyParam" : false
     }, {
       "responseHeaders" : [ ],
@@ -2130,13 +2329,31 @@
         "contentType" : "application/json",
         "example" : "{\r\n  \"firstName\" : \"aeiou\",\r\n  \"lastName\" : \"aeiou\",\r\n  \"password\" : \"aeiou\",\r\n  \"userStatus\" : 123,\r\n  \"phone\" : \"aeiou\",\r\n  \"id\" : 123456789,\r\n  \"email\" : \"aeiou\",\r\n  \"username\" : \"aeiou\"\r\n}"
       } ],
-      "vendorExtensions" : { },
+      "vendorExtensions" : {
+        "x-codegen-response" : {
+          "baseName" : "response",
+          "complexType" : "User",
+          "getter" : "getResponse",
+          "setter" : "setResponse",
+          "datatype" : "std::shared_ptr<User>",
+          "datatypeWithEnum" : "std::shared_ptr<User>",
+          "name" : "Response",
+          "defaultValue" : "new User()",
+          "defaultValueWithParam" : " = data.response;",
+          "baseType" : "User",
+          "example" : "null",
+          "jsonSchema" : "{\r\n  \"$ref\" : \"#/definitions/User\"\r\n}",
+          "isNotContainer" : true,
+          "isEnum" : false,
+          "vendorExtensions" : { }
+        }
+      },
       "nickname" : "getUserByName",
       "operationIdLowerCase" : "getuserbyname",
       "hasHeaderParams" : false,
       "hasQueryParams" : false,
-      "hasFormParams" : false,
       "hasPathParams" : true,
+      "hasFormParams" : false,
       "hasBodyParam" : false
     }, {
       "responseHeaders" : [ {
@@ -2338,13 +2555,32 @@
         "contentType" : "application/json",
         "example" : "\"aeiou\""
       } ],
-      "vendorExtensions" : { },
+      "vendorExtensions" : {
+        "x-codegen-response" : {
+          "baseName" : "response",
+          "complexType" : "utility::string_t",
+          "getter" : "getResponse",
+          "setter" : "setResponse",
+          "datatype" : "utility::string_t",
+          "datatypeWithEnum" : "utility::string_t",
+          "name" : "Response",
+          "defaultValue" : "U(\"\")",
+          "defaultValueWithParam" : " = data.response;",
+          "baseType" : "utility::string_t",
+          "example" : "null",
+          "jsonSchema" : "{\r\n  \"type\" : \"string\"\r\n}",
+          "isNotContainer" : true,
+          "isString" : true,
+          "isEnum" : false,
+          "vendorExtensions" : { }
+        }
+      },
       "nickname" : "loginUser",
       "operationIdLowerCase" : "loginuser",
       "hasHeaderParams" : false,
       "hasQueryParams" : true,
-      "hasFormParams" : false,
       "hasPathParams" : false,
+      "hasFormParams" : false,
       "hasBodyParam" : false
     }, {
       "responseHeaders" : [ ],
@@ -2393,8 +2629,8 @@
       "operationIdLowerCase" : "logoutuser",
       "hasHeaderParams" : false,
       "hasQueryParams" : false,
-      "hasFormParams" : false,
       "hasPathParams" : false,
+      "hasFormParams" : false,
       "hasBodyParam" : false
     }, {
       "responseHeaders" : [ ],
@@ -2421,7 +2657,7 @@
         "secondaryParam" : true,
         "baseName" : "body",
         "paramName" : "body",
-        "dataType" : "User",
+        "dataType" : "std::shared_ptr<User>",
         "description" : "Updated user object",
         "baseType" : "User",
         "jsonSchema" : "{\r\n  \"in\" : \"body\",\r\n  \"name\" : \"body\",\r\n  \"description\" : \"Updated user object\",\r\n  \"required\" : true,\r\n  \"schema\" : {\r\n    \"$ref\" : \"#/definitions/User\"\r\n  }\r\n}",
@@ -2449,7 +2685,7 @@
         "secondaryParam" : true,
         "baseName" : "body",
         "paramName" : "body",
-        "dataType" : "User",
+        "dataType" : "std::shared_ptr<User>",
         "description" : "Updated user object",
         "baseType" : "User",
         "jsonSchema" : "{\r\n  \"in\" : \"body\",\r\n  \"name\" : \"body\",\r\n  \"description\" : \"Updated user object\",\r\n  \"required\" : true,\r\n  \"schema\" : {\r\n    \"$ref\" : \"#/definitions/User\"\r\n  }\r\n}",
@@ -2462,7 +2698,7 @@
         "isBodyParam" : true,
         "baseName" : "body",
         "paramName" : "body",
-        "dataType" : "User",
+        "dataType" : "std::shared_ptr<User>",
         "description" : "Updated user object",
         "baseType" : "User",
         "jsonSchema" : "{\r\n  \"in\" : \"body\",\r\n  \"name\" : \"body\",\r\n  \"description\" : \"Updated user object\",\r\n  \"required\" : true,\r\n  \"schema\" : {\r\n    \"$ref\" : \"#/definitions/User\"\r\n  }\r\n}",
@@ -2521,15 +2757,17 @@
       "operationIdLowerCase" : "updateuser",
       "hasHeaderParams" : false,
       "hasQueryParams" : false,
-      "hasFormParams" : false,
       "hasPathParams" : true,
+      "hasFormParams" : false,
       "hasBodyParam" : true
     } ],
     "pathPrefix" : "user"
   },
   "infoUrl" : null,
+  "defaultInclude" : "#include \"Commons.h\"",
+  "modelNamespace" : "swagger::petshop::model",
   "baseName" : "User",
-  "package" : "",
+  "package" : "swagger.petshop.api",
   "imports" : [ {
     "import" : "#include \"User.h\""
   }, {
@@ -2543,10 +2781,14 @@
   "termsOfService" : "http://swagger.io/terms/",
   "releaseNote" : "Minor update",
   "version" : "1.0.0",
+  "apiPackage" : "swagger.petshop.api",
+  "apiNamespace" : "swagger::petshop::api",
   "basePath" : "http://petstore.swagger.io/v2",
   "classname" : "UserApi",
   "gitRepoId" : "YOUR_GIT_REPO_ID",
-  "generatedDate" : "2016-05-04T18:39:34.329+02:00",
+  "generatedDate" : "2016-05-16T20:29:27.093+02:00",
   "infoEmail" : "apiteam@swagger.io",
-  "gitUserId" : "YOUR_GIT_USR_ID"
+  "apiNamespaceDeclarations" : [ "swagger", "petshop", "api" ],
+  "gitUserId" : "YOUR_GIT_USR_ID",
+  "modelNamespaceDeclarations" : [ "swagger", "petshop", "model" ]
 } ]

@@ -48,10 +48,29 @@ pplx::task<void> UserApi::createUser(std::shared_ptr<User> body)
     std::map<utility::string_t, utility::string_t> formParams;
     std::map<utility::string_t, std::shared_ptr<HttpContent>> fileParams;
 
-    std::unordered_set<utility::string_t> acceptHttpContentTypes;
-    acceptHttpContentTypes.insert( U("application/xml") );
-    acceptHttpContentTypes.insert( U("application/json") );
+    std::unordered_set<utility::string_t> responseHttpContentTypes;
+    responseHttpContentTypes.insert( U("application/xml") );
+    responseHttpContentTypes.insert( U("application/json") );
     
+    
+    utility::string_t responseHttpContentType;
+    
+    // use JSON if possible
+    if ( responseHttpContentTypes.size() == 0 || responseHttpContentTypes.find(U("application/json")) != responseHttpContentTypes.end() )
+    {
+        responseHttpContentType = U("application/json");
+    }
+    // multipart formdata 
+    else if( responseHttpContentTypes.find(U("multipart/form-data")) != responseHttpContentTypes.end() )
+    {
+        responseHttpContentType = U("multipart/form-data");
+    }
+    else
+    {
+        throw ApiException(400, U("UserApi->createUser does not produce any supported media type"));
+    }    
+    
+    headerParams[U("Accept")] = responseHttpContentType;
     
     std::unordered_set<utility::string_t> consumeHttpContentTypes;
     
@@ -59,12 +78,12 @@ pplx::task<void> UserApi::createUser(std::shared_ptr<User> body)
     
 
     std::shared_ptr<IHttpBody> httpBody;
-    utility::string_t httpContentType;
+    utility::string_t requestHttpContentType;
    
     // use JSON if possible
     if ( consumeHttpContentTypes.size() == 0 || consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
     {
-        httpContentType = U("application/json");
+        requestHttpContentType = U("application/json");
 
         
         web::json::value json;
@@ -79,7 +98,7 @@ pplx::task<void> UserApi::createUser(std::shared_ptr<User> body)
     // multipart formdata 
     else if( consumeHttpContentTypes.find(U("multipart/form-data")) != consumeHttpContentTypes.end() )
     {
-        httpContentType = U("multipart/form-data");
+        requestHttpContentType = U("multipart/form-data");
         
         
         std::shared_ptr<MultipartFormData> multipart(new MultipartFormData);
@@ -100,16 +119,39 @@ pplx::task<void> UserApi::createUser(std::shared_ptr<User> body)
     
     
     
-    return m_ApiClient->callApi(path, U("POST"), queryParams, httpBody, headerParams, formParams, fileParams, httpContentType)
+    return m_ApiClient->callApi(path, U("POST"), queryParams, httpBody, headerParams, formParams, fileParams, requestHttpContentType)
     .then([=](web::http::http_response response)
     {
-        printf("Received response status code:%u\n", response.status_code());
+		// 1xx - informational : OK
+		// 2xx - successful	   : OK
+		// 3xx - redirection   : OK 
+		// 4xx - client error  : not OK
+		// 5xx - client error  : not OK
+		if (response.status_code() >= 400)
+		{
+			throw ApiException(response.status_code()
+				, U("error calling findPetsByStatus: ") + response.reason_phrase()
+				, std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
+		}
+        
+        // check response content type
+        if(response.headers().has(U("Content-Type")))
+        {
+            utility::string_t contentType = response.headers()[U("Content-Type")];
+            if( contentType.find(responseHttpContentType) == std::string::npos )
+            {
+                throw ApiException(500
+                    , U("error calling findPetsByStatus: unexpected response type: ") + contentType
+                    , std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
+            }
+        }
+        
         return response.extract_string();
     })
-    .then([=](utility::string_t result)
+    .then([=](utility::string_t response)
     {
-        std::wcout << result << std::endl;
         return void();
+        
     });            
 }
 
@@ -126,10 +168,29 @@ pplx::task<void> UserApi::createUsersWithArrayInput(std::vector<std::shared_ptr<
     std::map<utility::string_t, utility::string_t> formParams;
     std::map<utility::string_t, std::shared_ptr<HttpContent>> fileParams;
 
-    std::unordered_set<utility::string_t> acceptHttpContentTypes;
-    acceptHttpContentTypes.insert( U("application/xml") );
-    acceptHttpContentTypes.insert( U("application/json") );
+    std::unordered_set<utility::string_t> responseHttpContentTypes;
+    responseHttpContentTypes.insert( U("application/xml") );
+    responseHttpContentTypes.insert( U("application/json") );
     
+    
+    utility::string_t responseHttpContentType;
+    
+    // use JSON if possible
+    if ( responseHttpContentTypes.size() == 0 || responseHttpContentTypes.find(U("application/json")) != responseHttpContentTypes.end() )
+    {
+        responseHttpContentType = U("application/json");
+    }
+    // multipart formdata 
+    else if( responseHttpContentTypes.find(U("multipart/form-data")) != responseHttpContentTypes.end() )
+    {
+        responseHttpContentType = U("multipart/form-data");
+    }
+    else
+    {
+        throw ApiException(400, U("UserApi->createUsersWithArrayInput does not produce any supported media type"));
+    }    
+    
+    headerParams[U("Accept")] = responseHttpContentType;
     
     std::unordered_set<utility::string_t> consumeHttpContentTypes;
     
@@ -137,12 +198,12 @@ pplx::task<void> UserApi::createUsersWithArrayInput(std::vector<std::shared_ptr<
     
 
     std::shared_ptr<IHttpBody> httpBody;
-    utility::string_t httpContentType;
+    utility::string_t requestHttpContentType;
    
     // use JSON if possible
     if ( consumeHttpContentTypes.size() == 0 || consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
     {
-        httpContentType = U("application/json");
+        requestHttpContentType = U("application/json");
 
         
         web::json::value json;
@@ -166,7 +227,7 @@ pplx::task<void> UserApi::createUsersWithArrayInput(std::vector<std::shared_ptr<
     // multipart formdata 
     else if( consumeHttpContentTypes.find(U("multipart/form-data")) != consumeHttpContentTypes.end() )
     {
-        httpContentType = U("multipart/form-data");
+        requestHttpContentType = U("multipart/form-data");
         
         
         std::shared_ptr<MultipartFormData> multipart(new MultipartFormData);
@@ -192,16 +253,39 @@ pplx::task<void> UserApi::createUsersWithArrayInput(std::vector<std::shared_ptr<
     
     
     
-    return m_ApiClient->callApi(path, U("POST"), queryParams, httpBody, headerParams, formParams, fileParams, httpContentType)
+    return m_ApiClient->callApi(path, U("POST"), queryParams, httpBody, headerParams, formParams, fileParams, requestHttpContentType)
     .then([=](web::http::http_response response)
     {
-        printf("Received response status code:%u\n", response.status_code());
+		// 1xx - informational : OK
+		// 2xx - successful	   : OK
+		// 3xx - redirection   : OK 
+		// 4xx - client error  : not OK
+		// 5xx - client error  : not OK
+		if (response.status_code() >= 400)
+		{
+			throw ApiException(response.status_code()
+				, U("error calling findPetsByStatus: ") + response.reason_phrase()
+				, std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
+		}
+        
+        // check response content type
+        if(response.headers().has(U("Content-Type")))
+        {
+            utility::string_t contentType = response.headers()[U("Content-Type")];
+            if( contentType.find(responseHttpContentType) == std::string::npos )
+            {
+                throw ApiException(500
+                    , U("error calling findPetsByStatus: unexpected response type: ") + contentType
+                    , std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
+            }
+        }
+        
         return response.extract_string();
     })
-    .then([=](utility::string_t result)
+    .then([=](utility::string_t response)
     {
-        std::wcout << result << std::endl;
         return void();
+        
     });            
 }
 
@@ -218,10 +302,29 @@ pplx::task<void> UserApi::createUsersWithListInput(std::vector<std::shared_ptr<U
     std::map<utility::string_t, utility::string_t> formParams;
     std::map<utility::string_t, std::shared_ptr<HttpContent>> fileParams;
 
-    std::unordered_set<utility::string_t> acceptHttpContentTypes;
-    acceptHttpContentTypes.insert( U("application/xml") );
-    acceptHttpContentTypes.insert( U("application/json") );
+    std::unordered_set<utility::string_t> responseHttpContentTypes;
+    responseHttpContentTypes.insert( U("application/xml") );
+    responseHttpContentTypes.insert( U("application/json") );
     
+    
+    utility::string_t responseHttpContentType;
+    
+    // use JSON if possible
+    if ( responseHttpContentTypes.size() == 0 || responseHttpContentTypes.find(U("application/json")) != responseHttpContentTypes.end() )
+    {
+        responseHttpContentType = U("application/json");
+    }
+    // multipart formdata 
+    else if( responseHttpContentTypes.find(U("multipart/form-data")) != responseHttpContentTypes.end() )
+    {
+        responseHttpContentType = U("multipart/form-data");
+    }
+    else
+    {
+        throw ApiException(400, U("UserApi->createUsersWithListInput does not produce any supported media type"));
+    }    
+    
+    headerParams[U("Accept")] = responseHttpContentType;
     
     std::unordered_set<utility::string_t> consumeHttpContentTypes;
     
@@ -229,12 +332,12 @@ pplx::task<void> UserApi::createUsersWithListInput(std::vector<std::shared_ptr<U
     
 
     std::shared_ptr<IHttpBody> httpBody;
-    utility::string_t httpContentType;
+    utility::string_t requestHttpContentType;
    
     // use JSON if possible
     if ( consumeHttpContentTypes.size() == 0 || consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
     {
-        httpContentType = U("application/json");
+        requestHttpContentType = U("application/json");
 
         
         web::json::value json;
@@ -258,7 +361,7 @@ pplx::task<void> UserApi::createUsersWithListInput(std::vector<std::shared_ptr<U
     // multipart formdata 
     else if( consumeHttpContentTypes.find(U("multipart/form-data")) != consumeHttpContentTypes.end() )
     {
-        httpContentType = U("multipart/form-data");
+        requestHttpContentType = U("multipart/form-data");
         
         
         std::shared_ptr<MultipartFormData> multipart(new MultipartFormData);
@@ -284,16 +387,39 @@ pplx::task<void> UserApi::createUsersWithListInput(std::vector<std::shared_ptr<U
     
     
     
-    return m_ApiClient->callApi(path, U("POST"), queryParams, httpBody, headerParams, formParams, fileParams, httpContentType)
+    return m_ApiClient->callApi(path, U("POST"), queryParams, httpBody, headerParams, formParams, fileParams, requestHttpContentType)
     .then([=](web::http::http_response response)
     {
-        printf("Received response status code:%u\n", response.status_code());
+		// 1xx - informational : OK
+		// 2xx - successful	   : OK
+		// 3xx - redirection   : OK 
+		// 4xx - client error  : not OK
+		// 5xx - client error  : not OK
+		if (response.status_code() >= 400)
+		{
+			throw ApiException(response.status_code()
+				, U("error calling findPetsByStatus: ") + response.reason_phrase()
+				, std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
+		}
+        
+        // check response content type
+        if(response.headers().has(U("Content-Type")))
+        {
+            utility::string_t contentType = response.headers()[U("Content-Type")];
+            if( contentType.find(responseHttpContentType) == std::string::npos )
+            {
+                throw ApiException(500
+                    , U("error calling findPetsByStatus: unexpected response type: ") + contentType
+                    , std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
+            }
+        }
+        
         return response.extract_string();
     })
-    .then([=](utility::string_t result)
+    .then([=](utility::string_t response)
     {
-        std::wcout << result << std::endl;
         return void();
+        
     });            
 }
 
@@ -311,10 +437,29 @@ pplx::task<void> UserApi::deleteUser(utility::string_t username)
     std::map<utility::string_t, utility::string_t> formParams;
     std::map<utility::string_t, std::shared_ptr<HttpContent>> fileParams;
 
-    std::unordered_set<utility::string_t> acceptHttpContentTypes;
-    acceptHttpContentTypes.insert( U("application/xml") );
-    acceptHttpContentTypes.insert( U("application/json") );
+    std::unordered_set<utility::string_t> responseHttpContentTypes;
+    responseHttpContentTypes.insert( U("application/xml") );
+    responseHttpContentTypes.insert( U("application/json") );
     
+    
+    utility::string_t responseHttpContentType;
+    
+    // use JSON if possible
+    if ( responseHttpContentTypes.size() == 0 || responseHttpContentTypes.find(U("application/json")) != responseHttpContentTypes.end() )
+    {
+        responseHttpContentType = U("application/json");
+    }
+    // multipart formdata 
+    else if( responseHttpContentTypes.find(U("multipart/form-data")) != responseHttpContentTypes.end() )
+    {
+        responseHttpContentType = U("multipart/form-data");
+    }
+    else
+    {
+        throw ApiException(400, U("UserApi->deleteUser does not produce any supported media type"));
+    }    
+    
+    headerParams[U("Accept")] = responseHttpContentType;
     
     std::unordered_set<utility::string_t> consumeHttpContentTypes;
     
@@ -326,19 +471,19 @@ pplx::task<void> UserApi::deleteUser(utility::string_t username)
     
 
     std::shared_ptr<IHttpBody> httpBody;
-    utility::string_t httpContentType;
+    utility::string_t requestHttpContentType;
    
     // use JSON if possible
     if ( consumeHttpContentTypes.size() == 0 || consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
     {
-        httpContentType = U("application/json");
+        requestHttpContentType = U("application/json");
 
         
     }
     // multipart formdata 
     else if( consumeHttpContentTypes.find(U("multipart/form-data")) != consumeHttpContentTypes.end() )
     {
-        httpContentType = U("multipart/form-data");
+        requestHttpContentType = U("multipart/form-data");
         
         
     }
@@ -349,16 +494,39 @@ pplx::task<void> UserApi::deleteUser(utility::string_t username)
     
     
     
-    return m_ApiClient->callApi(path, U("DELETE"), queryParams, httpBody, headerParams, formParams, fileParams, httpContentType)
+    return m_ApiClient->callApi(path, U("DELETE"), queryParams, httpBody, headerParams, formParams, fileParams, requestHttpContentType)
     .then([=](web::http::http_response response)
     {
-        printf("Received response status code:%u\n", response.status_code());
+		// 1xx - informational : OK
+		// 2xx - successful	   : OK
+		// 3xx - redirection   : OK 
+		// 4xx - client error  : not OK
+		// 5xx - client error  : not OK
+		if (response.status_code() >= 400)
+		{
+			throw ApiException(response.status_code()
+				, U("error calling findPetsByStatus: ") + response.reason_phrase()
+				, std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
+		}
+        
+        // check response content type
+        if(response.headers().has(U("Content-Type")))
+        {
+            utility::string_t contentType = response.headers()[U("Content-Type")];
+            if( contentType.find(responseHttpContentType) == std::string::npos )
+            {
+                throw ApiException(500
+                    , U("error calling findPetsByStatus: unexpected response type: ") + contentType
+                    , std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
+            }
+        }
+        
         return response.extract_string();
     })
-    .then([=](utility::string_t result)
+    .then([=](utility::string_t response)
     {
-        std::wcout << result << std::endl;
         return void();
+        
     });            
 }
 
@@ -376,10 +544,29 @@ pplx::task<std::shared_ptr<User>> UserApi::getUserByName(utility::string_t usern
     std::map<utility::string_t, utility::string_t> formParams;
     std::map<utility::string_t, std::shared_ptr<HttpContent>> fileParams;
 
-    std::unordered_set<utility::string_t> acceptHttpContentTypes;
-    acceptHttpContentTypes.insert( U("application/xml") );
-    acceptHttpContentTypes.insert( U("application/json") );
+    std::unordered_set<utility::string_t> responseHttpContentTypes;
+    responseHttpContentTypes.insert( U("application/xml") );
+    responseHttpContentTypes.insert( U("application/json") );
     
+    
+    utility::string_t responseHttpContentType;
+    
+    // use JSON if possible
+    if ( responseHttpContentTypes.size() == 0 || responseHttpContentTypes.find(U("application/json")) != responseHttpContentTypes.end() )
+    {
+        responseHttpContentType = U("application/json");
+    }
+    // multipart formdata 
+    else if( responseHttpContentTypes.find(U("multipart/form-data")) != responseHttpContentTypes.end() )
+    {
+        responseHttpContentType = U("multipart/form-data");
+    }
+    else
+    {
+        throw ApiException(400, U("UserApi->getUserByName does not produce any supported media type"));
+    }    
+    
+    headerParams[U("Accept")] = responseHttpContentType;
     
     std::unordered_set<utility::string_t> consumeHttpContentTypes;
     
@@ -391,19 +578,19 @@ pplx::task<std::shared_ptr<User>> UserApi::getUserByName(utility::string_t usern
     
 
     std::shared_ptr<IHttpBody> httpBody;
-    utility::string_t httpContentType;
+    utility::string_t requestHttpContentType;
    
     // use JSON if possible
     if ( consumeHttpContentTypes.size() == 0 || consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
     {
-        httpContentType = U("application/json");
+        requestHttpContentType = U("application/json");
 
         
     }
     // multipart formdata 
     else if( consumeHttpContentTypes.find(U("multipart/form-data")) != consumeHttpContentTypes.end() )
     {
-        httpContentType = U("multipart/form-data");
+        requestHttpContentType = U("multipart/form-data");
         
         
     }
@@ -414,16 +601,57 @@ pplx::task<std::shared_ptr<User>> UserApi::getUserByName(utility::string_t usern
     
     
     
-    return m_ApiClient->callApi(path, U("GET"), queryParams, httpBody, headerParams, formParams, fileParams, httpContentType)
+    return m_ApiClient->callApi(path, U("GET"), queryParams, httpBody, headerParams, formParams, fileParams, requestHttpContentType)
     .then([=](web::http::http_response response)
     {
-        printf("Received response status code:%u\n", response.status_code());
+		// 1xx - informational : OK
+		// 2xx - successful	   : OK
+		// 3xx - redirection   : OK 
+		// 4xx - client error  : not OK
+		// 5xx - client error  : not OK
+		if (response.status_code() >= 400)
+		{
+			throw ApiException(response.status_code()
+				, U("error calling findPetsByStatus: ") + response.reason_phrase()
+				, std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
+		}
+        
+        // check response content type
+        if(response.headers().has(U("Content-Type")))
+        {
+            utility::string_t contentType = response.headers()[U("Content-Type")];
+            if( contentType.find(responseHttpContentType) == std::string::npos )
+            {
+                throw ApiException(500
+                    , U("error calling findPetsByStatus: unexpected response type: ") + contentType
+                    , std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
+            }
+        }
+        
         return response.extract_string();
     })
-    .then([=](utility::string_t result)
+    .then([=](utility::string_t response)
     {
-        std::wcout << result << std::endl;
-        return std::shared_ptr<User>();
+        std::shared_ptr<User> result(new User());
+        
+        if(responseHttpContentType == U("application/json"))
+        {
+            web::json::value json = web::json::value::parse(response);
+            
+            result->fromJson(json);
+        }
+        // else if(responseHttpContentType == U("multipart/form-data"))
+        // {
+        // TODO multipart response parsing    
+        // }
+        else 
+        {
+			throw ApiException(500
+				, U("error calling findPetsByStatus: unsupported response type"));
+        }
+        
+        return result;
+        
     });            
 }
 
@@ -440,10 +668,29 @@ pplx::task<utility::string_t> UserApi::loginUser(utility::string_t username, uti
     std::map<utility::string_t, utility::string_t> formParams;
     std::map<utility::string_t, std::shared_ptr<HttpContent>> fileParams;
 
-    std::unordered_set<utility::string_t> acceptHttpContentTypes;
-    acceptHttpContentTypes.insert( U("application/xml") );
-    acceptHttpContentTypes.insert( U("application/json") );
+    std::unordered_set<utility::string_t> responseHttpContentTypes;
+    responseHttpContentTypes.insert( U("application/xml") );
+    responseHttpContentTypes.insert( U("application/json") );
     
+    
+    utility::string_t responseHttpContentType;
+    
+    // use JSON if possible
+    if ( responseHttpContentTypes.size() == 0 || responseHttpContentTypes.find(U("application/json")) != responseHttpContentTypes.end() )
+    {
+        responseHttpContentType = U("application/json");
+    }
+    // multipart formdata 
+    else if( responseHttpContentTypes.find(U("multipart/form-data")) != responseHttpContentTypes.end() )
+    {
+        responseHttpContentType = U("multipart/form-data");
+    }
+    else
+    {
+        throw ApiException(400, U("UserApi->loginUser does not produce any supported media type"));
+    }    
+    
+    headerParams[U("Accept")] = responseHttpContentType;
     
     std::unordered_set<utility::string_t> consumeHttpContentTypes;
     
@@ -461,19 +708,19 @@ pplx::task<utility::string_t> UserApi::loginUser(utility::string_t username, uti
     
 
     std::shared_ptr<IHttpBody> httpBody;
-    utility::string_t httpContentType;
+    utility::string_t requestHttpContentType;
    
     // use JSON if possible
     if ( consumeHttpContentTypes.size() == 0 || consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
     {
-        httpContentType = U("application/json");
+        requestHttpContentType = U("application/json");
 
         
     }
     // multipart formdata 
     else if( consumeHttpContentTypes.find(U("multipart/form-data")) != consumeHttpContentTypes.end() )
     {
-        httpContentType = U("multipart/form-data");
+        requestHttpContentType = U("multipart/form-data");
         
         
     }
@@ -484,16 +731,58 @@ pplx::task<utility::string_t> UserApi::loginUser(utility::string_t username, uti
     
     
     
-    return m_ApiClient->callApi(path, U("GET"), queryParams, httpBody, headerParams, formParams, fileParams, httpContentType)
+    return m_ApiClient->callApi(path, U("GET"), queryParams, httpBody, headerParams, formParams, fileParams, requestHttpContentType)
     .then([=](web::http::http_response response)
     {
-        printf("Received response status code:%u\n", response.status_code());
+		// 1xx - informational : OK
+		// 2xx - successful	   : OK
+		// 3xx - redirection   : OK 
+		// 4xx - client error  : not OK
+		// 5xx - client error  : not OK
+		if (response.status_code() >= 400)
+		{
+			throw ApiException(response.status_code()
+				, U("error calling findPetsByStatus: ") + response.reason_phrase()
+				, std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
+		}
+        
+        // check response content type
+        if(response.headers().has(U("Content-Type")))
+        {
+            utility::string_t contentType = response.headers()[U("Content-Type")];
+            if( contentType.find(responseHttpContentType) == std::string::npos )
+            {
+                throw ApiException(500
+                    , U("error calling findPetsByStatus: unexpected response type: ") + contentType
+                    , std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
+            }
+        }
+        
         return response.extract_string();
     })
-    .then([=](utility::string_t result)
+    .then([=](utility::string_t response)
     {
-        std::wcout << result << std::endl;
-        return utility::string_t();
+        utility::string_t result(U(""));
+        
+        if(responseHttpContentType == U("application/json"))
+        {
+            web::json::value json = web::json::value::parse(response);
+            
+            result = ModelBase::stringFromJson(json);
+            
+        }
+        // else if(responseHttpContentType == U("multipart/form-data"))
+        // {
+        // TODO multipart response parsing    
+        // }
+        else 
+        {
+			throw ApiException(500
+				, U("error calling findPetsByStatus: unsupported response type"));
+        }
+        
+        return result;
+        
     });            
 }
 
@@ -510,10 +799,29 @@ pplx::task<void> UserApi::logoutUser()
     std::map<utility::string_t, utility::string_t> formParams;
     std::map<utility::string_t, std::shared_ptr<HttpContent>> fileParams;
 
-    std::unordered_set<utility::string_t> acceptHttpContentTypes;
-    acceptHttpContentTypes.insert( U("application/xml") );
-    acceptHttpContentTypes.insert( U("application/json") );
+    std::unordered_set<utility::string_t> responseHttpContentTypes;
+    responseHttpContentTypes.insert( U("application/xml") );
+    responseHttpContentTypes.insert( U("application/json") );
     
+    
+    utility::string_t responseHttpContentType;
+    
+    // use JSON if possible
+    if ( responseHttpContentTypes.size() == 0 || responseHttpContentTypes.find(U("application/json")) != responseHttpContentTypes.end() )
+    {
+        responseHttpContentType = U("application/json");
+    }
+    // multipart formdata 
+    else if( responseHttpContentTypes.find(U("multipart/form-data")) != responseHttpContentTypes.end() )
+    {
+        responseHttpContentType = U("multipart/form-data");
+    }
+    else
+    {
+        throw ApiException(400, U("UserApi->logoutUser does not produce any supported media type"));
+    }    
+    
+    headerParams[U("Accept")] = responseHttpContentType;
     
     std::unordered_set<utility::string_t> consumeHttpContentTypes;
     
@@ -521,19 +829,19 @@ pplx::task<void> UserApi::logoutUser()
     
 
     std::shared_ptr<IHttpBody> httpBody;
-    utility::string_t httpContentType;
+    utility::string_t requestHttpContentType;
    
     // use JSON if possible
     if ( consumeHttpContentTypes.size() == 0 || consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
     {
-        httpContentType = U("application/json");
+        requestHttpContentType = U("application/json");
 
         
     }
     // multipart formdata 
     else if( consumeHttpContentTypes.find(U("multipart/form-data")) != consumeHttpContentTypes.end() )
     {
-        httpContentType = U("multipart/form-data");
+        requestHttpContentType = U("multipart/form-data");
         
         
     }
@@ -544,16 +852,39 @@ pplx::task<void> UserApi::logoutUser()
     
     
     
-    return m_ApiClient->callApi(path, U("GET"), queryParams, httpBody, headerParams, formParams, fileParams, httpContentType)
+    return m_ApiClient->callApi(path, U("GET"), queryParams, httpBody, headerParams, formParams, fileParams, requestHttpContentType)
     .then([=](web::http::http_response response)
     {
-        printf("Received response status code:%u\n", response.status_code());
+		// 1xx - informational : OK
+		// 2xx - successful	   : OK
+		// 3xx - redirection   : OK 
+		// 4xx - client error  : not OK
+		// 5xx - client error  : not OK
+		if (response.status_code() >= 400)
+		{
+			throw ApiException(response.status_code()
+				, U("error calling findPetsByStatus: ") + response.reason_phrase()
+				, std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
+		}
+        
+        // check response content type
+        if(response.headers().has(U("Content-Type")))
+        {
+            utility::string_t contentType = response.headers()[U("Content-Type")];
+            if( contentType.find(responseHttpContentType) == std::string::npos )
+            {
+                throw ApiException(500
+                    , U("error calling findPetsByStatus: unexpected response type: ") + contentType
+                    , std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
+            }
+        }
+        
         return response.extract_string();
     })
-    .then([=](utility::string_t result)
+    .then([=](utility::string_t response)
     {
-        std::wcout << result << std::endl;
         return void();
+        
     });            
 }
 
@@ -577,10 +908,29 @@ pplx::task<void> UserApi::updateUser(utility::string_t username, std::shared_ptr
     std::map<utility::string_t, utility::string_t> formParams;
     std::map<utility::string_t, std::shared_ptr<HttpContent>> fileParams;
 
-    std::unordered_set<utility::string_t> acceptHttpContentTypes;
-    acceptHttpContentTypes.insert( U("application/xml") );
-    acceptHttpContentTypes.insert( U("application/json") );
+    std::unordered_set<utility::string_t> responseHttpContentTypes;
+    responseHttpContentTypes.insert( U("application/xml") );
+    responseHttpContentTypes.insert( U("application/json") );
     
+    
+    utility::string_t responseHttpContentType;
+    
+    // use JSON if possible
+    if ( responseHttpContentTypes.size() == 0 || responseHttpContentTypes.find(U("application/json")) != responseHttpContentTypes.end() )
+    {
+        responseHttpContentType = U("application/json");
+    }
+    // multipart formdata 
+    else if( responseHttpContentTypes.find(U("multipart/form-data")) != responseHttpContentTypes.end() )
+    {
+        responseHttpContentType = U("multipart/form-data");
+    }
+    else
+    {
+        throw ApiException(400, U("UserApi->updateUser does not produce any supported media type"));
+    }    
+    
+    headerParams[U("Accept")] = responseHttpContentType;
     
     std::unordered_set<utility::string_t> consumeHttpContentTypes;
     
@@ -592,12 +942,12 @@ pplx::task<void> UserApi::updateUser(utility::string_t username, std::shared_ptr
     
 
     std::shared_ptr<IHttpBody> httpBody;
-    utility::string_t httpContentType;
+    utility::string_t requestHttpContentType;
    
     // use JSON if possible
     if ( consumeHttpContentTypes.size() == 0 || consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
     {
-        httpContentType = U("application/json");
+        requestHttpContentType = U("application/json");
 
         
         web::json::value json;
@@ -612,7 +962,7 @@ pplx::task<void> UserApi::updateUser(utility::string_t username, std::shared_ptr
     // multipart formdata 
     else if( consumeHttpContentTypes.find(U("multipart/form-data")) != consumeHttpContentTypes.end() )
     {
-        httpContentType = U("multipart/form-data");
+        requestHttpContentType = U("multipart/form-data");
         
         
         std::shared_ptr<MultipartFormData> multipart(new MultipartFormData);
@@ -633,16 +983,39 @@ pplx::task<void> UserApi::updateUser(utility::string_t username, std::shared_ptr
     
     
     
-    return m_ApiClient->callApi(path, U("PUT"), queryParams, httpBody, headerParams, formParams, fileParams, httpContentType)
+    return m_ApiClient->callApi(path, U("PUT"), queryParams, httpBody, headerParams, formParams, fileParams, requestHttpContentType)
     .then([=](web::http::http_response response)
     {
-        printf("Received response status code:%u\n", response.status_code());
+		// 1xx - informational : OK
+		// 2xx - successful	   : OK
+		// 3xx - redirection   : OK 
+		// 4xx - client error  : not OK
+		// 5xx - client error  : not OK
+		if (response.status_code() >= 400)
+		{
+			throw ApiException(response.status_code()
+				, U("error calling findPetsByStatus: ") + response.reason_phrase()
+				, std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
+		}
+        
+        // check response content type
+        if(response.headers().has(U("Content-Type")))
+        {
+            utility::string_t contentType = response.headers()[U("Content-Type")];
+            if( contentType.find(responseHttpContentType) == std::string::npos )
+            {
+                throw ApiException(500
+                    , U("error calling findPetsByStatus: unexpected response type: ") + contentType
+                    , std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
+            }
+        }
+        
         return response.extract_string();
     })
-    .then([=](utility::string_t result)
+    .then([=](utility::string_t response)
     {
-        std::wcout << result << std::endl;
         return void();
+        
     });            
 }
 

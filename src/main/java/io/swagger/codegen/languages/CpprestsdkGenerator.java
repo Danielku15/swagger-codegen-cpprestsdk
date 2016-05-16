@@ -1,7 +1,11 @@
 package io.swagger.codegen.languages;
 
 import io.swagger.codegen.*;
+import io.swagger.codegen.examples.ExampleGenerator;
 import io.swagger.models.Model;
+import io.swagger.models.Operation;
+import io.swagger.models.Response;
+import io.swagger.models.Swagger;
 import io.swagger.models.properties.*;
 
 import java.util.*;
@@ -9,12 +13,12 @@ import java.io.File;
 
 public class CpprestsdkGenerator extends DefaultCodegen implements CodegenConfig {
 
-    public static final String DECLSPEC = "declspec";
-    public static final String DEFAULT_INCLUDE = "defaultInclude";
+	public static final String DECLSPEC = "declspec";
+	public static final String DEFAULT_INCLUDE = "defaultInclude";
 
-    protected String packageVersion = "1.0.0";
-    protected String declspec = "";
-    protected String defaultInclude = "";
+	protected String packageVersion = "1.0.0";
+	protected String declspec = "";
+	protected String defaultInclude = "";
 
 	/**
 	 * Configures the type of generator.
@@ -49,10 +53,9 @@ public class CpprestsdkGenerator extends DefaultCodegen implements CodegenConfig
 	public CpprestsdkGenerator() {
 		super();
 
-        apiPackage  = "io.swagger.client.api";
-        modelPackage = "io.swagger.client.model";
-        
-    
+		apiPackage = "io.swagger.client.api";
+		modelPackage = "io.swagger.client.model";
+
 		modelTemplateFiles.put("model-header.mustache", ".h");
 		modelTemplateFiles.put("model-source.mustache", ".cpp");
 
@@ -60,25 +63,20 @@ public class CpprestsdkGenerator extends DefaultCodegen implements CodegenConfig
 		apiTemplateFiles.put("api-source.mustache", ".cpp");
 
 		templateDir = "cpprestsdk";
-        
-        cliOptions.clear();
 
-        // CLI options
-        addOption(CodegenConstants.MODEL_PACKAGE,
-                "C++ namespace for models (convention: name.space.model).",
-                this.modelPackage);
-        addOption(CodegenConstants.API_PACKAGE,
-                "C++ namespace for apis (convention: name.space.api).",
-                this.apiPackage);
-        addOption(CodegenConstants.PACKAGE_VERSION,
-                "C++ package version.",
-                this.packageVersion);
-        addOption(DECLSPEC,
-                "C++ preprocessor to place before the class name for handling dllexport/dllimport.",
-                this.declspec);
-        addOption(DEFAULT_INCLUDE,
-                "The default include statement that should be placed in all headers for including things like the declspec (convention: #include \"Commons.h\" ",
-                this.defaultInclude);
+		cliOptions.clear();
+
+		// CLI options
+		addOption(CodegenConstants.MODEL_PACKAGE, "C++ namespace for models (convention: name.space.model).",
+				this.modelPackage);
+		addOption(CodegenConstants.API_PACKAGE, "C++ namespace for apis (convention: name.space.api).",
+				this.apiPackage);
+		addOption(CodegenConstants.PACKAGE_VERSION, "C++ package version.", this.packageVersion);
+		addOption(DECLSPEC, "C++ preprocessor to place before the class name for handling dllexport/dllimport.",
+				this.declspec);
+		addOption(DEFAULT_INCLUDE,
+				"The default include statement that should be placed in all headers for including things like the declspec (convention: #include \"Commons.h\" ",
+				this.defaultInclude);
 
 		reservedWords = new HashSet<String>();
 
@@ -125,36 +123,34 @@ public class CpprestsdkGenerator extends DefaultCodegen implements CodegenConfig
 		importMapping.put("utility::string_t", "#include <cpprest/details/basic_types.h>");
 		importMapping.put("utility::datetime", "#include <cpprest/details/basic_types.h>");
 	}
-    
-    protected void addOption(String key, String description, String defaultValue) {
-        CliOption option = new CliOption(key, description);
-        if (defaultValue != null) option.defaultValue(defaultValue);
-        cliOptions.add(option);
-    }
 
-    
-    @Override
-    public void processOpts() {
-        super.processOpts();
-        
-        if(additionalProperties.containsKey(DECLSPEC))
-        {
-            declspec = additionalProperties.get(DECLSPEC).toString();
-        }
+	protected void addOption(String key, String description, String defaultValue) {
+		CliOption option = new CliOption(key, description);
+		if (defaultValue != null)
+			option.defaultValue(defaultValue);
+		cliOptions.add(option);
+	}
 
-        if(additionalProperties.containsKey(DEFAULT_INCLUDE))
-        {
-            defaultInclude = additionalProperties.get(DEFAULT_INCLUDE).toString();
-        }
+	@Override
+	public void processOpts() {
+		super.processOpts();
 
-        additionalProperties.put("modelNamespaceDeclarations", modelPackage.split("\\."));
-        additionalProperties.put("modelNamespace", modelPackage.replaceAll("\\.", "::"));
-        additionalProperties.put("apiNamespaceDeclarations", apiPackage.split("\\."));
-        additionalProperties.put("apiNamespace", apiPackage.replaceAll("\\.", "::"));
-        additionalProperties.put("declspec", declspec);
-        additionalProperties.put("defaultInclude", defaultInclude);
-    }
-    
+		if (additionalProperties.containsKey(DECLSPEC)) {
+			declspec = additionalProperties.get(DECLSPEC).toString();
+		}
+
+		if (additionalProperties.containsKey(DEFAULT_INCLUDE)) {
+			defaultInclude = additionalProperties.get(DEFAULT_INCLUDE).toString();
+		}
+
+		additionalProperties.put("modelNamespaceDeclarations", modelPackage.split("\\."));
+		additionalProperties.put("modelNamespace", modelPackage.replaceAll("\\.", "::"));
+		additionalProperties.put("apiNamespaceDeclarations", apiPackage.split("\\."));
+		additionalProperties.put("apiNamespace", apiPackage.replaceAll("\\.", "::"));
+		additionalProperties.put("declspec", declspec);
+		additionalProperties.put("defaultInclude", defaultInclude);
+	}
+
 	/**
 	 * Escapes a reserved word as defined in the `reservedWords` array. Handle
 	 * escaping those terms here. This logic is only called if a variable
@@ -205,22 +201,39 @@ public class CpprestsdkGenerator extends DefaultCodegen implements CodegenConfig
 				codegenModel.imports.add(newImp);
 			}
 		}
-        
+
 		return codegenModel;
 	}
-    
-    @Override
-    public void postProcessModelProperty(CodegenModel model, CodegenProperty property){
-        if(isFileProperty(property))
-        {
-            property.vendorExtensions.put("x-codegen-file", true);
-        }
-    }
-    
-    protected boolean isFileProperty(CodegenProperty property)
-    {
-        return property.baseType.equals("HttpContent");
-    }
+
+	@Override
+	public CodegenOperation fromOperation(String path, String httpMethod, Operation operation,
+			Map<String, Model> definitions, Swagger swagger) {
+		CodegenOperation op = super.fromOperation(path, httpMethod, operation, definitions, swagger);
+
+		if (operation.getResponses() != null && !operation.getResponses().isEmpty()) {
+			Response methodResponse = findMethodResponse(operation.getResponses());
+
+			if (methodResponse != null) {
+				if (methodResponse.getSchema() != null) {
+					CodegenProperty cm = fromProperty("response", methodResponse.getSchema());
+					op.vendorExtensions.put("x-codegen-response", cm);
+				}
+			}
+		}
+
+		return op;
+	}
+
+	@Override
+	public void postProcessModelProperty(CodegenModel model, CodegenProperty property) {
+		if (isFileProperty(property)) {
+			property.vendorExtensions.put("x-codegen-file", true);
+		}
+	}
+
+	protected boolean isFileProperty(CodegenProperty property) {
+		return property.baseType.equals("HttpContent");
+	}
 
 	@Override
 	public String toModelFilename(String name) {
@@ -303,13 +316,12 @@ public class CpprestsdkGenerator extends DefaultCodegen implements CodegenConfig
 	@Override
 	public void postProcessParameter(CodegenParameter parameter) {
 		super.postProcessParameter(parameter);
-		
+
 		boolean isPrimitiveType = parameter.isPrimitiveType == Boolean.TRUE;
 		boolean isListContainer = parameter.isListContainer == Boolean.TRUE;
 		boolean isString = parameter.isString == Boolean.TRUE;
 
-		if ( !isPrimitiveType && !isListContainer && !isString && !parameter.dataType.startsWith("std::shared_ptr"))
-		{
+		if (!isPrimitiveType && !isListContainer && !isString && !parameter.dataType.startsWith("std::shared_ptr")) {
 			parameter.dataType = "std::shared_ptr<" + parameter.dataType + ">";
 		}
 	}
