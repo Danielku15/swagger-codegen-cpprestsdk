@@ -62,7 +62,7 @@ pplx::task<void> UserApi::createUser(std::shared_ptr<User> body)
     utility::string_t httpContentType;
    
     // use JSON if possible
-    if ( consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
+    if ( consumeHttpContentTypes.size() == 0 || consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
     {
         httpContentType = U("application/json");
 
@@ -140,7 +140,7 @@ pplx::task<void> UserApi::createUsersWithArrayInput(std::vector<std::shared_ptr<
     utility::string_t httpContentType;
    
     // use JSON if possible
-    if ( consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
+    if ( consumeHttpContentTypes.size() == 0 || consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
     {
         httpContentType = U("application/json");
 
@@ -232,7 +232,7 @@ pplx::task<void> UserApi::createUsersWithListInput(std::vector<std::shared_ptr<U
     utility::string_t httpContentType;
    
     // use JSON if possible
-    if ( consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
+    if ( consumeHttpContentTypes.size() == 0 || consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
     {
         httpContentType = U("application/json");
 
@@ -329,7 +329,7 @@ pplx::task<void> UserApi::deleteUser(utility::string_t username)
     utility::string_t httpContentType;
    
     // use JSON if possible
-    if ( consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
+    if ( consumeHttpContentTypes.size() == 0 || consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
     {
         httpContentType = U("application/json");
 
@@ -394,7 +394,7 @@ pplx::task<std::shared_ptr<User>> UserApi::getUserByName(utility::string_t usern
     utility::string_t httpContentType;
    
     // use JSON if possible
-    if ( consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
+    if ( consumeHttpContentTypes.size() == 0 || consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
     {
         httpContentType = U("application/json");
 
@@ -464,7 +464,7 @@ pplx::task<utility::string_t> UserApi::loginUser(utility::string_t username, uti
     utility::string_t httpContentType;
    
     // use JSON if possible
-    if ( consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
+    if ( consumeHttpContentTypes.size() == 0 || consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
     {
         httpContentType = U("application/json");
 
@@ -524,7 +524,7 @@ pplx::task<void> UserApi::logoutUser()
     utility::string_t httpContentType;
    
     // use JSON if possible
-    if ( consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
+    if ( consumeHttpContentTypes.size() == 0 || consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
     {
         httpContentType = U("application/json");
 
@@ -595,7 +595,7 @@ pplx::task<void> UserApi::updateUser(utility::string_t username, std::shared_ptr
     utility::string_t httpContentType;
    
     // use JSON if possible
-    if ( consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
+    if ( consumeHttpContentTypes.size() == 0 || consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
     {
         httpContentType = U("application/json");
 

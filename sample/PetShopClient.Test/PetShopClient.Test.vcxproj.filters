@@ -16,6 +16,9 @@
     <Filter Include="Models">
       <UniqueIdentifier>{830ca098-a675-478c-baa8-22217b6feb17}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Api">
+      <UniqueIdentifier>{442d9915-5c90-4fb3-9d6b-25dc3808d7f5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CategoryTests.cpp">
@@ -29,6 +32,9 @@
     </ClCompile>
     <ClCompile Include="PetShopTests.cpp">
       <Filter>Models</Filter>
+    </ClCompile>
+    <ClCompile Include="PetApiTests.cpp">
+      <Filter>Api</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

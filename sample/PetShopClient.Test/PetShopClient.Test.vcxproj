@@ -56,7 +56,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(SolutionDir)PetShopClient\;$(SolutionDir)PetShopClient\generated;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)PetShopClient\;$(SolutionDir)PetShopClient\generated;$(SolutionDir)PetShopClient\generated\api;$(SolutionDir)PetShopClient\generated\model;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MinimalRebuild>false</MinimalRebuild>
     </ClCompile>
     <Link>
@@ -73,7 +73,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)PetShopClient\;$(SolutionDir)PetShopClient\generated;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)PetShopClient\;$(SolutionDir)PetShopClient\generated;$(SolutionDir)PetShopClient\generated\api;$(SolutionDir)PetShopClient\generated\model;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -84,6 +84,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CategoryTests.cpp" />
+    <ClCompile Include="PetApiTests.cpp" />
     <ClCompile Include="PetShopTests.cpp" />
     <ClCompile Include="PetTests.cpp" />
     <ClCompile Include="TagTests.cpp" />

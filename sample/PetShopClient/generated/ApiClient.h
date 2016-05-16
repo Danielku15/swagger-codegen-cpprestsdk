@@ -59,11 +59,11 @@ public:
     pplx::task<web::http::http_response> callApi( 
         const utility::string_t& path, 
         const utility::string_t& method, 
-        const std::map<utility::string_t, utility::string_t> queryParams, 
+        const std::map<utility::string_t, utility::string_t>& queryParams, 
         const std::shared_ptr<IHttpBody> postBody, 
-        const std::map<utility::string_t, utility::string_t> headerParams, 
-        const std::map<utility::string_t, utility::string_t> formParams, 
-        const std::map<utility::string_t, std::shared_ptr<HttpContent>> fileParams,
+        const std::map<utility::string_t, utility::string_t>& headerParams, 
+        const std::map<utility::string_t, utility::string_t>& formParams, 
+        const std::map<utility::string_t, std::shared_ptr<HttpContent>>& fileParams,
         const utility::string_t& contentType
     ) const;
     

@@ -70,7 +70,7 @@ pplx::task<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}void{{/r
     utility::string_t httpContentType;
    
     // use JSON if possible
-    if ( consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
+    if ( consumeHttpContentTypes.size() == 0 || consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
     {
         httpContentType = U("application/json");
 

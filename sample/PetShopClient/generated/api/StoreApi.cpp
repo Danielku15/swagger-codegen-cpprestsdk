@@ -61,7 +61,7 @@ pplx::task<void> StoreApi::deleteOrder(int64_t orderId)
     utility::string_t httpContentType;
    
     // use JSON if possible
-    if ( consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
+    if ( consumeHttpContentTypes.size() == 0 || consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
     {
         httpContentType = U("application/json");
 
@@ -120,7 +120,7 @@ pplx::task<std::map<utility::string_t, int32_t>> StoreApi::getInventory()
     utility::string_t httpContentType;
    
     // use JSON if possible
-    if ( consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
+    if ( consumeHttpContentTypes.size() == 0 || consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
     {
         httpContentType = U("application/json");
 
@@ -201,7 +201,7 @@ pplx::task<std::shared_ptr<Order>> StoreApi::getOrderById(int64_t orderId)
     utility::string_t httpContentType;
    
     // use JSON if possible
-    if ( consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
+    if ( consumeHttpContentTypes.size() == 0 || consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
     {
         httpContentType = U("application/json");
 
@@ -267,7 +267,7 @@ pplx::task<std::shared_ptr<Order>> StoreApi::placeOrder(std::shared_ptr<Order> b
     utility::string_t httpContentType;
    
     // use JSON if possible
-    if ( consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
+    if ( consumeHttpContentTypes.size() == 0 || consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
     {
         httpContentType = U("application/json");
 

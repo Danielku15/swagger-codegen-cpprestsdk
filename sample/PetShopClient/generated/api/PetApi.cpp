@@ -64,7 +64,7 @@ pplx::task<void> PetApi::addPet(std::shared_ptr<Pet> body)
     utility::string_t httpContentType;
    
     // use JSON if possible
-    if ( consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
+    if ( consumeHttpContentTypes.size() == 0 || consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
     {
         httpContentType = U("application/json");
 
@@ -159,7 +159,7 @@ pplx::task<void> PetApi::deletePet(int64_t petId, utility::string_t apiKey)
     utility::string_t httpContentType;
    
     // use JSON if possible
-    if ( consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
+    if ( consumeHttpContentTypes.size() == 0 || consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
     {
         httpContentType = U("application/json");
 
@@ -231,7 +231,7 @@ pplx::task<std::vector<std::shared_ptr<Pet>>> PetApi::findPetsByStatus(std::vect
     utility::string_t httpContentType;
    
     // use JSON if possible
-    if ( consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
+    if ( consumeHttpContentTypes.size() == 0 || consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
     {
         httpContentType = U("application/json");
 
@@ -303,7 +303,7 @@ pplx::task<std::vector<std::shared_ptr<Pet>>> PetApi::findPetsByTags(std::vector
     utility::string_t httpContentType;
    
     // use JSON if possible
-    if ( consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
+    if ( consumeHttpContentTypes.size() == 0 || consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
     {
         httpContentType = U("application/json");
 
@@ -375,7 +375,7 @@ pplx::task<std::shared_ptr<Pet>> PetApi::getPetById(int64_t petId)
     utility::string_t httpContentType;
    
     // use JSON if possible
-    if ( consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
+    if ( consumeHttpContentTypes.size() == 0 || consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
     {
         httpContentType = U("application/json");
 
@@ -459,7 +459,7 @@ pplx::task<void> PetApi::updatePet(std::shared_ptr<Pet> body)
     utility::string_t httpContentType;
    
     // use JSON if possible
-    if ( consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
+    if ( consumeHttpContentTypes.size() == 0 || consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
     {
         httpContentType = U("application/json");
 
@@ -560,7 +560,7 @@ pplx::task<void> PetApi::updatePetWithForm(int64_t petId, utility::string_t name
     utility::string_t httpContentType;
    
     // use JSON if possible
-    if ( consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
+    if ( consumeHttpContentTypes.size() == 0 || consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
     {
         httpContentType = U("application/json");
 
@@ -642,7 +642,7 @@ pplx::task<std::shared_ptr<ApiResponse>> PetApi::uploadFile(int64_t petId, utili
     utility::string_t httpContentType;
    
     // use JSON if possible
-    if ( consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
+    if ( consumeHttpContentTypes.size() == 0 || consumeHttpContentTypes.find(U("application/json")) != consumeHttpContentTypes.end() )
     {
         httpContentType = U("application/json");
 
