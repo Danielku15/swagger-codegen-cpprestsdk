@@ -34,13 +34,13 @@ public:
 	/////////////////////////////////////////////
 	/// ModelBase overrides
 	
-    virtual void validate() override;
+    void validate() override;
 
-    virtual web::json::value toJson() const override;
-    virtual void fromJson(web::json::value& json) override;
+    web::json::value toJson() const override;
+    void fromJson(web::json::value& json) override;
 
-    virtual void toMultipart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& namePrefix) const override;
-    virtual void fromMultiPart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& namePrefix) override;
+    void toMultipart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& namePrefix) const override;
+    void fromMultiPart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& namePrefix) override;
     
  	/////////////////////////////////////////////
 	/// Order members
@@ -51,7 +51,7 @@ public:
     /// </summary>
     int64_t getId() const;
     void setId(int64_t value);
-    bool IdIsSet();
+    bool idIsSet() const;
     void unsetId();
     
     
@@ -60,7 +60,7 @@ public:
     /// </summary>
     int64_t getPetId() const;
     void setPetId(int64_t value);
-    bool PetIdIsSet();
+    bool petIdIsSet() const;
     void unsetPetId();
     
     
@@ -69,7 +69,7 @@ public:
     /// </summary>
     int32_t getQuantity() const;
     void setQuantity(int32_t value);
-    bool QuantityIsSet();
+    bool quantityIsSet() const;
     void unsetQuantity();
     
     
@@ -78,7 +78,7 @@ public:
     /// </summary>
     utility::datetime getShipDate() const;
     void setShipDate(utility::datetime value);
-    bool ShipDateIsSet();
+    bool shipDateIsSet() const;
     void unsetShipDate();
     
     
@@ -87,7 +87,7 @@ public:
     /// </summary>
     utility::string_t getStatus() const;
     void setStatus(utility::string_t value);
-    bool StatusIsSet();
+    bool statusIsSet() const;
     void unsetStatus();
     
     
@@ -96,7 +96,7 @@ public:
     /// </summary>
     bool getComplete() const;
     void setComplete(bool value);
-    bool CompleteIsSet();
+    bool completeIsSet() const;
     void unsetComplete();
     
     

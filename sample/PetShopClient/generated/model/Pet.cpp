@@ -12,6 +12,14 @@ namespace model {
 
 Pet::Pet()
 {
+    m_Id = 0L;
+    m_IdIsSet = false;
+    m_CategoryIsSet = false;
+    m_Name = U("");
+    m_TagsIsSet = false;
+    m_Status = U("");
+    m_StatusIsSet = false;
+    
 }
 
 Pet::~Pet()
@@ -25,7 +33,7 @@ void Pet::validate()
 
 web::json::value Pet::toJson() const
 {
-    web::json::value val;
+    web::json::value val = web::json::value::object();
      
 	if(m_IdIsSet)
     {
@@ -128,8 +136,14 @@ void Pet::fromJson(web::json::value& val)
     
 }
 
-void Pet::toMultipart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& namePrefix) const
+void Pet::toMultipart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& prefix) const
 {
+    utility::string_t namePrefix = prefix;
+	if(namePrefix.size() > 0 && namePrefix[namePrefix.size() - 1] != U('.'))
+	{
+		namePrefix += U(".");
+	}
+
 	if(m_IdIsSet)
     {
         multipart->add(ModelBase::toHttpContent(namePrefix + U("id"), m_Id));
@@ -173,8 +187,14 @@ void Pet::toMultipart(std::shared_ptr<MultipartFormData> multipart, const utilit
     
 }
 
-void Pet::fromMultiPart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& namePrefix)
+void Pet::fromMultiPart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& prefix)
 {
+    utility::string_t namePrefix = prefix;
+	if(namePrefix.size() > 0 && namePrefix[namePrefix.size() - 1] != U('.'))
+	{
+		namePrefix += U(".");
+	}
+
     if(multipart->hasContent(U("id")))
     {
         setId(ModelBase::int64_tFromHttpContent(multipart->getContent(U("id"))));
@@ -244,9 +264,10 @@ int64_t Pet::getId() const
 void Pet::setId(int64_t value)
 {
 	m_Id = value;
+    m_IdIsSet = true;
 }
  
-bool Pet::IdIsSet() 
+bool Pet::idIsSet() const
 {
     return m_IdIsSet;
 }
@@ -262,9 +283,10 @@ std::shared_ptr<Category> Pet::getCategory() const
 void Pet::setCategory(std::shared_ptr<Category> value)
 {
 	m_Category = value;
+    m_CategoryIsSet = true;
 }
  
-bool Pet::CategoryIsSet() 
+bool Pet::categoryIsSet() const
 {
     return m_CategoryIsSet;
 }
@@ -280,6 +302,7 @@ utility::string_t Pet::getName() const
 void Pet::setName(utility::string_t value)
 {
 	m_Name = value;
+    
 }
  
 
@@ -294,7 +317,7 @@ std::vector<std::shared_ptr<Tag>>& Pet::getTags()
 	return m_Tags;
 }
  
-bool Pet::TagsIsSet() 
+bool Pet::tagsIsSet() const
 {
     return m_TagsIsSet;
 }
@@ -310,9 +333,10 @@ utility::string_t Pet::getStatus() const
 void Pet::setStatus(utility::string_t value)
 {
 	m_Status = value;
+    m_StatusIsSet = true;
 }
  
-bool Pet::StatusIsSet() 
+bool Pet::statusIsSet() const
 {
     return m_StatusIsSet;
 }

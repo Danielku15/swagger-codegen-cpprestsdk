@@ -36,9 +36,6 @@
     <ClCompile Include="generated\ApiException.cpp">
       <Filter>Generated\Api</Filter>
     </ClCompile>
-    <ClCompile Include="generated\model\ApiResponse.cpp">
-      <Filter>Generated\Api</Filter>
-    </ClCompile>
     <ClCompile Include="generated\api\UserApi.cpp">
       <Filter>Generated\Api</Filter>
     </ClCompile>
@@ -75,6 +72,9 @@
     <ClCompile Include="generated\model\User.cpp">
       <Filter>Generated\Models</Filter>
     </ClCompile>
+    <ClCompile Include="generated\model\ApiResponse.cpp">
+      <Filter>Generated\Models</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Commons.h">
@@ -87,9 +87,6 @@
       <Filter>Generated\Api</Filter>
     </ClInclude>
     <ClInclude Include="generated\ApiException.h">
-      <Filter>Generated\Api</Filter>
-    </ClInclude>
-    <ClInclude Include="generated\model\ApiResponse.h">
       <Filter>Generated\Api</Filter>
     </ClInclude>
     <ClInclude Include="generated\model\Category.h">
@@ -130,6 +127,9 @@
     </ClInclude>
     <ClInclude Include="generated\api\UserApi.h">
       <Filter>Generated\Api</Filter>
+    </ClInclude>
+    <ClInclude Include="generated\model\ApiResponse.h">
+      <Filter>Generated\Models</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

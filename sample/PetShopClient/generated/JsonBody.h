@@ -10,7 +10,6 @@
 #include "Commons.h"
 #include "IHttpBody.h"
 
-#include <cpprest/details/basic_types.h>
 #include <cpprest/json.h> 
 
 
@@ -28,7 +27,7 @@ public:
     JsonBody( const web::json::value& value );
     virtual ~JsonBody();
 
-    virtual void writeTo( std::ostream& target );
+    void writeTo( std::ostream& target ) override;
     
 protected:
     web::json::value m_Json;

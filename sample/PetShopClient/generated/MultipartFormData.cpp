@@ -19,6 +19,12 @@ MultipartFormData::MultipartFormData()
     m_Boundary = uuidString.str();
 }
 
+MultipartFormData::MultipartFormData(const utility::string_t& boundary)
+    : m_Boundary(boundary)
+{
+
+}
+
 MultipartFormData::~MultipartFormData()
 {
 }
@@ -56,23 +62,23 @@ void MultipartFormData::writeTo( std::ostream& target )
         std::shared_ptr<HttpContent> content = m_Contents[i];
 
         // boundary
-        target << "\r\n" << "--" << ModelBase::wstringToString( m_Boundary ) << "\r\n";
+        target << "\r\n" << "--" << utility::conversions::to_utf8string( m_Boundary ) << "\r\n";
 
         // headers
-        target << "Content-Disposition: " << ModelBase::wstringToString( content->getContentDisposition() );
+        target << "Content-Disposition: " << utility::conversions::to_utf8string( content->getContentDisposition() );
         if ( content->getName().size() > 0 )
         {
-            target << "; name=\"" << ModelBase::wstringToString( content->getName() );
+            target << "; name=\"" << utility::conversions::to_utf8string( content->getName() ) << "\"";
         }
         if ( content->getFileName().size() > 0 )
         {
-            target << "; filename=\"" << ModelBase::wstringToString( content->getFileName() ) << "\"";
+            target << "; filename=\"" << utility::conversions::to_utf8string( content->getFileName() ) << "\"";
         }
         target << "\r\n";
 
         if ( content->getContentType().size() > 0 )
         {
-            target << "Content-Type: " << ModelBase::wstringToString( content->getContentType() ) << "\r\n";
+            target << "Content-Type: " << utility::conversions::to_utf8string( content->getContentType() ) << "\r\n";
         }
 
         target << "\r\n";
@@ -83,7 +89,7 @@ void MultipartFormData::writeTo( std::ostream& target )
         target << data->rdbuf();
     }
 
-    target << "\r\n--" << ModelBase::wstringToString( m_Boundary ) << "--\r\n";
+    target << "\r\n--" << utility::conversions::to_utf8string( m_Boundary ) << "--\r\n";
 }
 
 

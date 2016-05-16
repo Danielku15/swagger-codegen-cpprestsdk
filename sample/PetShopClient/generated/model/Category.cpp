@@ -12,6 +12,11 @@ namespace model {
 
 Category::Category()
 {
+    m_Id = 0L;
+    m_IdIsSet = false;
+    m_Name = U("");
+    m_NameIsSet = false;
+    
 }
 
 Category::~Category()
@@ -25,7 +30,7 @@ void Category::validate()
 
 web::json::value Category::toJson() const
 {
-    web::json::value val;
+    web::json::value val = web::json::value::object();
      
 	if(m_IdIsSet)
     {
@@ -54,8 +59,14 @@ void Category::fromJson(web::json::value& val)
     
 }
 
-void Category::toMultipart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& namePrefix) const
+void Category::toMultipart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& prefix) const
 {
+    utility::string_t namePrefix = prefix;
+	if(namePrefix.size() > 0 && namePrefix[namePrefix.size() - 1] != U('.'))
+	{
+		namePrefix += U(".");
+	}
+
 	if(m_IdIsSet)
     {
         multipart->add(ModelBase::toHttpContent(namePrefix + U("id"), m_Id));
@@ -68,8 +79,14 @@ void Category::toMultipart(std::shared_ptr<MultipartFormData> multipart, const u
     
 }
 
-void Category::fromMultiPart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& namePrefix)
+void Category::fromMultiPart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& prefix)
 {
+    utility::string_t namePrefix = prefix;
+	if(namePrefix.size() > 0 && namePrefix[namePrefix.size() - 1] != U('.'))
+	{
+		namePrefix += U(".");
+	}
+
     if(multipart->hasContent(U("id")))
     {
         setId(ModelBase::int64_tFromHttpContent(multipart->getContent(U("id"))));
@@ -90,9 +107,10 @@ int64_t Category::getId() const
 void Category::setId(int64_t value)
 {
 	m_Id = value;
+    m_IdIsSet = true;
 }
  
-bool Category::IdIsSet() 
+bool Category::idIsSet() const
 {
     return m_IdIsSet;
 }
@@ -108,9 +126,10 @@ utility::string_t Category::getName() const
 void Category::setName(utility::string_t value)
 {
 	m_Name = value;
+    m_NameIsSet = true;
 }
  
-bool Category::NameIsSet() 
+bool Category::nameIsSet() const
 {
     return m_NameIsSet;
 }

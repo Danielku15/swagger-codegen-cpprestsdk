@@ -8,11 +8,7 @@
 #define IHttpBody_H_
 
 #include "Commons.h"
-
-#include <memory>
-
-#include <cpprest/details/basic_types.h> 
-
+#include <iostream>
 
 
 namespace swagger {

@@ -37,13 +37,13 @@ public:
 	/////////////////////////////////////////////
 	/// ModelBase overrides
 	
-    virtual void validate() override;
+    void validate() override;
 
-    virtual web::json::value toJson() const override;
-    virtual void fromJson(web::json::value& json) override;
+    web::json::value toJson() const override;
+    void fromJson(web::json::value& json) override;
 
-    virtual void toMultipart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& namePrefix) const override;
-    virtual void fromMultiPart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& namePrefix) override;
+    void toMultipart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& namePrefix) const override;
+    void fromMultiPart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& namePrefix) override;
     
  	/////////////////////////////////////////////
 	/// Pet members
@@ -54,7 +54,7 @@ public:
     /// </summary>
     int64_t getId() const;
     void setId(int64_t value);
-    bool IdIsSet();
+    bool idIsSet() const;
     void unsetId();
     
     
@@ -63,7 +63,7 @@ public:
     /// </summary>
     std::shared_ptr<Category> getCategory() const;
     void setCategory(std::shared_ptr<Category> value);
-    bool CategoryIsSet();
+    bool categoryIsSet() const;
     void unsetCategory();
     
     
@@ -84,7 +84,7 @@ public:
     /// 
     /// </summary>
     std::vector<std::shared_ptr<Tag>>& getTags();
-    bool TagsIsSet();
+    bool tagsIsSet() const;
     void unsetTags();
     
     
@@ -93,7 +93,7 @@ public:
     /// </summary>
     utility::string_t getStatus() const;
     void setStatus(utility::string_t value);
-    bool StatusIsSet();
+    bool statusIsSet() const;
     void unsetStatus();
     
     

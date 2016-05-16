@@ -22,8 +22,8 @@ ApiException::ApiException( uint32_t statusCode
     , std::shared_ptr<std::istream> content /*= nullptr*/ )
     : m_StatusCode(statusCode)
     , m_Message(message)
-    , m_Headers(headers)
     , m_Content(content)
+    , m_Headers(headers)
 {
 }
 
@@ -39,7 +39,7 @@ utility::string_t ApiException::getMessage() const
 {
     return m_Message;
 }
-std::shared_ptr<std::istream> ApiException::getContent()
+std::shared_ptr<std::istream> ApiException::getContent() const
 {
     return m_Content;
 }

@@ -34,13 +34,13 @@ public:
 	/////////////////////////////////////////////
 	/// ModelBase overrides
 	
-    virtual void validate() override;
+    void validate() override;
 
-    virtual web::json::value toJson() const override;
-    virtual void fromJson(web::json::value& json) override;
+    web::json::value toJson() const override;
+    void fromJson(web::json::value& json) override;
 
-    virtual void toMultipart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& namePrefix) const override;
-    virtual void fromMultiPart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& namePrefix) override;
+    void toMultipart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& namePrefix) const override;
+    void fromMultiPart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& namePrefix) override;
     
  	/////////////////////////////////////////////
 	/// ApiResponse members
@@ -51,7 +51,7 @@ public:
     /// </summary>
     int32_t getCode() const;
     void setCode(int32_t value);
-    bool CodeIsSet();
+    bool codeIsSet() const;
     void unsetCode();
     
     
@@ -60,7 +60,7 @@ public:
     /// </summary>
     utility::string_t getType() const;
     void setType(utility::string_t value);
-    bool TypeIsSet();
+    bool typeIsSet() const;
     void unsetType();
     
     
@@ -69,7 +69,7 @@ public:
     /// </summary>
     utility::string_t getMessage() const;
     void setMessage(utility::string_t value);
-    bool MessageIsSet();
+    bool messageIsSet() const;
     void unsetMessage();
     
     

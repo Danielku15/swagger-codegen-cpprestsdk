@@ -34,13 +34,13 @@ public:
 	/////////////////////////////////////////////
 	/// ModelBase overrides
 	
-    virtual void validate() override;
+    void validate() override;
 
-    virtual web::json::value toJson() const override;
-    virtual void fromJson(web::json::value& json) override;
+    web::json::value toJson() const override;
+    void fromJson(web::json::value& json) override;
 
-    virtual void toMultipart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& namePrefix) const override;
-    virtual void fromMultiPart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& namePrefix) override;
+    void toMultipart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& namePrefix) const override;
+    void fromMultiPart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& namePrefix) override;
     
  	/////////////////////////////////////////////
 	/// User members
@@ -51,7 +51,7 @@ public:
     /// </summary>
     int64_t getId() const;
     void setId(int64_t value);
-    bool IdIsSet();
+    bool idIsSet() const;
     void unsetId();
     
     
@@ -60,7 +60,7 @@ public:
     /// </summary>
     utility::string_t getUsername() const;
     void setUsername(utility::string_t value);
-    bool UsernameIsSet();
+    bool usernameIsSet() const;
     void unsetUsername();
     
     
@@ -69,7 +69,7 @@ public:
     /// </summary>
     utility::string_t getFirstName() const;
     void setFirstName(utility::string_t value);
-    bool FirstNameIsSet();
+    bool firstNameIsSet() const;
     void unsetFirstName();
     
     
@@ -78,7 +78,7 @@ public:
     /// </summary>
     utility::string_t getLastName() const;
     void setLastName(utility::string_t value);
-    bool LastNameIsSet();
+    bool lastNameIsSet() const;
     void unsetLastName();
     
     
@@ -87,7 +87,7 @@ public:
     /// </summary>
     utility::string_t getEmail() const;
     void setEmail(utility::string_t value);
-    bool EmailIsSet();
+    bool emailIsSet() const;
     void unsetEmail();
     
     
@@ -96,7 +96,7 @@ public:
     /// </summary>
     utility::string_t getPassword() const;
     void setPassword(utility::string_t value);
-    bool PasswordIsSet();
+    bool passwordIsSet() const;
     void unsetPassword();
     
     
@@ -105,7 +105,7 @@ public:
     /// </summary>
     utility::string_t getPhone() const;
     void setPhone(utility::string_t value);
-    bool PhoneIsSet();
+    bool phoneIsSet() const;
     void unsetPhone();
     
     
@@ -114,7 +114,7 @@ public:
     /// </summary>
     int32_t getUserStatus() const;
     void setUserStatus(int32_t value);
-    bool UserStatusIsSet();
+    bool userStatusIsSet() const;
     void unsetUserStatus();
     
     

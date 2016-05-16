@@ -33,10 +33,9 @@ class PETSHOP_DECLSPEC ApiClient
 {
 public:
     ApiClient( std::shared_ptr<ApiConfiguration> configuration = nullptr );
-    ApiClient( const utility::string_t& basePath );
     virtual ~ApiClient();
     
-    std::shared_ptr<ApiConfiguration> getConfiguration();
+    std::shared_ptr<ApiConfiguration> getConfiguration() const;
     void setConfiguration(std::shared_ptr<ApiConfiguration> configuration);
     
     static utility::string_t parameterToString(utility::string_t value);
@@ -48,7 +47,6 @@ public:
     {
         utility::stringstream_t ss;
         
-        int i = 0;
         for( size_t i = 0; i < value.size(); i++)
         {
             if( i > 0) ss << U(", ");
@@ -65,10 +63,9 @@ public:
         const std::shared_ptr<IHttpBody> postBody, 
         const std::map<utility::string_t, utility::string_t> headerParams, 
         const std::map<utility::string_t, utility::string_t> formParams, 
-        const std::map<utility::string_t, std::shared_ptr<HttpContent>> fileParams, 
-        const std::map<utility::string_t, utility::string_t> pathParams, 
+        const std::map<utility::string_t, std::shared_ptr<HttpContent>> fileParams,
         const utility::string_t& contentType
-    );
+    ) const;
     
 protected:
 

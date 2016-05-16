@@ -81,7 +81,7 @@ std::shared_ptr<HttpContent> ModelBase::toHttpContent( const utility::string_t& 
     content->setName( name );
     content->setContentDisposition( U("form-data") );
     content->setContentType( contentType );
-    content->setData( std::shared_ptr<std::istream>( new std::stringstream( ModelBase::wstringToString(value) ) ) );
+    content->setData( std::shared_ptr<std::istream>( new std::stringstream( utility::conversions::to_utf8string(value) ) ) );
     return content;
 }
 std::shared_ptr<HttpContent> ModelBase::toHttpContent( const utility::string_t& name, const utility::datetime& value, const utility::string_t& contentType )
@@ -90,7 +90,7 @@ std::shared_ptr<HttpContent> ModelBase::toHttpContent( const utility::string_t& 
     content->setName( name );
     content->setContentDisposition( U("form-data") );
     content->setContentType( contentType );
-    content->setData( std::shared_ptr<std::istream>( new std::stringstream( ModelBase::wstringToString(value.to_string(utility::datetime::ISO_8601) ) ) ) );
+    content->setData( std::shared_ptr<std::istream>( new std::stringstream( utility::conversions::to_utf8string(value.to_string(utility::datetime::ISO_8601) ) ) ) );
     return content;
 }
 std::shared_ptr<HttpContent> ModelBase::toHttpContent( const utility::string_t& name, std::shared_ptr<HttpContent> value )
@@ -109,7 +109,7 @@ std::shared_ptr<HttpContent> ModelBase::toHttpContent( const utility::string_t& 
     content->setName( name );
     content->setContentDisposition( U("form-data") );
     content->setContentType( contentType );
-    content->setData( std::shared_ptr<std::istream>( new std::stringstream( ModelBase::wstringToString(value.serialize()) ) ) );
+    content->setData( std::shared_ptr<std::istream>( new std::stringstream( utility::conversions::to_utf8string(value.serialize()) ) ) );
     return content;
 }
 std::shared_ptr<HttpContent> ModelBase::toHttpContent( const utility::string_t& name, int32_t value, const utility::string_t& contentType )
@@ -145,7 +145,7 @@ const static char Base64Chars[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrs
 const static char Base64PadChar = '=';
 utility::string_t ModelBase::toBase64( utility::string_t value )
 {
-    std::shared_ptr<std::istream> source( new std::stringstream( ModelBase::wstringToString(value) ) );
+    std::shared_ptr<std::istream> source( new std::stringstream( utility::conversions::to_utf8string(value) ) );
     return ModelBase::toBase64(source);
 }
 utility::string_t ModelBase::toBase64( std::shared_ptr<std::istream> value )
@@ -245,7 +245,7 @@ std::shared_ptr<std::istream> ModelBase::fromBase64( const utility::string_t& en
             {
                 throw web::json::json_exception( U( "Non-Valid Character in Base 64!" ) );
             }
-            cursor++;
+            ++cursor;
         }
 
         outBuf[0] = (temp >> 16) & 0x000000FF;
@@ -255,20 +255,6 @@ std::shared_ptr<std::istream> ModelBase::fromBase64( const utility::string_t& en
     }
 
     return result;
-}
-
-std::string ModelBase::wstringToString( const std::wstring& value )
-{
-    char const* p = reinterpret_cast<char const*>(&value[0]);
-    std::size_t size = value.size() * sizeof( value.front() );
-    return std::string(p, size);
-}
-
-std::wstring ModelBase::stringToWstring( const std::string& value )
-{
-    wchar_t const* p = reinterpret_cast<wchar_t const*>(&value[0]);
-    std::size_t size = value.size() % 2 == 0 ? value.size() : value.size() - 1;
-    return std::wstring(p, size * sizeof(wchar_t));
 }
 
 int64_t ModelBase::int64_tFromJson(web::json::value& val)
@@ -323,7 +309,7 @@ utility::string_t ModelBase::stringFromHttpContent(std::shared_ptr<HttpContent> 
     std::string str((std::istreambuf_iterator<char>(*data.get())),
                  std::istreambuf_iterator<char>());
     
-    return ModelBase::stringToWstring(str);
+    return utility::conversions::to_utf16string(str);
 }
 utility::datetime ModelBase::dateFromHttpContent(std::shared_ptr<HttpContent> val)
 {

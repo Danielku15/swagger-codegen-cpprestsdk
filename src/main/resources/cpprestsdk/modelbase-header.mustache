@@ -67,8 +67,6 @@ public:
     static utility::string_t toBase64( utility::string_t value );
     static utility::string_t toBase64( std::shared_ptr<std::istream> value );
     static std::shared_ptr<std::istream> fromBase64( const utility::string_t& encoded );
-    static std::string wstringToString( const std::wstring& value );
-    static std::wstring stringToWstring( const std::string& value );
 };
 
 {{#modelNamespaceDeclarations}}

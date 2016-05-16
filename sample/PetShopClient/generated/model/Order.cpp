@@ -12,6 +12,19 @@ namespace model {
 
 Order::Order()
 {
+    m_Id = 0L;
+    m_IdIsSet = false;
+    m_PetId = 0L;
+    m_PetIdIsSet = false;
+    m_Quantity = 0;
+    m_QuantityIsSet = false;
+    m_ShipDate = utility::datetime();
+    m_ShipDateIsSet = false;
+    m_Status = U("");
+    m_StatusIsSet = false;
+    m_Complete = false;
+    m_CompleteIsSet = false;
+    
 }
 
 Order::~Order()
@@ -25,7 +38,7 @@ void Order::validate()
 
 web::json::value Order::toJson() const
 {
-    web::json::value val;
+    web::json::value val = web::json::value::object();
      
 	if(m_IdIsSet)
     {
@@ -87,8 +100,14 @@ void Order::fromJson(web::json::value& val)
     
 }
 
-void Order::toMultipart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& namePrefix) const
+void Order::toMultipart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& prefix) const
 {
+    utility::string_t namePrefix = prefix;
+	if(namePrefix.size() > 0 && namePrefix[namePrefix.size() - 1] != U('.'))
+	{
+		namePrefix += U(".");
+	}
+
 	if(m_IdIsSet)
     {
         multipart->add(ModelBase::toHttpContent(namePrefix + U("id"), m_Id));
@@ -118,8 +137,14 @@ void Order::toMultipart(std::shared_ptr<MultipartFormData> multipart, const util
     
 }
 
-void Order::fromMultiPart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& namePrefix)
+void Order::fromMultiPart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& prefix)
 {
+    utility::string_t namePrefix = prefix;
+	if(namePrefix.size() > 0 && namePrefix[namePrefix.size() - 1] != U('.'))
+	{
+		namePrefix += U(".");
+	}
+
     if(multipart->hasContent(U("id")))
     {
         setId(ModelBase::int64_tFromHttpContent(multipart->getContent(U("id"))));
@@ -157,9 +182,10 @@ int64_t Order::getId() const
 void Order::setId(int64_t value)
 {
 	m_Id = value;
+    m_IdIsSet = true;
 }
  
-bool Order::IdIsSet() 
+bool Order::idIsSet() const
 {
     return m_IdIsSet;
 }
@@ -175,9 +201,10 @@ int64_t Order::getPetId() const
 void Order::setPetId(int64_t value)
 {
 	m_PetId = value;
+    m_PetIdIsSet = true;
 }
  
-bool Order::PetIdIsSet() 
+bool Order::petIdIsSet() const
 {
     return m_PetIdIsSet;
 }
@@ -193,9 +220,10 @@ int32_t Order::getQuantity() const
 void Order::setQuantity(int32_t value)
 {
 	m_Quantity = value;
+    m_QuantityIsSet = true;
 }
  
-bool Order::QuantityIsSet() 
+bool Order::quantityIsSet() const
 {
     return m_QuantityIsSet;
 }
@@ -211,9 +239,10 @@ utility::datetime Order::getShipDate() const
 void Order::setShipDate(utility::datetime value)
 {
 	m_ShipDate = value;
+    m_ShipDateIsSet = true;
 }
  
-bool Order::ShipDateIsSet() 
+bool Order::shipDateIsSet() const
 {
     return m_ShipDateIsSet;
 }
@@ -229,9 +258,10 @@ utility::string_t Order::getStatus() const
 void Order::setStatus(utility::string_t value)
 {
 	m_Status = value;
+    m_StatusIsSet = true;
 }
  
-bool Order::StatusIsSet() 
+bool Order::statusIsSet() const
 {
     return m_StatusIsSet;
 }
@@ -247,9 +277,10 @@ bool Order::getComplete() const
 void Order::setComplete(bool value)
 {
 	m_Complete = value;
+    m_CompleteIsSet = true;
 }
  
-bool Order::CompleteIsSet() 
+bool Order::completeIsSet() const
 {
     return m_CompleteIsSet;
 }

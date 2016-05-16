@@ -7,6 +7,7 @@
 
 #include <unordered_set>
 
+#include <boost/algorithm/string/replace.hpp>
 
 
 namespace swagger {
@@ -40,7 +41,8 @@ pplx::task<void> PetApi::addPet(std::shared_ptr<Pet> body)
     
     std::shared_ptr<ApiConfiguration> apiConfiguration( m_ApiClient->getConfiguration() );
     utility::string_t path = U("/pet");
-    std::map<utility::string_t, utility::string_t> pathParams;
+    
+    
     std::map<utility::string_t, utility::string_t> queryParams;
     std::map<utility::string_t, utility::string_t> headerParams( apiConfiguration->getDefaultHeaders() );
     std::map<utility::string_t, utility::string_t> formParams;
@@ -107,7 +109,7 @@ pplx::task<void> PetApi::addPet(std::shared_ptr<Pet> body)
     
     
     
-    return m_ApiClient->callApi(path, U("POST"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    return m_ApiClient->callApi(path, U("POST"), queryParams, httpBody, headerParams, formParams, fileParams, httpContentType)
     .then([=](web::http::http_response response)
     {
         printf("Received response status code:%u\n", response.status_code());
@@ -126,7 +128,9 @@ pplx::task<void> PetApi::deletePet(int64_t petId, utility::string_t apiKey)
     
     std::shared_ptr<ApiConfiguration> apiConfiguration( m_ApiClient->getConfiguration() );
     utility::string_t path = U("/pet/{petId}");
-    std::map<utility::string_t, utility::string_t> pathParams;
+    boost::replace_all(path, U("{") U("petId") U("}"), ApiClient::parameterToString(petId));
+    
+    
     std::map<utility::string_t, utility::string_t> queryParams;
     std::map<utility::string_t, utility::string_t> headerParams( apiConfiguration->getDefaultHeaders() );
     std::map<utility::string_t, utility::string_t> formParams;
@@ -142,7 +146,6 @@ pplx::task<void> PetApi::deletePet(int64_t petId, utility::string_t apiKey)
     
     
     {
-        pathParams[U("petId")] = ApiClient::parameterToString(petId);
         
     }
     
@@ -183,7 +186,7 @@ pplx::task<void> PetApi::deletePet(int64_t petId, utility::string_t apiKey)
     
     
     
-    return m_ApiClient->callApi(path, U("DELETE"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    return m_ApiClient->callApi(path, U("DELETE"), queryParams, httpBody, headerParams, formParams, fileParams, httpContentType)
     .then([=](web::http::http_response response)
     {
         printf("Received response status code:%u\n", response.status_code());
@@ -202,7 +205,8 @@ pplx::task<std::vector<std::shared_ptr<Pet>>> PetApi::findPetsByStatus(std::vect
     
     std::shared_ptr<ApiConfiguration> apiConfiguration( m_ApiClient->getConfiguration() );
     utility::string_t path = U("/pet/findByStatus");
-    std::map<utility::string_t, utility::string_t> pathParams;
+    
+    
     std::map<utility::string_t, utility::string_t> queryParams;
     std::map<utility::string_t, utility::string_t> headerParams( apiConfiguration->getDefaultHeaders() );
     std::map<utility::string_t, utility::string_t> formParams;
@@ -254,7 +258,7 @@ pplx::task<std::vector<std::shared_ptr<Pet>>> PetApi::findPetsByStatus(std::vect
     
     
     
-    return m_ApiClient->callApi(path, U("GET"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    return m_ApiClient->callApi(path, U("GET"), queryParams, httpBody, headerParams, formParams, fileParams, httpContentType)
     .then([=](web::http::http_response response)
     {
         printf("Received response status code:%u\n", response.status_code());
@@ -273,7 +277,8 @@ pplx::task<std::vector<std::shared_ptr<Pet>>> PetApi::findPetsByTags(std::vector
     
     std::shared_ptr<ApiConfiguration> apiConfiguration( m_ApiClient->getConfiguration() );
     utility::string_t path = U("/pet/findByTags");
-    std::map<utility::string_t, utility::string_t> pathParams;
+    
+    
     std::map<utility::string_t, utility::string_t> queryParams;
     std::map<utility::string_t, utility::string_t> headerParams( apiConfiguration->getDefaultHeaders() );
     std::map<utility::string_t, utility::string_t> formParams;
@@ -325,7 +330,7 @@ pplx::task<std::vector<std::shared_ptr<Pet>>> PetApi::findPetsByTags(std::vector
     
     
     
-    return m_ApiClient->callApi(path, U("GET"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    return m_ApiClient->callApi(path, U("GET"), queryParams, httpBody, headerParams, formParams, fileParams, httpContentType)
     .then([=](web::http::http_response response)
     {
         printf("Received response status code:%u\n", response.status_code());
@@ -344,7 +349,9 @@ pplx::task<std::shared_ptr<Pet>> PetApi::getPetById(int64_t petId)
     
     std::shared_ptr<ApiConfiguration> apiConfiguration( m_ApiClient->getConfiguration() );
     utility::string_t path = U("/pet/{petId}");
-    std::map<utility::string_t, utility::string_t> pathParams;
+    boost::replace_all(path, U("{") U("petId") U("}"), ApiClient::parameterToString(petId));
+    
+    
     std::map<utility::string_t, utility::string_t> queryParams;
     std::map<utility::string_t, utility::string_t> headerParams( apiConfiguration->getDefaultHeaders() );
     std::map<utility::string_t, utility::string_t> formParams;
@@ -360,7 +367,6 @@ pplx::task<std::shared_ptr<Pet>> PetApi::getPetById(int64_t petId)
     
     
     {
-        pathParams[U("petId")] = ApiClient::parameterToString(petId);
         
     }
     
@@ -405,7 +411,7 @@ pplx::task<std::shared_ptr<Pet>> PetApi::getPetById(int64_t petId)
     
     
     
-    return m_ApiClient->callApi(path, U("GET"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    return m_ApiClient->callApi(path, U("GET"), queryParams, httpBody, headerParams, formParams, fileParams, httpContentType)
     .then([=](web::http::http_response response)
     {
         printf("Received response status code:%u\n", response.status_code());
@@ -430,7 +436,8 @@ pplx::task<void> PetApi::updatePet(std::shared_ptr<Pet> body)
     
     std::shared_ptr<ApiConfiguration> apiConfiguration( m_ApiClient->getConfiguration() );
     utility::string_t path = U("/pet");
-    std::map<utility::string_t, utility::string_t> pathParams;
+    
+    
     std::map<utility::string_t, utility::string_t> queryParams;
     std::map<utility::string_t, utility::string_t> headerParams( apiConfiguration->getDefaultHeaders() );
     std::map<utility::string_t, utility::string_t> formParams;
@@ -497,7 +504,7 @@ pplx::task<void> PetApi::updatePet(std::shared_ptr<Pet> body)
     
     
     
-    return m_ApiClient->callApi(path, U("PUT"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    return m_ApiClient->callApi(path, U("PUT"), queryParams, httpBody, headerParams, formParams, fileParams, httpContentType)
     .then([=](web::http::http_response response)
     {
         printf("Received response status code:%u\n", response.status_code());
@@ -516,7 +523,9 @@ pplx::task<void> PetApi::updatePetWithForm(int64_t petId, utility::string_t name
     
     std::shared_ptr<ApiConfiguration> apiConfiguration( m_ApiClient->getConfiguration() );
     utility::string_t path = U("/pet/{petId}");
-    std::map<utility::string_t, utility::string_t> pathParams;
+    boost::replace_all(path, U("{") U("petId") U("}"), ApiClient::parameterToString(petId));
+    
+    
     std::map<utility::string_t, utility::string_t> queryParams;
     std::map<utility::string_t, utility::string_t> headerParams( apiConfiguration->getDefaultHeaders() );
     std::map<utility::string_t, utility::string_t> formParams;
@@ -533,7 +542,6 @@ pplx::task<void> PetApi::updatePetWithForm(int64_t petId, utility::string_t name
     
     
     {
-        pathParams[U("petId")] = ApiClient::parameterToString(petId);
         
     }
     
@@ -579,7 +587,7 @@ pplx::task<void> PetApi::updatePetWithForm(int64_t petId, utility::string_t name
     
     
     
-    return m_ApiClient->callApi(path, U("POST"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    return m_ApiClient->callApi(path, U("POST"), queryParams, httpBody, headerParams, formParams, fileParams, httpContentType)
     .then([=](web::http::http_response response)
     {
         printf("Received response status code:%u\n", response.status_code());
@@ -598,7 +606,9 @@ pplx::task<std::shared_ptr<ApiResponse>> PetApi::uploadFile(int64_t petId, utili
     
     std::shared_ptr<ApiConfiguration> apiConfiguration( m_ApiClient->getConfiguration() );
     utility::string_t path = U("/pet/{petId}/uploadImage");
-    std::map<utility::string_t, utility::string_t> pathParams;
+    boost::replace_all(path, U("{") U("petId") U("}"), ApiClient::parameterToString(petId));
+    
+    
     std::map<utility::string_t, utility::string_t> queryParams;
     std::map<utility::string_t, utility::string_t> headerParams( apiConfiguration->getDefaultHeaders() );
     std::map<utility::string_t, utility::string_t> formParams;
@@ -614,7 +624,6 @@ pplx::task<std::shared_ptr<ApiResponse>> PetApi::uploadFile(int64_t petId, utili
     
     
     {
-        pathParams[U("petId")] = ApiClient::parameterToString(petId);
         
     }
     
@@ -660,7 +669,7 @@ pplx::task<std::shared_ptr<ApiResponse>> PetApi::uploadFile(int64_t petId, utili
     
     
     
-    return m_ApiClient->callApi(path, U("POST"), queryParams, httpBody, headerParams, formParams, fileParams, pathParams, httpContentType)
+    return m_ApiClient->callApi(path, U("POST"), queryParams, httpBody, headerParams, formParams, fileParams, httpContentType)
     .then([=](web::http::http_response response)
     {
         printf("Received response status code:%u\n", response.status_code());

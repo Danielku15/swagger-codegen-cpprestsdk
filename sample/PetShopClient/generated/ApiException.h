@@ -9,9 +9,7 @@
 
 #include "Commons.h"
 
-#include <iostream> 
 #include <memory> 
-#include <exception>
 #include <map>
 
 #include <cpprest/details/basic_types.h>
@@ -41,7 +39,7 @@ public:
     uint32_t getStatusCode() const;
     utility::string_t getMessage() const;
     std::map<utility::string_t, utility::string_t>& getHeaders();
-    std::shared_ptr<std::istream> getContent();
+    std::shared_ptr<std::istream> getContent() const;
     
     virtual const char* what() const throw();
     

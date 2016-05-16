@@ -31,6 +31,7 @@ class PETSHOP_DECLSPEC MultipartFormData
 {
 public:
     MultipartFormData();
+    MultipartFormData(const utility::string_t& boundary);
     virtual ~MultipartFormData();
 
     virtual void add( std::shared_ptr<HttpContent> content );

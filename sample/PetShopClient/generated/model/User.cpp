@@ -12,6 +12,23 @@ namespace model {
 
 User::User()
 {
+    m_Id = 0L;
+    m_IdIsSet = false;
+    m_Username = U("");
+    m_UsernameIsSet = false;
+    m_FirstName = U("");
+    m_FirstNameIsSet = false;
+    m_LastName = U("");
+    m_LastNameIsSet = false;
+    m_Email = U("");
+    m_EmailIsSet = false;
+    m_Password = U("");
+    m_PasswordIsSet = false;
+    m_Phone = U("");
+    m_PhoneIsSet = false;
+    m_UserStatus = 0;
+    m_UserStatusIsSet = false;
+    
 }
 
 User::~User()
@@ -25,7 +42,7 @@ void User::validate()
 
 web::json::value User::toJson() const
 {
-    web::json::value val;
+    web::json::value val = web::json::value::object();
      
 	if(m_IdIsSet)
     {
@@ -107,8 +124,14 @@ void User::fromJson(web::json::value& val)
     
 }
 
-void User::toMultipart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& namePrefix) const
+void User::toMultipart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& prefix) const
 {
+    utility::string_t namePrefix = prefix;
+	if(namePrefix.size() > 0 && namePrefix[namePrefix.size() - 1] != U('.'))
+	{
+		namePrefix += U(".");
+	}
+
 	if(m_IdIsSet)
     {
         multipart->add(ModelBase::toHttpContent(namePrefix + U("id"), m_Id));
@@ -150,8 +173,14 @@ void User::toMultipart(std::shared_ptr<MultipartFormData> multipart, const utili
     
 }
 
-void User::fromMultiPart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& namePrefix)
+void User::fromMultiPart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& prefix)
 {
+    utility::string_t namePrefix = prefix;
+	if(namePrefix.size() > 0 && namePrefix[namePrefix.size() - 1] != U('.'))
+	{
+		namePrefix += U(".");
+	}
+
     if(multipart->hasContent(U("id")))
     {
         setId(ModelBase::int64_tFromHttpContent(multipart->getContent(U("id"))));
@@ -201,9 +230,10 @@ int64_t User::getId() const
 void User::setId(int64_t value)
 {
 	m_Id = value;
+    m_IdIsSet = true;
 }
  
-bool User::IdIsSet() 
+bool User::idIsSet() const
 {
     return m_IdIsSet;
 }
@@ -219,9 +249,10 @@ utility::string_t User::getUsername() const
 void User::setUsername(utility::string_t value)
 {
 	m_Username = value;
+    m_UsernameIsSet = true;
 }
  
-bool User::UsernameIsSet() 
+bool User::usernameIsSet() const
 {
     return m_UsernameIsSet;
 }
@@ -237,9 +268,10 @@ utility::string_t User::getFirstName() const
 void User::setFirstName(utility::string_t value)
 {
 	m_FirstName = value;
+    m_FirstNameIsSet = true;
 }
  
-bool User::FirstNameIsSet() 
+bool User::firstNameIsSet() const
 {
     return m_FirstNameIsSet;
 }
@@ -255,9 +287,10 @@ utility::string_t User::getLastName() const
 void User::setLastName(utility::string_t value)
 {
 	m_LastName = value;
+    m_LastNameIsSet = true;
 }
  
-bool User::LastNameIsSet() 
+bool User::lastNameIsSet() const
 {
     return m_LastNameIsSet;
 }
@@ -273,9 +306,10 @@ utility::string_t User::getEmail() const
 void User::setEmail(utility::string_t value)
 {
 	m_Email = value;
+    m_EmailIsSet = true;
 }
  
-bool User::EmailIsSet() 
+bool User::emailIsSet() const
 {
     return m_EmailIsSet;
 }
@@ -291,9 +325,10 @@ utility::string_t User::getPassword() const
 void User::setPassword(utility::string_t value)
 {
 	m_Password = value;
+    m_PasswordIsSet = true;
 }
  
-bool User::PasswordIsSet() 
+bool User::passwordIsSet() const
 {
     return m_PasswordIsSet;
 }
@@ -309,9 +344,10 @@ utility::string_t User::getPhone() const
 void User::setPhone(utility::string_t value)
 {
 	m_Phone = value;
+    m_PhoneIsSet = true;
 }
  
-bool User::PhoneIsSet() 
+bool User::phoneIsSet() const
 {
     return m_PhoneIsSet;
 }
@@ -327,9 +363,10 @@ int32_t User::getUserStatus() const
 void User::setUserStatus(int32_t value)
 {
 	m_UserStatus = value;
+    m_UserStatusIsSet = true;
 }
  
-bool User::UserStatusIsSet() 
+bool User::userStatusIsSet() const
 {
     return m_UserStatusIsSet;
 }

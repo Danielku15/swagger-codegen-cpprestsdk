@@ -8,6 +8,11 @@ namespace {{this}} {
 
 {{classname}}::{{classname}}()
 {
+    {{#vars}}{{#isNotContainer}}{{#isPrimitiveType}}m_{{name}} = {{{defaultValue}}};
+    {{/isPrimitiveType}}{{^isPrimitiveType}}{{#isString}}m_{{name}} = {{{defaultValue}}};
+    {{/isString}}{{#isDateTime}}m_{{name}} = {{{defaultValue}}};
+    {{/isDateTime}}{{/isPrimitiveType}}{{/isNotContainer}}{{^required}}m_{{name}}IsSet = false;
+    {{/required}}{{/vars}}
 }
 
 {{classname}}::~{{classname}}()
@@ -21,7 +26,7 @@ void {{classname}}::validate()
 
 web::json::value {{classname}}::toJson() const
 {
-    web::json::value val;
+    web::json::value val = web::json::value::object();
      
 	{{#vars}}{{#isPrimitiveType}}{{^required}}if(m_{{name}}IsSet)
     {
@@ -108,8 +113,14 @@ void {{classname}}::fromJson(web::json::value& val)
     {{/vendorExtensions.x-codegen-file}}{{/isDateTime}}{{/isString}}{{/required}}{{/isListContainer}}{{/isPrimitiveType}}{{/vars}}
 }
 
-void {{classname}}::toMultipart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& namePrefix) const
+void {{classname}}::toMultipart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& prefix) const
 {
+    utility::string_t namePrefix = prefix;
+	if(namePrefix.size() > 0 && namePrefix[namePrefix.size() - 1] != U('.'))
+	{
+		namePrefix += U(".");
+	}
+
 	{{#vars}}{{#isPrimitiveType}}{{^required}}if(m_{{name}}IsSet)
     {
         multipart->add(ModelBase::toHttpContent(namePrefix + U("{{baseName}}"), m_{{name}}));
@@ -146,8 +157,14 @@ void {{classname}}::toMultipart(std::shared_ptr<MultipartFormData> multipart, co
     {{/vendorExtensions.x-codegen-file}}{{/isDateTime}}{{/isString}}{{/required}}{{/isListContainer}}{{/isPrimitiveType}}{{/vars}}
 }
 
-void {{classname}}::fromMultiPart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& namePrefix)
+void {{classname}}::fromMultiPart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& prefix)
 {
+    utility::string_t namePrefix = prefix;
+	if(namePrefix.size() > 0 && namePrefix[namePrefix.size() - 1] != U('.'))
+	{
+		namePrefix += U(".");
+	}
+
     {{#vars}}{{#isPrimitiveType}}{{^required}}if(multipart->hasContent(U("{{baseName}}")))
     {
         {{setter}}(ModelBase::{{baseType}}FromHttpContent(multipart->getContent(U("{{baseName}}"))));
@@ -215,9 +232,10 @@ void {{classname}}::fromMultiPart(std::shared_ptr<MultipartFormData> multipart, 
 void {{classname}}::{{setter}}({{{datatype}}} value)
 {
 	m_{{name}} = value;
+    {{^required}}m_{{name}}IsSet = true;{{/required}}
 }
 {{/isNotContainer}} 
-{{^required}}bool {{classname}}::{{name}}IsSet() 
+{{^required}}bool {{classname}}::{{baseName}}IsSet() const
 {
     return m_{{name}}IsSet;
 }
