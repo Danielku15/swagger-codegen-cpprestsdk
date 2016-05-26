@@ -110,6 +110,7 @@ pplx::task<void> UserApi::createUser(std::shared_ptr<User> body)
         
 
         httpBody = multipart;
+        requestHttpContentType += U("; boundary=") + multipart->getBoundary();
         
     }
     else
@@ -130,7 +131,7 @@ pplx::task<void> UserApi::createUser(std::shared_ptr<User> body)
 		if (response.status_code() >= 400)
 		{
 			throw ApiException(response.status_code()
-				, U("error calling findPetsByStatus: ") + response.reason_phrase()
+				, U("error calling createUser: ") + response.reason_phrase()
 				, std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
 		}
         
@@ -141,7 +142,7 @@ pplx::task<void> UserApi::createUser(std::shared_ptr<User> body)
             if( contentType.find(responseHttpContentType) == std::string::npos )
             {
                 throw ApiException(500
-                    , U("error calling findPetsByStatus: unexpected response type: ") + contentType
+                    , U("error calling createUser: unexpected response type: ") + contentType
                     , std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
             }
         }
@@ -244,6 +245,7 @@ pplx::task<void> UserApi::createUsersWithArrayInput(std::vector<std::shared_ptr<
         
 
         httpBody = multipart;
+        requestHttpContentType += U("; boundary=") + multipart->getBoundary();
         
     }
     else
@@ -264,7 +266,7 @@ pplx::task<void> UserApi::createUsersWithArrayInput(std::vector<std::shared_ptr<
 		if (response.status_code() >= 400)
 		{
 			throw ApiException(response.status_code()
-				, U("error calling findPetsByStatus: ") + response.reason_phrase()
+				, U("error calling createUsersWithArrayInput: ") + response.reason_phrase()
 				, std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
 		}
         
@@ -275,7 +277,7 @@ pplx::task<void> UserApi::createUsersWithArrayInput(std::vector<std::shared_ptr<
             if( contentType.find(responseHttpContentType) == std::string::npos )
             {
                 throw ApiException(500
-                    , U("error calling findPetsByStatus: unexpected response type: ") + contentType
+                    , U("error calling createUsersWithArrayInput: unexpected response type: ") + contentType
                     , std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
             }
         }
@@ -378,6 +380,7 @@ pplx::task<void> UserApi::createUsersWithListInput(std::vector<std::shared_ptr<U
         
 
         httpBody = multipart;
+        requestHttpContentType += U("; boundary=") + multipart->getBoundary();
         
     }
     else
@@ -398,7 +401,7 @@ pplx::task<void> UserApi::createUsersWithListInput(std::vector<std::shared_ptr<U
 		if (response.status_code() >= 400)
 		{
 			throw ApiException(response.status_code()
-				, U("error calling findPetsByStatus: ") + response.reason_phrase()
+				, U("error calling createUsersWithListInput: ") + response.reason_phrase()
 				, std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
 		}
         
@@ -409,7 +412,7 @@ pplx::task<void> UserApi::createUsersWithListInput(std::vector<std::shared_ptr<U
             if( contentType.find(responseHttpContentType) == std::string::npos )
             {
                 throw ApiException(500
-                    , U("error calling findPetsByStatus: unexpected response type: ") + contentType
+                    , U("error calling createUsersWithListInput: unexpected response type: ") + contentType
                     , std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
             }
         }
@@ -505,7 +508,7 @@ pplx::task<void> UserApi::deleteUser(utility::string_t username)
 		if (response.status_code() >= 400)
 		{
 			throw ApiException(response.status_code()
-				, U("error calling findPetsByStatus: ") + response.reason_phrase()
+				, U("error calling deleteUser: ") + response.reason_phrase()
 				, std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
 		}
         
@@ -516,7 +519,7 @@ pplx::task<void> UserApi::deleteUser(utility::string_t username)
             if( contentType.find(responseHttpContentType) == std::string::npos )
             {
                 throw ApiException(500
-                    , U("error calling findPetsByStatus: unexpected response type: ") + contentType
+                    , U("error calling deleteUser: unexpected response type: ") + contentType
                     , std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
             }
         }
@@ -612,7 +615,7 @@ pplx::task<std::shared_ptr<User>> UserApi::getUserByName(utility::string_t usern
 		if (response.status_code() >= 400)
 		{
 			throw ApiException(response.status_code()
-				, U("error calling findPetsByStatus: ") + response.reason_phrase()
+				, U("error calling getUserByName: ") + response.reason_phrase()
 				, std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
 		}
         
@@ -623,7 +626,7 @@ pplx::task<std::shared_ptr<User>> UserApi::getUserByName(utility::string_t usern
             if( contentType.find(responseHttpContentType) == std::string::npos )
             {
                 throw ApiException(500
-                    , U("error calling findPetsByStatus: unexpected response type: ") + contentType
+                    , U("error calling getUserByName: unexpected response type: ") + contentType
                     , std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
             }
         }
@@ -742,7 +745,7 @@ pplx::task<utility::string_t> UserApi::loginUser(utility::string_t username, uti
 		if (response.status_code() >= 400)
 		{
 			throw ApiException(response.status_code()
-				, U("error calling findPetsByStatus: ") + response.reason_phrase()
+				, U("error calling loginUser: ") + response.reason_phrase()
 				, std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
 		}
         
@@ -753,7 +756,7 @@ pplx::task<utility::string_t> UserApi::loginUser(utility::string_t username, uti
             if( contentType.find(responseHttpContentType) == std::string::npos )
             {
                 throw ApiException(500
-                    , U("error calling findPetsByStatus: unexpected response type: ") + contentType
+                    , U("error calling loginUser: unexpected response type: ") + contentType
                     , std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
             }
         }
@@ -863,7 +866,7 @@ pplx::task<void> UserApi::logoutUser()
 		if (response.status_code() >= 400)
 		{
 			throw ApiException(response.status_code()
-				, U("error calling findPetsByStatus: ") + response.reason_phrase()
+				, U("error calling logoutUser: ") + response.reason_phrase()
 				, std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
 		}
         
@@ -874,7 +877,7 @@ pplx::task<void> UserApi::logoutUser()
             if( contentType.find(responseHttpContentType) == std::string::npos )
             {
                 throw ApiException(500
-                    , U("error calling findPetsByStatus: unexpected response type: ") + contentType
+                    , U("error calling logoutUser: unexpected response type: ") + contentType
                     , std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
             }
         }
@@ -974,6 +977,7 @@ pplx::task<void> UserApi::updateUser(utility::string_t username, std::shared_ptr
         
 
         httpBody = multipart;
+        requestHttpContentType += U("; boundary=") + multipart->getBoundary();
         
     }
     else
@@ -994,7 +998,7 @@ pplx::task<void> UserApi::updateUser(utility::string_t username, std::shared_ptr
 		if (response.status_code() >= 400)
 		{
 			throw ApiException(response.status_code()
-				, U("error calling findPetsByStatus: ") + response.reason_phrase()
+				, U("error calling updateUser: ") + response.reason_phrase()
 				, std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
 		}
         
@@ -1005,7 +1009,7 @@ pplx::task<void> UserApi::updateUser(utility::string_t username, std::shared_ptr
             if( contentType.find(responseHttpContentType) == std::string::npos )
             {
                 throw ApiException(500
-                    , U("error calling findPetsByStatus: unexpected response type: ") + contentType
+                    , U("error calling updateUser: unexpected response type: ") + contentType
                     , std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
             }
         }

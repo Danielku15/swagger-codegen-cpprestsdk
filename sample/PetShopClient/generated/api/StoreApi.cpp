@@ -111,7 +111,7 @@ pplx::task<void> StoreApi::deleteOrder(int64_t orderId)
 		if (response.status_code() >= 400)
 		{
 			throw ApiException(response.status_code()
-				, U("error calling findPetsByStatus: ") + response.reason_phrase()
+				, U("error calling deleteOrder: ") + response.reason_phrase()
 				, std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
 		}
         
@@ -122,7 +122,7 @@ pplx::task<void> StoreApi::deleteOrder(int64_t orderId)
             if( contentType.find(responseHttpContentType) == std::string::npos )
             {
                 throw ApiException(500
-                    , U("error calling findPetsByStatus: unexpected response type: ") + contentType
+                    , U("error calling deleteOrder: unexpected response type: ") + contentType
                     , std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
             }
         }
@@ -228,7 +228,7 @@ pplx::task<std::map<utility::string_t, int32_t>> StoreApi::getInventory()
 		if (response.status_code() >= 400)
 		{
 			throw ApiException(response.status_code()
-				, U("error calling findPetsByStatus: ") + response.reason_phrase()
+				, U("error calling getInventory: ") + response.reason_phrase()
 				, std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
 		}
         
@@ -239,7 +239,7 @@ pplx::task<std::map<utility::string_t, int32_t>> StoreApi::getInventory()
             if( contentType.find(responseHttpContentType) == std::string::npos )
             {
                 throw ApiException(500
-                    , U("error calling findPetsByStatus: unexpected response type: ") + contentType
+                    , U("error calling getInventory: unexpected response type: ") + contentType
                     , std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
             }
         }
@@ -359,7 +359,7 @@ pplx::task<std::shared_ptr<Order>> StoreApi::getOrderById(int64_t orderId)
 		if (response.status_code() >= 400)
 		{
 			throw ApiException(response.status_code()
-				, U("error calling findPetsByStatus: ") + response.reason_phrase()
+				, U("error calling getOrderById: ") + response.reason_phrase()
 				, std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
 		}
         
@@ -370,7 +370,7 @@ pplx::task<std::shared_ptr<Order>> StoreApi::getOrderById(int64_t orderId)
             if( contentType.find(responseHttpContentType) == std::string::npos )
             {
                 throw ApiException(500
-                    , U("error calling findPetsByStatus: unexpected response type: ") + contentType
+                    , U("error calling getOrderById: unexpected response type: ") + contentType
                     , std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
             }
         }
@@ -483,6 +483,7 @@ pplx::task<std::shared_ptr<Order>> StoreApi::placeOrder(std::shared_ptr<Order> b
         
 
         httpBody = multipart;
+        requestHttpContentType += U("; boundary=") + multipart->getBoundary();
         
     }
     else
@@ -503,7 +504,7 @@ pplx::task<std::shared_ptr<Order>> StoreApi::placeOrder(std::shared_ptr<Order> b
 		if (response.status_code() >= 400)
 		{
 			throw ApiException(response.status_code()
-				, U("error calling findPetsByStatus: ") + response.reason_phrase()
+				, U("error calling placeOrder: ") + response.reason_phrase()
 				, std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
 		}
         
@@ -514,7 +515,7 @@ pplx::task<std::shared_ptr<Order>> StoreApi::placeOrder(std::shared_ptr<Order> b
             if( contentType.find(responseHttpContentType) == std::string::npos )
             {
                 throw ApiException(500
-                    , U("error calling findPetsByStatus: unexpected response type: ") + contentType
+                    , U("error calling placeOrder: unexpected response type: ") + contentType
                     , std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
             }
         }

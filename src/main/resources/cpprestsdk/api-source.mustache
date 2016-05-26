@@ -147,6 +147,7 @@ pplx::task<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}void{{/r
         {{/isString}}{{/isListContainer}}{{/isPrimitiveType}}
 
         httpBody = multipart;
+        requestHttpContentType += U("; boundary=") + multipart->getBoundary();
         {{/bodyParam}}
     }
     else
@@ -195,7 +196,7 @@ pplx::task<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}void{{/r
 		if (response.status_code() >= 400)
 		{
 			throw ApiException(response.status_code()
-				, U("error calling findPetsByStatus: ") + response.reason_phrase()
+				, U("error calling {{operationId}}: ") + response.reason_phrase()
 				, std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
 		}
         
@@ -206,7 +207,7 @@ pplx::task<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}void{{/r
             if( contentType.find(responseHttpContentType) == std::string::npos )
             {
                 throw ApiException(500
-                    , U("error calling findPetsByStatus: unexpected response type: ") + contentType
+                    , U("error calling {{operationId}}: unexpected response type: ") + contentType
                     , std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
             }
         }

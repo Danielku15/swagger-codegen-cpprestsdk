@@ -112,6 +112,7 @@ pplx::task<void> PetApi::addPet(std::shared_ptr<Pet> body)
         
 
         httpBody = multipart;
+        requestHttpContentType += U("; boundary=") + multipart->getBoundary();
         
     }
     else
@@ -139,7 +140,7 @@ pplx::task<void> PetApi::addPet(std::shared_ptr<Pet> body)
 		if (response.status_code() >= 400)
 		{
 			throw ApiException(response.status_code()
-				, U("error calling findPetsByStatus: ") + response.reason_phrase()
+				, U("error calling addPet: ") + response.reason_phrase()
 				, std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
 		}
         
@@ -150,7 +151,7 @@ pplx::task<void> PetApi::addPet(std::shared_ptr<Pet> body)
             if( contentType.find(responseHttpContentType) == std::string::npos )
             {
                 throw ApiException(500
-                    , U("error calling findPetsByStatus: unexpected response type: ") + contentType
+                    , U("error calling addPet: unexpected response type: ") + contentType
                     , std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
             }
         }
@@ -258,7 +259,7 @@ pplx::task<void> PetApi::deletePet(int64_t petId, utility::string_t apiKey)
 		if (response.status_code() >= 400)
 		{
 			throw ApiException(response.status_code()
-				, U("error calling findPetsByStatus: ") + response.reason_phrase()
+				, U("error calling deletePet: ") + response.reason_phrase()
 				, std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
 		}
         
@@ -269,7 +270,7 @@ pplx::task<void> PetApi::deletePet(int64_t petId, utility::string_t apiKey)
             if( contentType.find(responseHttpContentType) == std::string::npos )
             {
                 throw ApiException(500
-                    , U("error calling findPetsByStatus: unexpected response type: ") + contentType
+                    , U("error calling deletePet: unexpected response type: ") + contentType
                     , std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
             }
         }
@@ -512,7 +513,7 @@ pplx::task<std::vector<std::shared_ptr<Pet>>> PetApi::findPetsByTags(std::vector
 		if (response.status_code() >= 400)
 		{
 			throw ApiException(response.status_code()
-				, U("error calling findPetsByStatus: ") + response.reason_phrase()
+				, U("error calling findPetsByTags: ") + response.reason_phrase()
 				, std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
 		}
         
@@ -523,7 +524,7 @@ pplx::task<std::vector<std::shared_ptr<Pet>>> PetApi::findPetsByTags(std::vector
             if( contentType.find(responseHttpContentType) == std::string::npos )
             {
                 throw ApiException(500
-                    , U("error calling findPetsByStatus: unexpected response type: ") + contentType
+                    , U("error calling findPetsByTags: unexpected response type: ") + contentType
                     , std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
             }
         }
@@ -661,7 +662,7 @@ pplx::task<std::shared_ptr<Pet>> PetApi::getPetById(int64_t petId)
 		if (response.status_code() >= 400)
 		{
 			throw ApiException(response.status_code()
-				, U("error calling findPetsByStatus: ") + response.reason_phrase()
+				, U("error calling getPetById: ") + response.reason_phrase()
 				, std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
 		}
         
@@ -672,7 +673,7 @@ pplx::task<std::shared_ptr<Pet>> PetApi::getPetById(int64_t petId)
             if( contentType.find(responseHttpContentType) == std::string::npos )
             {
                 throw ApiException(500
-                    , U("error calling findPetsByStatus: unexpected response type: ") + contentType
+                    , U("error calling getPetById: unexpected response type: ") + contentType
                     , std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
             }
         }
@@ -787,6 +788,7 @@ pplx::task<void> PetApi::updatePet(std::shared_ptr<Pet> body)
         
 
         httpBody = multipart;
+        requestHttpContentType += U("; boundary=") + multipart->getBoundary();
         
     }
     else
@@ -814,7 +816,7 @@ pplx::task<void> PetApi::updatePet(std::shared_ptr<Pet> body)
 		if (response.status_code() >= 400)
 		{
 			throw ApiException(response.status_code()
-				, U("error calling findPetsByStatus: ") + response.reason_phrase()
+				, U("error calling updatePet: ") + response.reason_phrase()
 				, std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
 		}
         
@@ -825,7 +827,7 @@ pplx::task<void> PetApi::updatePet(std::shared_ptr<Pet> body)
             if( contentType.find(responseHttpContentType) == std::string::npos )
             {
                 throw ApiException(500
-                    , U("error calling findPetsByStatus: unexpected response type: ") + contentType
+                    , U("error calling updatePet: unexpected response type: ") + contentType
                     , std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
             }
         }
@@ -939,7 +941,7 @@ pplx::task<void> PetApi::updatePetWithForm(int64_t petId, utility::string_t name
 		if (response.status_code() >= 400)
 		{
 			throw ApiException(response.status_code()
-				, U("error calling findPetsByStatus: ") + response.reason_phrase()
+				, U("error calling updatePetWithForm: ") + response.reason_phrase()
 				, std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
 		}
         
@@ -950,7 +952,7 @@ pplx::task<void> PetApi::updatePetWithForm(int64_t petId, utility::string_t name
             if( contentType.find(responseHttpContentType) == std::string::npos )
             {
                 throw ApiException(500
-                    , U("error calling findPetsByStatus: unexpected response type: ") + contentType
+                    , U("error calling updatePetWithForm: unexpected response type: ") + contentType
                     , std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
             }
         }
@@ -1063,7 +1065,7 @@ pplx::task<std::shared_ptr<ApiResponse>> PetApi::uploadFile(int64_t petId, utili
 		if (response.status_code() >= 400)
 		{
 			throw ApiException(response.status_code()
-				, U("error calling findPetsByStatus: ") + response.reason_phrase()
+				, U("error calling uploadFile: ") + response.reason_phrase()
 				, std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
 		}
         
@@ -1074,7 +1076,7 @@ pplx::task<std::shared_ptr<ApiResponse>> PetApi::uploadFile(int64_t petId, utili
             if( contentType.find(responseHttpContentType) == std::string::npos )
             {
                 throw ApiException(500
-                    , U("error calling findPetsByStatus: unexpected response type: ") + contentType
+                    , U("error calling uploadFile: unexpected response type: ") + contentType
                     , std::make_shared<std::stringstream>(response.extract_utf8string(true).get()));
             }
         }
