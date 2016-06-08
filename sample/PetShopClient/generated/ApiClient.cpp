@@ -122,6 +122,10 @@ pplx::task<web::http::http_response> ApiClient::callApi(
 	}
 	request.set_request_uri(builder.to_uri());
 	request.set_method(method);
+	if ( !request.headers().has( web::http::header_names::user_agent ) )
+	{
+		request.headers().add( web::http::header_names::user_agent, m_Configuration->getUserAgent() );
+	}	
 
 	return client.request(request);
 }

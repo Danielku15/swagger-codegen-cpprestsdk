@@ -13,6 +13,7 @@
 #include <map>
 
 #include <cpprest/details/basic_types.h>
+#include <cpprest/http_msg.h>
 
 
 
@@ -24,28 +25,22 @@ namespace api {
 
 
 class PETSHOP_DECLSPEC ApiException
-    : public std::exception
+    : public web::http::http_exception
 {
 public:
-    ApiException( uint32_t statusCode
+    ApiException( int errorCode
         , const utility::string_t& message
         , std::shared_ptr<std::istream> content = nullptr );
-    ApiException( uint32_t statusCode
+    ApiException( int errorCode
         , const utility::string_t& message
         , std::map<utility::string_t, utility::string_t>& headers
         , std::shared_ptr<std::istream> content = nullptr );
     virtual ~ApiException();
     
-    uint32_t getStatusCode() const;
-    utility::string_t getMessage() const;
     std::map<utility::string_t, utility::string_t>& getHeaders();
     std::shared_ptr<std::istream> getContent() const;
-    
-    virtual const char* what() const throw();
-    
+        
 protected:
-    uint32_t m_StatusCode;
-    utility::string_t m_Message;
     std::shared_ptr<std::istream> m_Content;    
     std::map<utility::string_t, utility::string_t> m_Headers;
 };
