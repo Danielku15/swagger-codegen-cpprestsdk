@@ -82,8 +82,6 @@ public class CpprestsdkGenerator extends DefaultCodegen implements CodegenConfig
 
 		supportingFiles.add(new SupportingFile("modelbase-header.mustache", "", "ModelBase.h"));
 		supportingFiles.add(new SupportingFile("modelbase-source.mustache", "", "ModelBase.cpp"));
-		supportingFiles.add(new SupportingFile("apibase-header.mustache", "", "ApiBase.h"));
-		supportingFiles.add(new SupportingFile("apibase-source.mustache", "", "ApiBase.cpp"));
 		supportingFiles.add(new SupportingFile("apiclient-header.mustache", "", "ApiClient.h"));
 		supportingFiles.add(new SupportingFile("apiclient-source.mustache", "", "ApiClient.cpp"));
 		supportingFiles.add(new SupportingFile("apiconfiguration-header.mustache", "", "ApiConfiguration.h"));
