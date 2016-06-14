@@ -1,6 +1,6 @@
 # Swagger Codegen for the cpprestsdk library
 
-# This code generator is currently still work-in-progress and not yet usable. 
+# This code generator is currently still unfinished but it is already usable for calling APIs.
 
 ## Overview
 This is a client generation library for Swagger Codegen focusing on generating clients for APIs written using ASP.net Web API.
